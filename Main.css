@@ -1,0 +1,314 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+} 
+html , body {
+  width:100%;
+  color:white !important;
+  height:100%;
+}
+ /* video */ 
+ #background-video {
+   width: 100vw;
+   height: 100vh ;
+   object-fit: cover;
+   position: fixed;
+   left: 0;
+   right: 0;
+   top: 0;
+   bottom: 0;
+   z-index: -1;
+   filter:brightness(-20px);
+}
+hr {
+  margin:10px 0;
+}
+nav{
+  display: flex;
+  height: 60px;
+  width: 100%;
+  background: transparent;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 50px 0 100px;
+  flex-wrap: wrap;
+  position:fixed;
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid black;
+  z-index:99;
+}
+nav .logo > img{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  border:0.5px solid black;
+}
+nav ul{
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+}
+nav ul li{
+  margin: 0 5px;
+}
+nav ul li a{
+  color: #f2f2f2;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 500;
+  padding: 8px 15px;
+  border-radius: 5px;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+}
+nav ul li a.active,
+nav ul li a:hover{
+  color: #111;
+  background: #fff;
+}
+nav .menu-btn i{
+  color: #fff;
+  font-size: 22px;
+  cursor: pointer;
+  display: none;
+}
+input[type="checkbox"]{
+  display: none;
+}
+@media (max-width: 1000px){
+  nav{
+    padding: 0 40px 0 50px;
+  }
+}
+@media (max-width: 920px) {
+  nav .menu-btn i{
+    display: block;
+  }
+  #click:checked ~ .menu-btn i:before{
+    content: "\f00d";
+  }
+  nav ul{
+    position: fixed;
+    top: 80px;
+    left: -100%;
+    background: #111;
+    height: 100vh;
+    width: 100%;
+    text-align: center;
+    display: block;
+    transition: all 0.3s ease;
+  }
+  #click:checked ~ ul{
+    left: 0;
+  }
+  nav ul li{
+    width: 100%;
+    margin: 40px 0;
+  }
+  nav ul li a{
+    width: 100%;
+    margin-left: -100%;
+    display: block;
+    font-size: 20px;
+    transition: 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+  #click:checked ~ ul li a{
+    margin-left: 0px;
+  }
+  nav ul li a.active,
+  nav ul li a:hover{
+    background: none;
+    color: cyan;
+  }
+}
+/* header style */
+header {
+  padding-top:75px;
+}
+.iam{
+  color:white;
+  font-family:Sans-Serif;
+  text-align:center;
+}
+.text{
+    border-right: 1px solid red;
+    font-family: sans-serif;
+    color:#b47835;
+    text-align:center;
+}
+
+.profile-img {
+  display:flex;
+  width:270px;
+  height:270px;
+  border-radius:31% 69% 69% 31% / 59% 39% 61% 41% ;
+  margin:20px auto;
+  box-shadow:10px 10px 20px #Ffcf99, -10px -10px 20px #Ffcf99;
+}
+.social-media > ul {
+  width:100%;
+  display:flex;
+  justify-content:center;
+  align-content:center;
+}
+.social-media > ul > li {
+  width:40px;
+  height:40px;
+  border-radius:2px;
+  margin-left:10px;
+  list-style:none;
+}
+/* about me section  */
+.about-me {
+  padding:15px 0 5px 15px;
+}
+.about-div > p {
+  padding:10px 13px;
+  line-height:1.5rem;
+}
+.about-div > p > span , .job-div > p > span {
+  font-weight:500;
+  font-size:30px;
+  color:red;
+}
+.mern-div , .frontend,.framework {
+  width:100%;
+  display:flex;
+  justify-content:space-evenly;
+  align-content:space-between;
+  backdrop-filter:blur(10px);
+}
+.mern-div > div , .frontend > div , .framework > div{
+  width:85px;
+  height:85px;
+  border-radius:8px;
+  /* border:2px solid black; */
+  box-shadow: rgba(133, 0, 0, 0.6) 0px 2px 4px, rgba(133, 0, 0, 0.6) 0px 7px 13px
+ -3px, rgba(133, 0, 0, 0.4) 0px -3px 0px inset;
+  display:flex;
+  flex-wrap: wrap-reverse;
+  justify-content: center;
+  font-size:12px;
+  margin:10px 0;
+}
+.certificate {
+  width:100%;
+  height:auto;
+  display:flex;
+  justify-content:center;
+}
+.certificate  > div > img {
+  width:310px;
+  height:210px;
+}
+.job-div  {
+  width:100%;
+  display:flex;
+  justify-content:center;
+  align-content:center;
+  padding:15px 13px;
+  line-height:1.7em;
+}
+.job-div > p {
+  text-align:center;
+}
+form {
+  height:auto;
+  width:340px;
+/*   border:1px solid black;
+ */  border-radius:9px;
+  margin:10px auto;
+  backdrop-filter:blur(40px);
+  box-sizing:border-box;
+  border:1px solid #Ffcf99 ;
+  padding:10px;
+}
+form > h3 {
+  text-align:center;
+  font-family:Georgia;
+}
+#text , #number{
+ width:90%;
+ height:50px;
+ border:0.4px solid #c59393ac;
+ border-radius:10px;
+ display:flex;
+ margin:10px auto;
+ box-sizing:border-box;
+ padding:10px;
+ color:white;
+ font-size:15px;
+ background:transparent;
+ box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px
+ -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
+textarea {
+  width:90%;
+  height:150px;
+  display:flex;
+  margin:0 auto;
+  border:none;
+  box-sizing:border-box;
+  padding:10px;
+  border-radius: 11px;
+  border:0.4px solid #c59393ac;
+  background:transparent;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px
+ -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
+form > button {
+  width:100px;
+  height:40px;
+  border-radius:10px;
+  margin:20px auto;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#bb342f;
+  border:none;
+  color:#dda448;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px
+ -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
+footer > .logo {
+  margin:12px 0 2px 15px;
+}
+footer > .logo > img {
+  width:60px;
+  height:60px;
+  border-radius:50%;
+  border:1px solid black;
+}
+.social-media-footer > ul {
+  display:flex;
+  justify-content:center;
+  align-content: center;
+}
+.social-media-footer > ul > li {
+  width:40px;
+  height:40px;
+  border-radius:2px;
+  margin-left:10px;
+  list-style:none;
+  margin-bottom:30px;
+}
+footer > .list {
+  display:flex;
+  justify-content:space-evenly;
+  align-content:center;
+  padding:15px 0;
+}
+footer > .address > address > p > span {
+  font-weight:bold;
+}
+footer > .address > address {
+  text-align: center;
+  padding:10px 0;
+}
+.mern-div > div > svg , .frontend > div > svg , .framework > div > svg   {
+  width:50px;
+  height:50px;
+}
