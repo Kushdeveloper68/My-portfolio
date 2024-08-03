@@ -7,7 +7,7 @@ const path = require('path');
 const router = require('./Routes.js');
 //const {firstMiddleware} = require('./Middleware.js');
 
-mongoose.connect('mongodb://127.0.0.1:27017/myFirstWeb').then(() =>
+mongoose.connect('mongodb+srv://kushpandit68775:kush68775@portfoliodata.wppojw6.mongodb.net/').then(() =>
 console.log('server started')).catch(err => console.log('mongoose err', err));
 
 app.use(bodyParser.urlencoded({ extended: true }));
