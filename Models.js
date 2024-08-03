@@ -15,7 +15,7 @@ const form = new Schema({
     required: true,
   },
   numberOrEmail: {
-    type: String
+    type: String,
     required:true
   },
   description: {
