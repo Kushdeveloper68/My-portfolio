@@ -3,23 +3,8 @@ const ipinfo = require('ipinfo');
 //get controler
 async function handleMainPage(req , res ) {
   try {
-    const ip = await req.headers['x-forwarded-for'] || req.socket.remoteAddress;
-    ipinfo(ip, async (err, cLoc) => {
-      if (err) {
-        console.log('ip errrrr ', err );
-       return;
-      }
-     if(ip === null || undefined || '' || "") {
-       console.log('ip err' , err);
-       res.render('Main');
-      } else {
-       await IpL.create({
-         ip,
-         location:JSON.stringify(cLoc) 
-        });
-        res.render('Main');
-      }
-    });
+    let msg = "Welcome on my portfolio page 📃."
+    res.render('Main', {msg:msg});
   }catch (e) {console.log(' get route rendering err' , e)} 
 }
 async function handleUserCreate(req, res) {
@@ -32,7 +17,6 @@ async function handleUserCreate(req, res) {
      numberOrEmail,
      description
     });
-   
  } 
   if (numberOrEmail === '' || null || undefined || "") {
      await   User.create({
@@ -40,7 +24,8 @@ async function handleUserCreate(req, res) {
      description
     }); 
   }
-  res.send('user created');
+  let msg = "your message has been sent";
+  res.render('Main',{msg:msg});
  } catch (e) {console.log('first  post route err' , e)}
 }
 module.exports = {
