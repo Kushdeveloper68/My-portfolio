@@ -20,7 +20,7 @@ app.use(ipGettingMiddleware);
 
 app.use('/', router);
 
-app.set('view engine' , 'ejs');
-app.set('views', path.resolve('../frontend/'));
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, '../frontend/'));
 
 app.listen(PORT , () => console.log('server started http://localhost:5000/'));
