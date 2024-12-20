@@ -1,14 +1,16 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 3000;
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const dburl = process.env.DBURL;
 const path = require('path');
 const router = require('./Routes.js');
 const {ipGettingMiddleware} = require('./Middleware.js');
 //const {firstMiddleware} = require('./Middleware.js');
 
-mongoose.connect('mongodb+srv://kushpandit68775:kush68775@portfoliodata.wppojw6.mongodb.net/').then(() =>
+mongoose.connect(dburl).then(() =>
 console.log('server started')).catch(err => console.log('mongoose err', err));
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -23,4 +25,4 @@ app.use('/', router);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '../frontend/'));
 
-app.listen(PORT , () => console.log('server started http://localhost:5000/'));
+app.listen(PORT , () => console.log(`server started http://localhost:${PORT}/`));
