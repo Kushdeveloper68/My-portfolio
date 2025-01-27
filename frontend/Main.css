@@ -221,7 +221,7 @@ input[type="checkbox"]{
 main {
   width:100%;
   height:auto;
-  padding-top:30px
+  padding-top:30px;
   color:black;
 }
 /* solution-div style */
@@ -237,6 +237,8 @@ main > .solution-div {
   width:100%;
   height:auto;
   padding:50px 0;
+  display: flex;
+  flex-wrap: wrap;
 }
 .solution-div > .solution-box {
   width:325px;
@@ -265,13 +267,18 @@ main > .solution-div {
   height:auto;
   padding:0 10px;
 }
-.project-div > p {
+ .heading-p {
   color:#1100ff;
 }
-.project > p {
+.project  {
+  display:flex;
+  flex-wrap: wrap;
+  text-wrap:wrap;
+}
+.project > div > p {
   padding:7px 5px;
 }
-.project > h2 {
+.project > div > h2 {
   font-weight:400;
 }
 .project > img  {
@@ -282,7 +289,7 @@ main > .solution-div {
   margin:15px auto;
   border:1px solid #fed0df;
 }
-.project > p > span {
+.project > div > p > span {
   color:#2300ff;
   text-transform:uppercase;
 }
@@ -336,6 +343,11 @@ main > .solution-div {
    width:100%;
    padding:10px;
  }
+ @media (min-width:920px) {
+  .career-div {
+    display: flex;
+  }
+ }
  .career-div > p {
    color:#003bc0;
    padding:10px 10px;
@@ -368,6 +380,15 @@ main > .solution-div {
 .client-div {
   width:100%;
   height:auto;
+  
+}
+@media (min-width:920px) {
+  .client-div {
+    display:flex;
+    flex-shrink: 1;
+    gap:10px;
+  }
+  
 }
 .client-div > p {
   color:#003bc0;
