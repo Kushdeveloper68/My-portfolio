@@ -9,22 +9,19 @@ async function handleMainPage(req , res ) {
 }
 async function handleUserCreate(req, res) {
  try {
-     let { name ,email, description} = await req.body;
- if( email !== '' || null || undefined || "") {
+     let { name ,email, description, service} = await req.body;
+     if (email == '' || null || undefined || "", name == '' || null || undefined || "", description == '' || null || undefined || "", service == '' || null || undefined || "") {
+      let msg = "fill all the requirement inputs";
+      return res.render('Main',{msg:msg});
+     }
     await User.create({
      fullname:name,
      numberOrEmail:email,
-     description
+     description,
+     service
     });
- } 
-  if (email === '' || null || undefined || "") {
-     await   User.create({
-     fullname:name,
-     description
-    }); 
-  }
   let msg = "your message has been sent";
-  res.render('Main',{msg:msg});
+  return res.render('Main',{msg:msg});
  } catch (e) {console.log('first  post route err' , e)}
 }
 module.exports = {

@@ -30,6 +30,10 @@ const form = new Schema({
   description: {
     type:String,
     required:true
+  } , 
+  service: {
+    type:String,
+    required:true
   }
 });
 // Create the model from the schema and export it
