@@ -17,7 +17,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static(path.join(__dirname, '../frontend/')));
-
+app.set('trust proxy', true); // Tell Express to trust Render's proxy
 app.use(ipGettingMiddleware);
 
 app.use('/', router);
