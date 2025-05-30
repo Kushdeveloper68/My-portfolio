@@ -1,22 +1,25 @@
-const {IpL} = require("./Models.js");
+const { IpL } = require("./Models.js");
 const ipinfo = require('ipinfo');
-async function ipGettingMiddleware(req, res , next) {
-ipinfo((err, cLoc) => {
-  if (err) {
-    console.log("Error fetching IP info:", err);
-    next();
-  } else {
-    // ip data saving 
+
+async function ipGettingMiddleware(req, res, next) {
+  const realIP = req.headers['x-forwarded-for']?.split(',')[0] || req.connection.remoteAddress;
+
+  ipinfo(realIP, (err, cLoc) => {
+    if (err) {
+      console.log("Error fetching IP info:", err);
+      return next();
+    }
+
     IpL.create({
-      ip:cLoc.ip,
-      location:cLoc.city + cLoc.region + cLoc.country,
-      organization:cLoc.org,
-      postalCode:cLoc.postal,
-      timezone:cLoc.timezone
-    });
+      ip: cLoc.ip,
+      location: `${cLoc.city}, ${cLoc.region}, ${cLoc.country}`,
+      organization: cLoc.org,
+      postalCode: cLoc.postal,
+      timezone: cLoc.timezone
+    }).catch(console.error);
+
     next();
-  }
-});
+  });
 }
 async function postMiddleware(req, res , next) {
   try {
