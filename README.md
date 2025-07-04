@@ -2,7 +2,7 @@
 
 Welcome to the repository for my **personal portfolio website**, showcasing my skills, projects, and journey as a full-stack web developer.  
 
-🔗 **Live Demo**: [Visit my Portfolio](https://developer-kush-pandit.onrender.com)  
+🔗 **Live Demo**: [Visit my Portfolio](https://kushdeveloper.onrender.com/)  
 
 ---
 
