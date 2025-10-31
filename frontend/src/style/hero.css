@@ -1,0 +1,142 @@
+body {
+  background-color: #0A0A1A;
+  color: #F0F0F0;
+}
+
+.glassmorphism {
+  background: rgba(10, 10, 26, 0.5);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.nav-link-effect {
+  position: relative;
+  overflow: hidden;
+}
+.nav-link-effect::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background-color: rgba(0, 245, 255, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.4s ease, height 0.4s ease;
+  z-index: -1;
+}
+.nav-link-effect:hover::before {
+  width: 200px;
+  height: 200px;
+}
+
+.typewriter-cursor::after {
+  content: '|';
+  animation: blink 0.7s infinite;
+  font-weight: 300;
+}
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.animate-delay-200 {
+  animation-delay: 200ms;
+}
+.animate-delay-400 {
+  animation-delay: 400ms;
+}
+.animate-delay-600 {
+  animation-delay: 600ms;
+}
+.animate-delay-800 {
+  animation-delay: 800ms;
+}
+
+/* Animations from tailwind.config (convert to CSS keyframes) */
+@keyframes fadeInUp {
+  0% { opacity: 0; transform: translateY(20px) scale(0.98); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+@keyframes pulseGlow {
+  0%,100% { box-shadow: 0 0 5px #00F5FF, 0 0 15px #00F5FF, 0 0 30px #E600FF, 0 0 60px #E600FF; }
+  50% { box-shadow: 0 0 10px #00F5FF, 0 0 25px #00F5FF, 0 0 50px #E600FF, 0 0 100px #E600FF; }
+}
+.animate-pulse-glow {
+  animation: pulseGlow 2s infinite ease-in-out;
+}
+
+@keyframes linePulse {
+  0%,100% { opacity: 0.2; }
+  50% { opacity: 0.6; }
+}
+.animate-line-pulse-1 {
+  animation: linePulse 12s linear infinite;
+}
+.animate-line-pulse-2 {
+  animation: linePulse 10s linear infinite reverse;
+}
+.animate-line-pulse-3 {
+  animation: linePulse 15s linear infinite;
+}
+
+.font-display {
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+/* Responsive Header Styles */
+.glassmorphism {
+  background: rgba(10, 10, 26, 0.5);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+/* Mobile drawer slide in animation */
+@keyframes slidein {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+.animate-slidein {
+  animation: slidein 0.3s cubic-bezier(.4,0,.2,1) both;
+}
+.mobile-nav-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.40);
+  z-index: 50;
+  
+}
+
+/* Nav link effect */
+.nav-link-effect {
+  position: relative;
+  overflow: hidden;
+}
+.nav-link-effect::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background-color: rgba(0, 245, 255, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.4s ease, height 0.4s ease;
+  z-index: -1;
+}
+.nav-link-effect:hover::before {
+  width: 200px;
+  height: 200px;
+}
+nav {
+  backdrop-filter: blur(10px);
+}

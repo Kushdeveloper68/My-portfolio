@@ -1,0 +1,172 @@
+.certificate-bg {
+  min-height: 100vh;
+  background: #101e22;
+  font-family: 'Space Grotesk', sans-serif;
+  color: #F0F0F0;
+  position: relative;
+}
+.certificate-bg-layers {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.laser-sweep {
+  background: linear-gradient(to bottom, transparent, #0db9f2 60%, transparent 100%);
+  opacity: .5;
+}
+.radial-bg {
+  background: radial-gradient(ellipse 80% 80% at 50% -20%, rgba(13,185,242,0.15), rgba(255,255,255,0));
+  position: absolute;
+  inset: 0;
+}
+/* Carousel styles + scrollbar hide */
+.carousel-container {
+  display: flex;
+  gap: 2rem;
+  overflow-x: auto;
+  overflow-y: visible !important;
+  position: relative;
+  padding: 0 1rem;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.carousel-container::-webkit-scrollbar {
+  display: none;
+}
+.carousel-item {
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 350px;
+  scroll-snap-align: center;
+}
+
+@media (min-width: 768px) {
+  .carousel-item {width: calc(50% - 1rem);}
+}
+@media (min-width: 1024px) {
+  .carousel-item {width: calc(33.333% - 1.33rem);}
+}
+
+/* Hologram card and hover animation */
+.hologram-card {
+  background: linear-gradient(135deg, rgba(13, 185, 242, 0.05), rgba(13, 185, 242, 0.02));
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+  border-radius: 1rem;
+  border: 1px solid transparent;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  color: #F0F0F0;
+}
+.hologram-card:before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(13,185,242,0.2);
+  border-radius: inherit;
+  pointer-events: none;
+  transition: all 0.5s ease;
+}
+.hologram-card:hover:before {
+  border-color: rgba(13,185,242,0.8);
+  box-shadow: 0 0 20px rgba(13,185,242,0.5);
+}
+.hologram-card .glow-layer-1,
+.hologram-card .glow-layer-2,
+.hologram-card .glow-layer-3 {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+  pointer-events: none;
+}
+.hologram-card:hover .glow-layer-1 {
+  opacity: 1;
+  transform: translateZ(-50px) scale(1.1);
+  box-shadow: 0 0 40px 10px rgba(13,185,242,0.4);
+  animation: glitch 0.3s linear infinite alternate;
+}
+.hologram-card:hover .glow-layer-2 {
+  opacity: 1;
+  transform: translateZ(-100px) scale(1.2);
+  box-shadow: 0 0 80px 20px rgba(13,185,242,0.2);
+  transition-delay: 0.1s;
+}
+.hologram-card:hover .glow-layer-3 {
+  opacity: 1;
+  transform: translateZ(-20px) scale(1.05);
+  background: radial-gradient(circle at center, rgba(13,185,242,0.1), transparent 70%);
+  transition-delay: 0.05s;
+}
+
+/* Glitch text effect */
+.glitch-text {display: inline-block;}
+.group:hover .glitch-text {
+  animation: glitch 0.2s linear infinite alternate-reverse;
+}
+
+/* Animate in effect */
+@keyframes hologramMaterialize {
+  0% { opacity: 0; transform: scale(0.8) translateY(50px); filter: blur(20px);}
+  100% { opacity: 1; transform: scale(1) translateY(0); filter: blur(0);}
+}
+.animate-hologramMaterialize {
+  animation: hologramMaterialize 1s cubic-bezier(0.19,1,0.22,1) forwards;
+}
+
+/* Laser sweep effect */
+@keyframes laserSweep {
+  0% {transform: translateY(-100%) rotate(-45deg); opacity: 0;}
+  10% {opacity: 0.3;}
+  90% {opacity: 0.3;}
+  100% {transform: translateY(100vh) rotate(-45deg); opacity: 0;}
+}
+.animate-laserSweep1 { animation: laserSweep 15s linear infinite; }
+.animate-laserSweep2 { animation: laserSweep 20s linear infinite 5s reverse; }
+
+/* Glitch effect */
+@keyframes glitch {
+  0% {transform: translate(0);}
+  20% {transform: translate(-2px,2px);}
+  40% {transform: translate(-2px,-2px);}
+  60% {transform: translate(2px,2px);}
+  80% {transform: translate(2px,-2px);}
+  100% {transform: translate(0);}
+}
+
+/* Controls */
+button[disabled], .carousel-btn-disabled {
+  opacity: .3;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 48;
+  font-size: 2rem;
+  line-height: 1;
+}
+
+/* Card icon bubble, text colors */
+.w-20.h-20 {
+  background: rgba(13,185,242,0.1);
+  border: 1px solid rgba(13,185,242,0.2);
+}
+.group:hover .w-20.h-20 {
+  background: rgba(13,185,242,0.2);
+  box-shadow: 0 0 20px rgba(13,185,242,0.6);
+}
+.text-primary { color: #0db9f2;}
+.text-gray-400 { color: #a0a0b0;}
+.text-gray-500 { color: #39c3ff;}
+.text-white { color: #F0F0F0;}

@@ -1,0 +1,80 @@
+body {
+  background-color: #101e22;
+}
+
+.font-display {
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+/* ANIMATION KEYFRAMES */
+@keyframes fadeInEnergy {
+  0% { opacity: 0; transform: translateY(40px) scale(0.95); filter: blur(10px);}
+  100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0);}
+}
+.animate-fadeIn {
+  animation: fadeInEnergy 1s ease-out forwards;
+  opacity: 0;
+  animation-delay: var(--delay, 0s);
+}
+
+/* Hologram effect */
+@keyframes holoScan {
+  0%,100% { top: 0%; opacity: 0; }
+  50% { opacity: 0.5; }
+  100% { top: 100%; }
+}
+.hologram-scanline {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(13, 185, 242, 0.8), transparent);
+  box-shadow: 0 0 5px #0db9f2;
+  animation: holoScan 4s infinite ease-in-out;
+  animation-delay: 1s;
+}
+
+/* Pulse glow for photo card */
+@keyframes pulseGlow {
+  0%,100% { box-shadow: 0 0 15px rgba(13, 185, 242, 0.3), 0 0 25px rgba(13, 185, 242, 0.2);}
+  50% { box-shadow: 0 0 25px rgba(13, 185, 242, 0.5), 0 0 40px rgba(13, 185, 242, 0.4);}
+}
+.animate-pulseGlow {
+  animation: pulseGlow 4s infinite ease-in-out;
+}
+
+/* Typewriter effect (if needed) */
+@keyframes typewriter {
+  from { width: 0; }
+  to { width: 100%; }
+}
+@keyframes blinkCaret {
+  from, to { border-color: transparent; }
+  50% { border-color: #0db9f2;}
+}
+.typewriter-text {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: .15em solid #0db9f2;
+  animation: typewriter 2s steps(40, end), blinkCaret .75s step-end infinite;
+  animation-fill-mode: forwards;
+}
+
+/* FLOATING PARTICLES */
+@keyframes particle-drift {
+  0% { transform: translate(0,0); opacity: 0;}
+  10% { opacity: 1;}
+  90% { opacity: 1;}
+  100% { transform: translate(var(--end-x), var(--end-y)); opacity: 0;}
+}
+.particle {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background-color: #0db9f2;
+  border-radius: 50%;
+  box-shadow: 0 0 5px #0db9f2, 0 0 10px #0db9f2;
+  animation: particle-drift infinite linear;
+  opacity: 0;
+}

@@ -1,0 +1,91 @@
+.shimmer-text {
+  background: linear-gradient(to right, #9cb2ba 20%, #ffffff 40%, #9cb2ba 60%);
+  background-size: 200% auto;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* Neon glowing top border (matches HTML effect) */
+.neon-border {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #0db9f2, #77eaff, #0db9f2);
+  box-shadow: 0 0 20px 4px #0db9f2, 0 0 40px 8px #0db9f2;
+  animation: neon-pulse 2s infinite alternate;
+  border-radius: 10px;
+}
+
+/* "Go to Top" button glowing aura */
+.fab-aura {
+  position: absolute;
+  inset: -6px;
+  border-radius: 9999px;
+  background: radial-gradient(circle, #0db9f2 0%, #7c3aed 70%, transparent 100%);
+  filter: blur(15px);
+  opacity: 0.6;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Icon hover logic */
+.group-hover-icon .icon-default {
+  display: block;
+}
+.group-hover-icon .icon-hover {
+  display: none;
+}
+.group-hover-icon:hover .icon-default {
+  display: none;
+}
+.group-hover-icon:hover .icon-hover {
+  display: block;
+}
+
+/* Tailwind custom animations */
+@keyframes neon-pulse {
+  0%, 100% {
+    box-shadow: 0 0 20px 4px #0db9f2, 0 0 40px 8px #0db9f2;
+  }
+  50% {
+    box-shadow: 0 0 40px 8px #77eaff, 0 0 60px 16px #0db9f2;
+  }
+}
+@keyframes ripple-fade-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes scanline-reveal {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes shimmer {
+  0% {
+    background-position: -500% 0;
+  }
+  100% {
+    background-position: 500% 0;
+  }
+}
+@keyframes orb-pulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 10px #0db9f2, 0 0 20px #0db9f2;
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px #0db9f2, 0 0 30px #0db9f2;
+  }
+}
