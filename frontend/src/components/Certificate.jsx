@@ -46,7 +46,7 @@ export default function Certificate() {
   };
 
   return (
-    <div className="certificate-bg font-display dark" id="certificate">
+    <div className="certificate-bg font-display dark" id="certificate" style={{width:"100%", overflow:"hidden"}}>
       <div className="absolute inset-0 z-0 certificate-bg-layers pointer-events-none">
         <div className="absolute top-0 left-1/4 h-full w-1 rotate-45 laser-sweep animate-laserSweep1"></div>
         <div className="absolute top-0 left-2/3 h-full w-0.5 -rotate-45 laser-sweep animate-laserSweep2"></div>
