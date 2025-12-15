@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 const primary = "#0da2e7";
 const primaryDark = "#0a8bc5";
@@ -6,6 +6,31 @@ const primaryDark = "#0a8bc5";
 const Hero = () => {
   const [navBtnBg, setNavBtnBg] = useState(primary);
   const [primaryBtnBg, setPrimaryBtnBg] = useState(primary);
+  const [mobileOpen, setMobileOpen] = useState(false)
+  const firstMobileLinkRef = useRef(null)
+  const panelRef = useRef(null)
+
+  useEffect(() => {
+    // lock body scroll when mobile nav is open
+    if (mobileOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => { document.body.style.overflow = '' }
+  }, [mobileOpen])
+
+  useEffect(() => {
+    // focus first link when opened and support ESC to close
+    function onKey(e) {
+      if (e.key === 'Escape') setMobileOpen(false)
+    }
+    if (mobileOpen) {
+      firstMobileLinkRef.current?.focus()
+      window.addEventListener('keydown', onKey)
+    }
+    return () => window.removeEventListener('keydown', onKey)
+  }, [mobileOpen])
  
   return (
     <div id="hero"
@@ -139,11 +164,78 @@ const Hero = () => {
           </button>
           </a>
           {/* Mobile Menu Icon */}
-          <button className="md:hidden text-white">
-            <span className="material-symbols-outlined text-3xl">menu</span>
+          <button
+            className="md:hidden text-white p-2"
+            aria-controls="mobile-nav"
+            aria-expanded={mobileOpen}
+            onClick={() => setMobileOpen(prev => !prev)}
+          >
+            <span className="material-symbols-outlined text-3xl">{mobileOpen ? 'close' : 'menu'}</span>
           </button>
         </div>
       </header>
+
+      {/* Mobile Slide-Out Nav + Overlay */}
+      {/* Overlay */}
+      {mobileOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40 md:hidden"
+          onClick={() => setMobileOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
+      {/* Panel (slides from right) */}
+      <nav
+        id="mobile-nav"
+        ref={panelRef}
+        className={`fixed top-0 right-0 h-full z-50 md:hidden w-[78%] max-w-[360px] transform bg-[rgba(16,28,34,0.96)] transition-transform duration-300 ease-in-out ${mobileOpen ? 'translate-x-0' : 'translate-x-full'}`}
+        aria-hidden={!mobileOpen}
+      >
+        <div className="flex items-center justify-between px-6 py-4 border-b border-white/5">
+          <div className="flex items-center gap-3">
+            <div className="relative size-9 flex items-center justify-center rounded-lg" style={{ backgroundColor: 'rgba(13,162,231,0.12)' }}>
+              <span className="material-symbols-outlined text-2xl" style={{ color: primary }}>terminal</span>
+            </div>
+            <div>
+              <h3 className="text-white font-bold">Kush</h3>
+              <span className="text-xs" style={{ color: primary }}>Full Stack</span>
+            </div>
+          </div>
+          <button className="p-2 text-white" onClick={() => setMobileOpen(false)} aria-label="Close menu">
+            <span className="material-symbols-outlined">close</span>
+          </button>
+        </div>
+
+        <div className="px-6 py-6">
+          <ul className="flex flex-col gap-3">
+            <li>
+              <a href="#hero" ref={firstMobileLinkRef} onClick={() => setMobileOpen(false)} className="block text-white py-3 px-2 rounded hover:bg-white/5">Home</a>
+            </li>
+            <li>
+              <a href="#about" onClick={() => setMobileOpen(false)} className="block text-white py-3 px-2 rounded hover:bg-white/5">About</a>
+            </li>
+            <li>
+              <a href="#skill" onClick={() => setMobileOpen(false)} className="block text-white py-3 px-2 rounded hover:bg-white/5">Skill</a>
+            </li>
+            <li>
+              <a href="#project" onClick={() => setMobileOpen(false)} className="block text-white py-3 px-2 rounded hover:bg-white/5">Project</a>
+            </li>
+            <li>
+              <a href="#experience" onClick={() => setMobileOpen(false)} className="block text-white py-3 px-2 rounded hover:bg-white/5">Experience</a>
+            </li>
+            <li>
+              <a href="#certificate" onClick={() => setMobileOpen(false)} className="block text-white py-3 px-2 rounded hover:bg-white/5">Certificate</a>
+            </li>
+            <li>
+              <a href="#connect" onClick={() => setMobileOpen(false)} className="block text-white py-3 px-2 rounded hover:bg-white/5">Connect</a>
+            </li>
+            <li>
+              <a href="/developer-kush-resume.pdf" download onClick={() => setMobileOpen(false)} className="mt-4 inline-block w-full text-center bg-[#0da2e7] text-black py-3 rounded font-bold">Resume</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
 
       {/* Main Hero Section */}
       <main className="relative z-10 flex min-h-screen w-full flex-col justify-center items-center px-4 pt-20 pb-10">
