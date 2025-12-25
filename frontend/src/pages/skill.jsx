@@ -310,326 +310,328 @@ const SkillsPage = () => {
 
         {/* DETAILED BREAKDOWN SECTION */}
         <section
-        id='skills'
-          className='py-20 relative'
-          style={{ backgroundColor: 'rgba(22,37,45,0.5)' }} // bg-surface-dark/50
+  id="skills-showcase"
+  className="py-24 relative overflow-hidden bg-[#16252d]/80"
+>
+  <div
+    className="absolute inset-0 opacity-10 animate-pulse pointer-events-none"
+    style={{
+      backgroundImage:
+        "url('https://www.transparenttextures.com/patterns/stardust.png')",
+    }}
+  ></div>
+
+  <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-[#0da2e7]/30 to-transparent"></div>
+  <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-[#0da2e7]/30 to-transparent"></div>
+
+  <div className="absolute top-20 left-10 w-64 h-64 bg-[#0da2e7]/5 rounded-full blur-3xl animate-float pointer-events-none"></div>
+
+  <div
+    className="absolute bottom-20 right-10 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl animate-float pointer-events-none"
+    style={{ animationDelay: "2s" }}
+  ></div>
+
+  <div className="max-w-7xl mx-auto px-6 relative z-10">
+    {/* Heading */}
+    <div className="text-center mb-20">
+      <h2 className="text-4xl md:text-5xl font-display font-bold text-white mb-6">
+        Creative{" "}
+        <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400">
+          Skills Universe
+        </span>
+      </h2>
+      <p className="text-slate-400 max-w-2xl mx-auto text-lg">
+        An interactive constellation of technologies powering my full-stack
+        capabilities. Explore the system nodes.
+      </p>
+    </div>
+
+    {/* Frontend Galaxy */}
+    <div className="mb-24 relative group/category">
+      <div className="absolute -left-4 top-0 bottom-0 w-1 bg-gradient-to-b from-cyan-500/0 via-cyan-500/50 to-cyan-500/0 rounded-full opacity-50"></div>
+
+      <div className="flex items-center gap-4 mb-10 pl-4 md:pl-6 border-l border-white/5">
+        <div className="p-3 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 shadow-[0_0_15px_rgba(34,211,238,0.2)]">
+          <span className="material-symbols-outlined text-3xl">
+            code_blocks
+          </span>
+        </div>
+        <h3 className="text-2xl md:text-3xl font-bold text-white">
+          Frontend <span className="text-cyan-400">Galaxy</span>
+        </h3>
+        <span className="text-xs font-mono text-cyan-500/50 ml-auto hidden sm:block">
+          02 // VISUAL
+        </span>
+      </div>
+
+      <div className="flex flex-wrap justify-center gap-8 md:gap-16 perspective-1000 py-10">
+        {/* React/Next */}
+        <div
+          className="relative group cursor-pointer animate-float"
+          style={{ animationDelay: "0s" }}
         >
-          <div className='max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16'>
-            {/* FRONTEND ENGINEERING */}
-            <div>
-              <div className='flex items-center justify-between mb-8 pb-4 border-b border-white/10'>
-                <h2 className='text-2xl font-bold text-white tracking-tight flex items-center gap-3'>
-                  <span
-                    className='w-1 h-6 rounded-full'
-                    style={{ backgroundColor: primary }}
-                  ></span>
-                  FRONTEND ENGINEERING
-                </h2>
-                <span
-                  className='font-mono text-sm'
-                  style={{ color: 'rgba(13,162,231,0.5)' }} // text-primary/50
-                >
-                  02 // VISUAL
-                </span>
-              </div>
-
-              <div className='space-y-8'>
-                {/* Skill Item */}
-                <div className='group'>
-                  <div className='flex justify-between mb-2'>
-                    <span className='text-white font-medium flex items-center gap-2'>
-                      <span
-                        className='material-symbols-outlined text-lg'
-                        style={{ color: primary }} // text-primary
-                      >
-                        code_blocks
-                      </span>
-                      HTML5 / CSS3
-                    </span>
-                    <span
-                      className='font-mono text-sm'
-                      style={{ color: primary }}
-                    >
-                      95%
-                    </span>
-                  </div>
-                  <div
-                    className='h-2 w-full rounded-full overflow-hidden relative'
-                    style={{ backgroundColor: '#1d2e38' }} // bg-secondary
-                  >
-                    <div className='skill-bar-fill h-full rounded-full w-[95%] relative group-hover:brightness-125 transition-all'>
-                      <div className='absolute right-0 top-0 bottom-0 w-2 bg-white/50 blur-[2px]'></div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Skill Item */}
-                <div className='group'>
-                  <div className='flex justify-between mb-2'>
-                    <span className='text-white font-medium flex items-center gap-2'>
-                      <span
-                        className='material-symbols-outlined text-lg'
-                        style={{ color: primary }}
-                      >
-                        javascript
-                      </span>
-                      JavaScript (ES6+)
-                    </span>
-                    <span
-                      className='font-mono text-sm'
-                      style={{ color: primary }}
-                    >
-                      85%
-                    </span>
-                  </div>
-                  <div
-                    className='h-2 w-full rounded-full overflow-hidden'
-                    style={{ backgroundColor: '#1d2e38' }}
-                  >
-                    <div className='skill-bar-fill h-full rounded-full w-[85%] relative group-hover:brightness-125 transition-all'>
-                      <div className='absolute right-0 top-0 bottom-0 w-2 bg-white/50 blur-[2px]'></div>
-                    </div>
-                  </div>
-                </div>
-                {/* Skill Item */}
-                <div className='group'>
-                  <div className='flex justify-between mb-2'>
-                    <span className='text-white font-medium flex items-center gap-2'>
-                      <span
-                        className='material-symbols-outlined text-lg'
-                        style={{ color: primary }}
-                      >
-                        view_in_ar
-                      </span>
-                      Tailwind CSS
-                    </span>
-                    <span
-                      className='font-mono text-sm'
-                      style={{ color: primary }}
-                    >
-                      75%
-                    </span>
-                  </div>
-                  <div
-                    className='h-2 w-full rounded-full overflow-hidden'
-                    style={{ backgroundColor: '#1d2e38' }}
-                  >
-                    <div className='skill-bar-fill h-full rounded-full w-[75%] relative group-hover:brightness-125 transition-all'>
-                      <div className='absolute right-0 top-0 bottom-0 w-2 bg-white/50 blur-[2px]'></div>
-                    </div>
-                  </div>
-                </div>
-                {/* Skill Item */}
-                <div className='group'>
-                  <div className='flex justify-between mb-2'>
-                    <span className='text-white font-medium flex items-center gap-2'>
-                      <span
-                        className='material-symbols-outlined text-lg'
-                        style={{ color: primary }}
-                      >
-                        code
-                      </span>
-                      React + Vite
-                    </span>
-                    <span
-                      className='font-mono text-sm'
-                      style={{ color: primary }}
-                    >
-                      80%
-                    </span>
-                  </div>
-                  <div
-                    className='h-2 w-full rounded-full overflow-hidden'
-                    style={{ backgroundColor: '#1d2e38' }}
-                  >
-                    <div className='skill-bar-fill h-full rounded-full w-[80%] relative group-hover:brightness-125 transition-all'>
-                      <div className='absolute right-0 top-0 bottom-0 w-2 bg-white/50 blur-[2px]'></div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Skill Item */}
-                <div className='group'>
-                  <div className='flex justify-between mb-2'>
-                    <span className='text-white font-medium flex items-center gap-2'>
-                      <span
-                        className='material-symbols-outlined text-lg'
-                        style={{ color: primary }}
-                      >
-                        view_in_ar
-                      </span>
-                      UI Design (Figma)
-                    </span>
-                    <span
-                      className='font-mono text-sm'
-                      style={{ color: primary }}
-                    >
-                      70%
-                    </span>
-                  </div>
-                  <div
-                    className='h-2 w-full rounded-full overflow-hidden'
-                    style={{ backgroundColor: '#1d2e38' }}
-                  >
-                    <div className='skill-bar-fill h-full rounded-full w-[70%] relative group-hover:brightness-125 transition-all'>
-                      <div className='absolute right-0 top-0 bottom-0 w-2 bg-white/50 blur-[2px]'></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* BACKEND & DATA */}
-            <div>
-              <div className='flex items-center justify-between mb-8 pb-4 border-b border-white/10'>
-                <h2 className='text-2xl font-bold text-white tracking-tight flex items-center gap-3'>
-                  <span
-                    className='w-1 h-6 rounded-full'
-                    style={{ backgroundColor: primary }}
-                  ></span>
-                  BACKEND &amp; DATA
-                </h2>
-                <span
-                  className='font-mono text-sm'
-                  style={{ color: 'rgba(13,162,231,0.5)' }}
-                >
-                  03 // SYSTEM
-                </span>
-              </div>
-              <div className='grid grid-cols-2 gap-8'>
-                {[
-                  {
-                    label: 'Node.js',
-                    sub: 'Express/Rest APIs',
-                    percent: '288deg',
-                    value: '80%'
-                  },
-                  {
-                    label: 'Python',
-                    sub: 'Django',
-                    percent: '216deg',
-                    value: '60%'
-                  },
-                  {
-                    label: 'MongoDB',
-                    sub: 'Complex Schema',
-                    percent: '288deg',
-                    value: '80%'
-                  },
-                  {
-                    label: 'Database Design',
-                    sub: 'Compass',
-                    percent: '252deg',
-                    value: '70%'
-                  }
-                ].map(item => (
-                  <div
-                    key={item.label}
-                    className='flex flex-col items-center gap-4 p-6 glass-panel rounded-xl group hover:border-primary/50 transition-colors'
-                  >
-                    <div
-                      className='radial-progress shadow-neon group-hover:shadow-neon-strong transition-shadow duration-500'
-                      style={{ ['--percent']: item.percent }}
-                    >
-                      <div className='radial-text flex flex-col items-center'>
-                        <span className='text-2xl font-bold text-white'>
-                          {item.value}
-                        </span>
-                      </div>
-                    </div>
-                    <div className='text-center'>
-                      <h4 className='text-white font-bold mb-1'>
-                        {item.label}
-                      </h4>
-                      <span className='text-xs text-slate-400'>{item.sub}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+          <div className="absolute inset-0 bg-cyan-500/20 rounded-full blur-xl group-hover:bg-cyan-400/40 transition-all duration-500 opacity-0 group-hover:opacity-100 scale-0 group-hover:scale-150"></div>
+          <div className="relative w-28 h-28 md:w-36 md:h-36 rounded-full border border-white/10 bg-white/5 backdrop-blur-md flex flex-col items-center justify-center gap-2 transition-all duration-500 group-hover:border-cyan-400/50 group-hover:scale-110 group-hover:-translate-y-2 group-hover:shadow-[0_0_30px_rgba(34,211,238,0.3)] z-10">
+            <span className="material-symbols-outlined text-4xl text-cyan-200 group-hover:text-white transition-colors">
+              code
+            </span>
+            <span className="text-xs font-bold text-cyan-100 tracking-wider opacity-60 group-hover:opacity-100 transition-opacity">
+              React/vite
+            </span>
           </div>
-        </section>
+        </div>
 
-        {/* TOOLS & PLATFORMS */}
-        <section className='py-20'>
-          <div className='max-w-7xl mx-auto px-6'>
-            <div className='flex items-center justify-between mb-10 pb-4 border-b border-white/10'>
-              <h2 className='text-2xl font-bold text-white tracking-tight flex items-center gap-3'>
-                <span
-                  className='w-1 h-6 rounded-full'
-                  style={{ backgroundColor: primary }}
-                ></span>
-                TOOLS &amp; INFRASTRUCTURE
-              </h2>
-              <span
-                className='font-mono text-sm'
-                style={{ color: 'rgba(13,162,231,0.5)' }}
-              >
-                04 // STACK
-              </span>
-            </div>
-
-            <div className='flex flex-wrap gap-4 justify-center'>
-              {[
-                { icon: 'code', label: 'VS Code' },
-                { icon: 'terminal', label: 'CLI' },
-                { icon: 'terminal', label: 'Linux' },
-                { icon: 'code', label: 'Git' },
-                { icon: 'design_services', label: 'Figma' },
-                { icon: 'api', label: 'Postman' }
-              ].map(tool => (
-                <div
-                  key={tool.label}
-                  className='group relative px-6 py-3 border border-white/5 rounded-full hover:border-primary/50 transition-all cursor-default'
-                  style={{ backgroundColor: '#1d2e38' }} // bg-secondary
-                >
-                  <div
-                    className='absolute inset-0 rounded-full blur opacity-0 group-hover:opacity-100 transition-opacity'
-                    style={{ backgroundColor: 'rgba(13,162,231,0.1)' }} // bg-primary/10
-                  ></div>
-                  <div className='relative flex items-center gap-3 text-slate-300 group-hover:text-white'>
-                    <span className='material-symbols-outlined text-lg'>
-                      {tool.icon}
-                    </span>
-                    <span className='font-medium'>{tool.label}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* CTA Banner */}
-            <div className='mt-20 rounded-2xl p-1 bg-gradient-to-r from-primary/20 via-primary/50 to-primary/20'>
-              <div
-                className='rounded-xl px-10 py-16 text-center relative overflow-hidden'
-                style={{ backgroundColor: backgroundDark }} // bg-background-dark
-              >
-                <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10"></div>
-                <div className='relative z-10 flex flex-col items-center gap-6'>
-                  <h3 className='text-3xl md:text-4xl font-bold text-white max-w-2xl'>
-                    Ready to build something real together?
-                  </h3>
-                  <p className='text-slate-400 max-w-lg'>
-                    I focus on clean code, practical solutions, and continuous
-                    learning. Let’s turn your idea into a working product.
-                  </p>
-                  <a href="#connect">
-                  <button
-                    className='flex min-w-[160px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-8 text-white text-base font-bold leading-normal tracking-[0.015em] shadow-neon hover:shadow-neon-strong transition-all duration-300 mt-4'
-                    style={{ backgroundColor: primary }} // bg-primary
-                    onMouseEnter={e =>
-                      (e.currentTarget.style.backgroundColor = primaryDark)
-                    }
-                    onMouseLeave={e =>
-                      (e.currentTarget.style.backgroundColor = primary)
-                    }
-                  >
-                    Start Collaboration
-                  </button></a>
-                </div>
-              </div>
-            </div>
+        {/* Tailwind */}
+        <div
+          className="relative group cursor-pointer animate-float"
+          style={{ animationDelay: "1.5s" }}
+        >
+          <div className="absolute inset-0 bg-cyan-500/20 rounded-full blur-xl group-hover:bg-cyan-400/40 transition-all duration-500 opacity-0 group-hover:opacity-100 scale-0 group-hover:scale-150"></div>
+          <div className="relative w-28 h-28 md:w-36 md:h-36 rounded-full border border-white/10 bg-white/5 backdrop-blur-md flex flex-col items-center justify-center gap-2 transition-all duration-500 group-hover:border-cyan-400/50 group-hover:scale-110 group-hover:-translate-y-2 group-hover:rotate-6 group-hover:shadow-[0_0_30px_rgba(34,211,238,0.3)] z-10">
+            <span className="material-symbols-outlined text-4xl text-cyan-200 group-hover:text-white transition-colors">
+             css
+            </span>
+            <span className="text-xs font-bold text-cyan-100 tracking-wider opacity-60 group-hover:opacity-100 transition-opacity">
+              Tailwind
+            </span>
           </div>
-        </section>
+        </div>
+
+        {/* javaScript */}
+        <div
+          className="relative group cursor-pointer animate-float"
+          style={{ animationDelay: "0.7s" }}
+        >
+          <div className="absolute inset-0 bg-blue-500/20 rounded-full blur-xl group-hover:bg-blue-400/40 transition-all duration-500 opacity-0 group-hover:opacity-100 scale-0 group-hover:scale-150"></div>
+          <div className="relative w-28 h-28 md:w-36 md:h-36 rounded-full border border-white/10 bg-white/5 backdrop-blur-md flex flex-col items-center justify-center gap-2 transition-all duration-500 group-hover:border-blue-400/50 group-hover:scale-110 group-hover:-translate-y-2 group-hover:-rotate-3 group-hover:shadow-[0_0_30px_rgba(59,130,246,0.3)] z-10">
+            <span className="material-symbols-outlined text-4xl text-blue-200 group-hover:text-white transition-colors">
+              javascript
+            </span>
+            <span className="text-xs font-bold text-blue-100 tracking-wider opacity-60 group-hover:opacity-100 transition-opacity">
+              Javascript
+            </span>
+          </div>
+        </div>
+
+        {/* Figma  */}
+        <div
+          className="relative group cursor-pointer animate-float"
+          style={{ animationDelay: "2.2s" }}
+        >
+          <div className="absolute inset-0 bg-pink-500/20 rounded-full blur-xl group-hover:bg-pink-400/40 transition-all duration-500 opacity-0 group-hover:opacity-100 scale-0 group-hover:scale-150"></div>
+          <div className="relative w-28 h-28 md:w-36 md:h-36 rounded-full border border-white/10 bg-white/5 backdrop-blur-md flex flex-col items-center justify-center gap-2 transition-all duration-500 group-hover:border-pink-400/50 group-hover:scale-110 group-hover:-translate-y-2 group-hover:rotate-12 group-hover:shadow-[0_0_30px_rgba(236,72,153,0.3)] z-10">
+            <span className="material-symbols-outlined text-4xl text-pink-200 group-hover:text-white transition-colors">
+              view_in_ar
+            </span>
+            <span className="text-xs font-bold text-pink-100 tracking-wider opacity-60 group-hover:opacity-100 transition-opacity">
+              Figma
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* Backend Nebula */}
+    <div className="mb-24 relative group/category">
+      <div className="absolute -right-4 top-0 bottom-0 w-1 bg-gradient-to-b from-purple-500/0 via-purple-500/50 to-purple-500/0 rounded-full opacity-50"></div>
+
+      <div className="flex items-center justify-end gap-4 mb-10 pr-4 md:pr-6 border-r border-white/5">
+        <span className="text-xs font-mono text-purple-500/50 mr-auto hidden sm:block">
+          03 // SYSTEM
+        </span>
+        <h3 className="text-2xl md:text-3xl font-bold text-white">
+          Backend <span className="text-purple-400">Nebula</span>
+        </h3>
+        <div className="p-3 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-400 shadow-[0_0_15px_rgba(168,85,247,0.2)]">
+          <span className="material-symbols-outlined text-3xl">dns</span>
+        </div>
+      </div>
+
+      <div className="flex flex-wrap justify-center gap-8 md:gap-16 perspective-1000 py-10">
+        {/* Node.js */}
+        <div
+          className="relative group cursor-pointer animate-float"
+          style={{ animationDelay: "1s" }}
+        >
+          <div className="absolute inset-0 bg-green-500/20 rounded-full blur-xl group-hover:bg-green-400/40 transition-all duration-500 opacity-0 group-hover:opacity-100 scale-0 group-hover:scale-150"></div>
+          <div className="relative w-28 h-28 md:w-36 md:h-36 rounded-full border border-white/10 bg-white/5 backdrop-blur-md flex flex-col items-center justify-center gap-2 transition-all duration-500 group-hover:border-green-400/50 group-hover:scale-110 group-hover:-translate-y-2 group-hover:shadow-[0_0_30px_rgba(74,222,128,0.3)] z-10">
+            <span className="material-symbols-outlined text-4xl text-green-200 group-hover:text-white transition-colors">
+              data_object
+            </span>
+            <span className="text-xs font-bold text-green-100 tracking-wider opacity-60 group-hover:opacity-100 transition-opacity">
+              Node.js
+            </span>
+          </div>
+        </div>
+
+        {/* Python */}
+        <div
+          className="relative group cursor-pointer animate-float"
+          style={{ animationDelay: "2.5s" }}
+        >
+          <div className="absolute inset-0 bg-yellow-500/20 rounded-full blur-xl group-hover:bg-yellow-400/40 transition-all duration-500 opacity-0 group-hover:opacity-100 scale-0 group-hover:scale-150"></div>
+          <div className="relative w-28 h-28 md:w-36 md:h-36 rounded-full border border-white/10 bg-white/5 backdrop-blur-md flex flex-col items-center justify-center gap-2 transition-all duration-500 group-hover:border-yellow-400/50 group-hover:scale-110 group-hover:-translate-y-2 group-hover:rotate-6 group-hover:shadow-[0_0_30px_rgba(250,204,21,0.3)] z-10">
+            <span className="material-symbols-outlined text-4xl text-yellow-200 group-hover:text-white transition-colors">
+              terminal
+            </span>
+            <span className="text-xs font-bold text-yellow-100 tracking-wider opacity-60 group-hover:opacity-100 transition-opacity">
+              Python
+            </span>
+          </div>
+        </div>
+
+        {/* Postgres */}
+        <div
+          className="relative group cursor-pointer animate-float"
+          style={{ animationDelay: "0.5s" }}
+        >
+          <div className="absolute inset-0 bg-blue-600/20 rounded-full blur-xl group-hover:bg-blue-500/40 transition-all duration-500 opacity-0 group-hover:opacity-100 scale-0 group-hover:scale-150"></div>
+          <div className="relative w-28 h-28 md:w-36 md:h-36 rounded-full border border-white/10 bg-white/5 backdrop-blur-md flex flex-col items-center justify-center gap-2 transition-all duration-500 group-hover:border-blue-500/50 group-hover:scale-110 group-hover:-translate-y-2 group-hover:-rotate-6 group-hover:shadow-[0_0_30px_rgba(37,99,235,0.3)] z-10">
+            <span className="material-symbols-outlined text-4xl text-blue-300 group-hover:text-white transition-colors">
+              database
+            </span>
+            <span className="text-xs font-bold text-blue-200 tracking-wider opacity-60 group-hover:opacity-100 transition-opacity">
+            MongoDB
+            </span>
+          </div>
+        </div>
+
+        {/* GraphQL */}
+        <div
+          className="relative group cursor-pointer animate-float"
+          style={{ animationDelay: "1.8s" }}
+        >
+          <div className="absolute inset-0 bg-pink-600/20 rounded-full blur-xl group-hover:bg-pink-500/40 transition-all duration-500 opacity-0 group-hover:opacity-100 scale-0 group-hover:scale-150"></div>
+          <div className="relative w-28 h-28 md:w-36 md:h-36 rounded-full border border-white/10 bg-white/5 backdrop-blur-md flex flex-col items-center justify-center gap-2 transition-all duration-500 group-hover:border-pink-500/50 group-hover:scale-110 group-hover:-translate-y-2 group-hover:rotate-12 group-hover:shadow-[0_0_30px_rgba(219,39,119,0.3)] z-10">
+            <span className="material-symbols-outlined text-4xl text-pink-300 group-hover:text-white transition-colors">
+              schema
+            </span>
+            <span className="text-xs font-bold text-pink-200 tracking-wider opacity-60 group-hover:opacity-100 transition-opacity">
+              Database Design
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* Tools & Platforms */}
+    <div className="relative group/category pt-10">
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+
+      <div className="flex items-center justify-center gap-4 mb-16">
+        <div className="px-8 py-3 rounded-full bg-slate-800/50 border border-white/10 backdrop-blur text-slate-300 shadow-[0_0_10px_rgba(13,162,231,0.3),0_0_20px_rgba(13,162,231,0.1)] flex items-center gap-3">
+          <span className="material-symbols-outlined text-[#0da2e7] text-xl">
+            construction
+          </span>
+          <span className="text-sm font-bold tracking-widest uppercase">
+            Tools &amp; Platforms
+          </span>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6 max-w-6xl mx-auto">
+        {/* vs code */}
+        <div className="group relative">
+          <div className="absolute inset-0 bg-[#0da2e7]/20 rounded-xl blur opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          <div className="relative h-24 bg-[#16252d] border border-white/5 rounded-xl flex flex-col items-center justify-center gap-2 transition-all duration-300 group-hover:-translate-y-2 group-hover:border-[#0da2e7]/50 group-hover:bg-[#1d2e38]">
+            <span className="material-symbols-outlined text-3xl text-[#0da2e7]/70 group-hover:text-[#0da2e7] transition-colors">
+              code
+            </span>
+            <span className="text-sm font-medium text-slate-300 group-hover:text-white">
+              VS code
+            </span>
+          </div>
+        </div>
+
+        {/* cli */}
+        <div className="group relative">
+          <div className="absolute inset-0 bg-[#0da2e7]/20 rounded-xl blur opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          <div className="relative h-24 bg-[#16252d] border border-white/5 rounded-xl flex flex-col items-center justify-center gap-2 transition-all duration-300 group-hover:-translate-y-2 group-hover:border-[#0da2e7]/50 group-hover:bg-[#1d2e38]">
+            <span className="material-symbols-outlined text-3xl text-[#0da2e7]/70 group-hover:text-[#0da2e7] transition-colors">
+              Terminal
+            </span>
+            <span className="text-sm font-medium text-slate-300 group-hover:text-white">
+              CLI
+            </span>
+          </div>
+        </div>
+
+        {/* Linux */}
+        <div className="group relative">
+          <div className="absolute inset-0 bg-[#0da2e7]/20 rounded-xl blur opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          <div className="relative h-24 bg-[#16252d] border border-white/5 rounded-xl flex flex-col items-center justify-center gap-2 transition-all duration-300 group-hover:-translate-y-2 group-hover:border-[#0da2e7]/50 group-hover:bg-[#1d2e38]">
+            <span className="material-symbols-outlined text-3xl text-[#0da2e7]/70 group-hover:text-[#0da2e7] transition-colors">
+              terminal
+            </span>
+            <span className="text-sm font-medium text-slate-300 group-hover:text-white">
+              Linux
+            </span>
+          </div>
+        </div>
+
+        {/* Git */}
+        <div className="group relative">
+          <div className="absolute inset-0 bg-[#0da2e7]/20 rounded-xl blur opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          <div className="relative h-24 bg-[#16252d] border border-white/5 rounded-xl flex flex-col items-center justify-center gap-2 transition-all duration-300 group-hover:-translate-y-2 group-hover:border-[#0da2e7]/50 group-hover:bg-[#1d2e38]">
+            <span className="material-symbols-outlined text-3xl text-[#0da2e7]/70 group-hover:text-[#0da2e7] transition-colors">
+              code
+            </span>
+            <span className="text-sm font-medium text-slate-300 group-hover:text-white">
+              Git
+            </span>
+          </div>
+        </div>
+
+        {/* Figma */}
+        <div className="group relative">
+          <div className="absolute inset-0 bg-[#0da2e7]/20 rounded-xl blur opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          <div className="relative h-24 bg-[#16252d] border border-white/5 rounded-xl flex flex-col items-center justify-center gap-2 transition-all duration-300 group-hover:-translate-y-2 group-hover:border-[#0da2e7]/50 group-hover:bg-[#1d2e38]">
+            <span className="material-symbols-outlined text-3xl text-[#0da2e7]/70 group-hover:text-[#0da2e7] transition-colors">
+              design_services
+            </span>
+            <span className="text-sm font-medium text-slate-300 group-hover:text-white">
+              Figma
+            </span>
+          </div>
+        </div>
+
+        {/* Redis */}
+        <div className="group relative">
+          <div className="absolute inset-0 bg-[#0da2e7]/20 rounded-xl blur opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          <div className="relative h-24 bg-[#16252d] border border-white/5 rounded-xl flex flex-col items-center justify-center gap-2 transition-all duration-300 group-hover:-translate-y-2 group-hover:border-[#0da2e7]/50 group-hover:bg-[#1d2e38]">
+            <span className="material-symbols-outlined text-3xl text-[#0da2e7]/70 group-hover:text-[#0da2e7] transition-colors">
+              api
+            </span>
+            <span className="text-sm font-medium text-slate-300 group-hover:text-white">
+             Postman
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* CTA */}
+    <div className="mt-24 rounded-2xl p-1 bg-gradient-to-r from-[#0da2e7]/20 via-[#0da2e7]/50 to-[#0da2e7]/20">
+      <div className="bg-[#101c22] rounded-xl px-10 py-16 text-center relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10"></div>
+        <div className="relative z-10 flex flex-col items-center gap-6">
+          <h3 className="text-3xl md:text-4xl font-bold text-white max-w-2xl">
+           Ready to build something real together?
+          </h3>
+          <p className="text-slate-400 max-w-lg">
+           I focus on clean code, practical solutions, and continuous learning. Let’s turn your idea into a working product.
+          </p>
+          <a href="#connect">
+          <button  className="flex min-w-[160px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-8 bg-[#0da2e7] text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-[#007bb5] shadow-[0_0_10px_rgba(13,162,231,0.3),0_0_20px_rgba(13,162,231,0.1)] hover:shadow-[0_0_15px_rgba(13,162,231,0.6),0_0_30px_rgba(13,162,231,0.2)] transition-all duration-300 mt-4">
+            Start Collaboration
+          </button>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+      </section>
+
       </main>
 
       {/* Footer */}
