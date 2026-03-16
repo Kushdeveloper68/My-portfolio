@@ -91,7 +91,7 @@ const About = () => {
                       className='absolute inset-0 bg-cover bg-center'
                       style={{
                         backgroundImage:
-                          "url('/profilepic.jpg')"
+                          "url('/profilepic.png')"
                       }}
                     ></div>
                     {/* Card Overlay Gradient */}
