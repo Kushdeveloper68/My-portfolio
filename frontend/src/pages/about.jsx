@@ -68,7 +68,7 @@ export default function About() {
       <section
         id="about"
         ref={containerRef}
-        style={{ backgroundColor: '#0c1a20', color: '#fff', position: 'relative', overflow: 'hidden' }}
+        style={{ backgroundColor: '#0c1a20', color: '#fff', position: 'relative', zIndex: 0, overflow: 'hidden' }}
       >
         {/* Grid bg */}
         {/* Orb — top right */}

@@ -159,7 +159,7 @@ export default function SkillsPage() {
       <section
         id="skill"
         ref={sectionRef}
-        style={{ backgroundColor: BG, color: '#fff', position: 'relative', overflow: 'hidden' }}
+        style={{ backgroundColor: BG, color: '#fff', position: 'relative', zIndex: 0, overflow: 'hidden' }}
       >
         {/* Grid bg */}
         <div className="kds-grid-bg absolute inset-0 pointer-events-none" style={{ opacity: 0.5 }} />

@@ -63,7 +63,7 @@ export default function Hero() {
       {/* ════════════════════════════════════════
           SECTION ROOT
       ════════════════════════════════════════ */}
-      <section id="hero" className="relative isolate min-h-screen overflow-hidden text-white">
+      <section id="hero" className="relative isolate z-50 min-h-screen overflow-hidden text-white">
 
         {/* ── Background layers ── */}
         <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
@@ -102,7 +102,7 @@ export default function Hero() {
             NAVBAR
         ════════════════════════════════════════ */}
         <header
-          className={`fixed top-0 left-0 right-0 z-5000 transition-all duration-500 ${
+          className={`fixed top-0 left-0 right-0 z-1000 transition-all duration-500 ${
             scrolled
               ? "bg-black/[0.72] backdrop-blur-2xl border-b border-[rgba(123,63,255,0.12)]"
               : "bg-transparent"
@@ -200,13 +200,13 @@ export default function Hero() {
         {mobileOpen && (
           <div
             onClick={close}
-            className="fixed inset-0 bg-black/65 z-40 md:hidden backdrop-blur-[6px]"
+            className="fixed inset-0 bg-black/65 z-1001 md:hidden backdrop-blur-[6px]"
           />
         )}
 
         <nav
           className={[
-            "fixed top-0 right-0 h-full z-[60] w-[300px]",
+            "fixed top-0 right-0 h-full z-1002 w-[300px]",
             "border-l border-[rgba(107,47,255,0.18)] backdrop-blur-2xl",
             "transition-transform duration-[380ms] ease-[cubic-bezier(0.22,1,0.36,1)]",
           ].join(" ")}

@@ -63,7 +63,7 @@ function Stars({ count }) {
 
 export default function TestimonialsPage() {
   return (
-    <section id="testimonials" style={{ backgroundColor: '#0b1720', color: '#fff', fontFamily: '"Space Grotesk", sans-serif' }}>
+    <section id="testimonials" style={{ backgroundColor: '#0b1720', color: '#fff', position: 'relative', zIndex: 0, fontFamily: '"Space Grotesk", sans-serif' }}>
       <div className="relative overflow-hidden py-24 md:py-32">
         {/* Background */}
         <div className="absolute inset-0 pointer-events-none">

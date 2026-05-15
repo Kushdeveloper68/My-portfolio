@@ -143,7 +143,7 @@ export default function Projects() {
       <section
         id="project"
         ref={sectionRef}
-        style={{ backgroundColor: '#080f16', color: '#fff', position: 'relative', overflow: 'hidden' }}
+        style={{ backgroundColor: '#080f16', color: '#fff', position: 'relative', zIndex: 0, overflow: 'hidden' }}
       >
         {/* Hyperspeed background */}
         <div className="absolute inset-0 z-0 pointer-events-none opacity-80">

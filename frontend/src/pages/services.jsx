@@ -72,7 +72,7 @@ export default function ServicesPage() {
   return (
     <>
   
-      <section id="services" ref={sectionRef} style={{ backgroundColor: '#0b1720', color: '#fff', position: 'relative', overflow: 'hidden' }}>
+      <section id="services" ref={sectionRef} style={{ backgroundColor: '#0b1720', color: '#fff', position: 'relative', zIndex: 0, overflow: 'hidden' }}>
 
         {/* FloatingLines bg — elegant flowing waves perfect for services */}
         <div className="absolute inset-0 z-0 pointer-events-none" style={{ opacity: 0.55 }}>

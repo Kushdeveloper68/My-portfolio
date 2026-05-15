@@ -266,7 +266,7 @@ export default function CertificatesPage() {
 
       <section
         id="certificate"
-        className="relative isolate overflow-hidden min-h-screen"
+        className="relative isolate z-0 overflow-hidden min-h-screen"
         style={{ backgroundColor: '#07080f', color: '#fff' }}
       >
 
