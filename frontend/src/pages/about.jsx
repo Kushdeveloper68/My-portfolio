@@ -1,323 +1,269 @@
-import React, { useEffect } from 'react'
+import { useEffect, useRef } from 'react';
+import { Orb } from '../components';
 
-const primary = '#0da2e7'
-const backgroundLight = '#f5f7f8'
-const backgroundDark = '#101c22'
+const P = '#0da2e7';
+const P_DIM = 'rgba(13,162,231,0.12)';
+const P_BORDER = 'rgba(13,162,231,0.25)';
 
-const About = () => {
-  // 3D mouse move effect (React way)
+const STATS = [
+  { val: '1.5+', label: 'Years', sub: 'Experience' },
+  { val: '10+', label: 'Projects', sub: 'Delivered' },
+  { val: '2+', label: 'Internships', sub: 'Completed' },
+];
+
+const TAGS = [
+  { icon: 'code', text: 'React / Vite' },
+  { icon: 'dns', text: 'Node.js / Express' },
+  { icon: 'brush', text: 'Tailwind / Figma' },
+  { icon: 'database', text: 'MongoDB / SQL' },
+];
+
+const SOCIAL = [
+  { href: 'https://github.com/Kushdeveloper68', icon: 'code', label: 'GitHub' },
+  { href: 'https://www.instagram.com/kushdev.js', icon: 'alternate_email', label: 'Instagram' },
+  { href: 'https://www.linkedin.com/in/kushdeveloper', icon: 'link', label: 'LinkedIn' },
+];
+
+export default function About() {
+  const containerRef = useRef(null);
+  const cardRef = useRef(null);
+  const wrapRef = useRef(null);
+
+  /* 3-D tilt */
   useEffect(() => {
-    const card = document.querySelector('.card-3d')
-    const container = document.querySelector('.perspective-container')
+    const wrap = wrapRef.current;
+    const card = cardRef.current;
+    if (!wrap || !card) return;
+    const move = e => {
+      const r = wrap.getBoundingClientRect();
+      const rx = ((e.clientY - r.top - r.height / 2) / (r.height / 2)) * -6;
+      const ry = ((e.clientX - r.left - r.width / 2) / (r.width / 2)) * 6;
+      card.style.transform = `perspective(1000px) rotateX(${rx}deg) rotateY(${ry}deg) scale(1.02)`;
+    };
+    const leave = () => { card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)'; };
+    wrap.addEventListener('mousemove', move);
+    wrap.addEventListener('mouseleave', leave);
+    return () => { wrap.removeEventListener('mousemove', move); wrap.removeEventListener('mouseleave', leave); };
+  }, []);
 
-    if (!container || !card) return
-
-    const handleMove = e => {
-      const rect = container.getBoundingClientRect()
-      const x = e.clientX - rect.left
-      const y = e.clientY - rect.top
-
-      const centerX = rect.width / 2
-      const centerY = rect.height / 2
-
-      const rotateX = ((y - centerY) / centerY) * -5
-      const rotateY = ((x - centerX) / centerX) * 5
-
-      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`
-    }
-
-    const handleLeave = () => {
-      card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)'
-    }
-
-    container.addEventListener('mousemove', handleMove)
-    container.addEventListener('mouseleave', handleLeave)
-
-    return () => {
-      container.removeEventListener('mousemove', handleMove)
-      container.removeEventListener('mouseleave', handleLeave)
-    }
-  }, [])
+  /* Scroll-triggered entrance */
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const items = el.querySelectorAll('[data-reveal]');
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    items.forEach(i => io.observe(i));
+    return () => io.disconnect();
+  }, []);
 
   return (
-    <div
-      className='dark'
-      style={{
-        backgroundColor: backgroundDark, // dark bg
-        color: '#ffffff',
-        fontFamily: '"Space Grotesk", "Noto Sans", sans-serif'
-      }}
-    >
-      {/* Navigation */}
-
-      {/* Main Content Wrapper */}
-      <div
-        className='relative min-h-screen flex flex-col pt-24 pb-12'
-        id='about'
+    <>
+      <section
+        id="about"
+        ref={containerRef}
+        style={{ backgroundColor: '#0c1a20', color: '#fff', position: 'relative', overflow: 'hidden' }}
       >
-        {/* Decorative Background Elements */}
-        <div className='absolute top-1/4 left-10 opacity-10 animate-float pointer-events-none'>
-          <span
-            className='material-symbols-outlined text-8xl'
-            style={{ color: primary }} // text-primary
-          >
-            code_blocks
-          </span>
+        {/* Grid bg */}
+        {/* Orb — top right */}
+        <div className="absolute -top-16 -right-16 w-[520px] h-[520px] pointer-events-auto opacity-70">
+          <Orb hue={247} hoverIntensity={1.3} rotateOnHover forceHoverState={false} backgroundColor="#0c1a20" />
         </div>
-        <div className='absolute bottom-1/3 right-10 opacity-10 animate-float-delayed pointer-events-none'>
-          <span
-            className='material-symbols-outlined text-8xl'
-            style={{ color: primary }} // text-primary
-          >
-            layers
-          </span>
+
+        {/* Ambient glow bottom-left */}
+        <div className="absolute bottom-0 left-0 w-[400px] h-[300px] pointer-events-none"
+          style={{ background: 'radial-gradient(ellipse at 0% 100%, rgba(13,162,231,0.07) 0%, transparent 70%)' }} />
+
+        {/* Vertical side label */}
+        <div className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none hidden xl:flex items-center gap-2 opacity-30">
+          <span className="kd-vert" style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.2em', color: P }}>PORTFOLIO — 2025</span>
+          <div style={{ width: 1, height: 80, background: 'linear-gradient(to bottom, transparent, rgba(13,162,231,0.5), transparent)' }} />
         </div>
-        {/* <div
-          className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full blur-[120px] pointer-events-none'
-          style={{ backgroundColor: 'rgba(13,162,231,0.05)' }} // bg-primary/5
-        ></div> */}
 
+        <div className="relative max-w-[1200px] mx-auto px-6 md:px-12 py-24 lg:py-32">
 
-        <div className='layout-container flex grow flex-col relative z-10'>
-          <div className='px-4 md:px-10 lg:px-40 flex flex-1 justify-center py-5'>
-            <div className='layout-content-container flex flex-col max-w-[1100px] flex-1'>
-              {/* Hero/About Grid */}
-              <div className='grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center'>
-                {/* Left Column: 3D Profile Card */}
-                <div className='lg:col-span-5 perspective-container group flex justify-center lg:block order-2 lg:order-1'>
-                  <div className='card-3d relative w-full max-w-[420px] aspect-[4/5] rounded-2xl overflow-hidden neon-shadow transition-all duration-500'>
-                    {/* Card Background Image */}
-                    <div
-                      className='absolute inset-0 bg-cover bg-center'
-                      style={{
-                        backgroundImage:
-                          "url('/profilepic.png')"
-                      }}
-                    ></div>
-                    {/* Card Overlay Gradient */}
-                    <div className='absolute inset-0 bg-gradient-to-t from-[#101c22] via-[#101c22]/40 to-transparent'></div>
-                    {/* Glass Overlay Content */}
-                    <div className='absolute inset-0 flex flex-col justify-end p-6 md:p-8'>
-                      <div className='glass-panel p-4 rounded-xl translate-y-2 group-hover:translate-y-0 transition-transform duration-300'>
-                        <div className='flex items-center justify-between mb-2'>
-                          <h3 className='text-xl font-bold text-white'>
-                            Kush Pandit
-                          </h3>
-                          <span
-                            className='px-2 py-0.5 rounded text-[10px] font-bold border uppercase tracking-wider'
-                            style={{
-                              backgroundColor: 'rgba(13,162,231,0.2)', // bg-primary/20
-                              color: primary, // text-primary
-                              borderColor: 'rgba(13,162,231,0.3)' // border-primary/30
-                            }}
-                          >
-                            Available
-                          </span>
-                        </div>
-                        <p className='text-sm text-gray-300 font-light mb-4'>
-                         Full-Stack Web Developer
-                        </p>
-                        <div className='flex gap-3'>
-                          <a
-                          target='_blank'
-                           href='https://github.com/Kushdeveloper68'
-                          title='github' className='size-8 rounded-full bg-white/5 hover:bg-primary hover:text-white border border-white/10 flex items-center justify-center transition-all text-gray-400'>
-                            <span className='material-symbols-outlined text-sm'>
-                              code
-                            </span>
-                          </a>
-                          <a
-                           href='https://www.instagram.com/kushdev.js'
-                           target='_blank'
-                          title='instagram' className='size-8 rounded-full bg-white/5 hover:bg-primary hover:text-white border border-white/10 flex items-center justify-center transition-all text-gray-400'>
-                            <span className='material-symbols-outlined text-sm'>
-                              alternate_email
-                            </span>
-                          </a>
-                          <a 
-                          target='_blank'
-                           href='https://www.linkedin.com/in/kushdeveloper?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app'
-                           title='linkedin' className='size-8 rounded-full bg-white/5 hover:bg-primary hover:text-white border border-white/10 flex items-center justify-center transition-all text-gray-400'>
-                            <span className='material-symbols-outlined text-sm'>
-                              link
-                            </span>
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                    {/* Decorative Border */}
-                    <div className='absolute inset-0 border border-white/10 rounded-2xl pointer-events-none'></div>
-                  </div>
+          {/* ─── SECTION LABEL ─── */}
+          <div data-reveal data-delay="100" className="flex items-center gap-3 mb-12 justify-center lg:justify-start">
+            <span className="kd-line-accent" />
+            <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '11px', letterSpacing: '0.2em', color: P, textTransform: 'uppercase' }}>
+              001 / About Me
+            </span>
+          </div>
+
+          {/* ─── MAIN GRID ─── */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-12 items-start">
+
+            {/* ── LEFT: Profile card ── */}
+            <div className="lg:col-span-5 order-2 lg:order-1 flex justify-center">
+              <div
+                ref={wrapRef}
+                data-reveal="left"
+                data-delay="200"
+                className="kd-card-wrap relative w-full max-w-[380px]"
+                style={{ cursor: 'default' }}
+              >
+                {/* Index number decoration */}
+                <div className="absolute -top-5 -left-2 pointer-events-none" style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '7rem', color: P, opacity: 0.06, lineHeight: 1, letterSpacing: '0.04em' }}>
+                  KP
                 </div>
 
-                {/* Right Column: Content */}
-                <div className='lg:col-span-7 flex flex-col gap-8 order-1 lg:order-2 text-center lg:text-left'>
-                  <div
-                    className='space-y-2 animate-slide-in-up'
-                    style={{ animationDelay: '0.1s' }}
-                  >
-                    <div
-                      className='inline-flex items-center gap-2 px-3 py-1 rounded-full border w-fit mx-auto lg:mx-0'
-                      style={{
-                        backgroundColor: 'rgba(13,162,231,0.1)', // bg-primary/10
-                        borderColor: 'rgba(13,162,231,0.2)' // border-primary/20
-                      }}
-                    >
-                      <span
-                        className='block w-2 h-2 rounded-full animate-pulse'
-                        style={{ backgroundColor: primary }} // bg-primary
-                      ></span>
-                      <span
-                        className='text-xs font-bold uppercase tracking-widest'
-                        style={{ color: primary }} // text-primary
-                      >
-                        About Me
-                      </span>
-                    </div>
-                    <h1 className='text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter leading-tight'>
-                      Turning Ideas Into
-                      <br />
-                      <span className='text-gradient'>
-                        Real-World Web Solutions
-                      </span>
-                    </h1>
-                  </div>
+                {/* Card */}
+                <div
+                  ref={cardRef}
+                  className="kd-card-3d relative rounded-[20px] overflow-hidden"
+                  style={{
+                    aspectRatio: '4/5',
+                    boxShadow: '0 0 60px -15px rgba(13,162,231,0.2), 0 30px 60px rgba(0,0,0,0.4)',
+                    border: '1px solid rgba(255,255,255,0.07)',
+                  }}
+                >
+                  {/* Photo */}
+                  <div className="absolute inset-0 bg-cover bg-center bg-no-repeat" style={{ backgroundImage: "url('/profilepic.png')" }} />
 
-                  <div
-                    className='space-y-6 text-gray-400 text-lg leading-relaxed animate-slide-in-up'
-                    style={{ animationDelay: '0.2s' }}
-                  >
-                    <p className='font-light'>
-                      I’m a passionate Full-Stack Web Developer with a strong
-                      focus on frontend development and modern{' '}
-                      <strong className='text-white font-medium'>
-                        JavaScript technologies.
-                      </strong>{' '}
-                      I enjoy building clean, responsive, and user-friendly web
-                      applications that solve{' '}
-                      <strong className='text-white font-medium'>
-                        real problems.
-                      </strong>
-                    </p>
-                    <p className='font-light'>
-                      I have hands-on experience working with React, Tailwind
-                      CSS, Node.js, Express, MongoDB, and REST APIs. From
-                      designing UI layouts to implementing backend logic, I like
-                      understanding and building the complete product.
-                    </p>
-                    <p className='font-light'>
-                      I’m continuously learning, improving my skills through
-                      projects, internships, and self-study, with a long-term
-                      goal of becoming a professional software developer.
-                    </p>
-                  </div>
+                  {/* Gradient overlay */}
+                  <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, #0c1a20 0%, rgba(12,26,32,0.5) 45%, rgba(12,26,32,0.1) 100%)' }} />
 
-                  {/* Animated Stats Row */}
-                  <div
-                    className='grid grid-cols-3 gap-4 pt-4 animate-slide-in-up'
-                    style={{ animationDelay: '0.3s' }}
-                  >
-                    <div className='flex flex-col gap-1 p-4 rounded-xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] transition-colors group'>
-                      <span className='text-3xl md:text-4xl font-bold text-white group-hover:text-[#0da2e7] transition-colors'>
-                        1.5+
-                      </span>
-                      <span className='text-xs md:text-sm text-gray-500 uppercase tracking-wide'>
-                        Years Exp
-                      </span>
-                    </div>
-                    <div className='flex flex-col gap-1 p-4 rounded-xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] transition-colors group'>
-                      <span className='text-3xl md:text-4xl font-bold text-white group-hover:text-[#0da2e7] transition-colors'>
-                        10+
-                      </span>
-                      <span className='text-xs md:text-sm text-gray-500 uppercase tracking-wide'>
-                        Projects
-                      </span>
-                    </div>
-                    <div className='flex flex-col gap-1 p-4 rounded-xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] transition-colors group'>
-                      <span className='text-3xl md:text-4xl font-bold text-white group-hover:text-[#0da2e7] transition-colors'>
-                        2+
-                      </span>
-                      <span className='text-xs md:text-sm text-gray-500 uppercase tracking-wide'>
-                        Internships / Training Programs
-                      </span>
+                  {/* Scanline texture */}
+                  <div className="absolute inset-0 pointer-events-none" style={{
+                    backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px)',
+                    mixBlendMode: 'overlay',
+                  }} />
+
+                  {/* Bottom info panel */}
+                  <div className="absolute bottom-0 left-0 right-0 p-5">
+                    <div className="kd-card-panel p-4">
+                      {/* Name row */}
+                      <div className="flex items-start justify-between mb-2">
+                        <div>
+                          <h3 style={{ fontFamily: "'Syne', sans-serif", fontWeight: 700, fontSize: '1.05rem', color: '#fff', margin: 0, lineHeight: 1.2 }}>
+                            Kush Pandit
+                          </h3>
+                          <p style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', color: 'rgba(255,255,255,0.45)', margin: '4px 0 0', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+                            Full-Stack Developer
+                          </p>
+                        </div>
+                        <div className="flex items-center gap-1.5 px-2 py-1 rounded-md" style={{ background: 'rgba(13,162,231,0.12)', border: '1px solid rgba(13,162,231,0.25)' }}>
+                          <span className="kd-avail-dot w-1.5 h-1.5 rounded-full inline-block" style={{ backgroundColor: P }} />
+                          <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '9px', color: P, letterSpacing: '0.15em', textTransform: 'uppercase' }}>Open</span>
+                        </div>
+                      </div>
+
+                      {/* Divider */}
+                      <div style={{ height: 1, background: 'rgba(255,255,255,0.07)', margin: '10px 0' }} />
+
+                      {/* Socials */}
+                      <div className="flex gap-2.5">
+                        {SOCIAL.map(({ href, icon, label }) => (
+                          <a key={label} href={href} target="_blank" rel="noopener noreferrer" title={label}
+                            className="kd-social w-9 h-9 rounded-full flex items-center justify-center">
+                            <span className="material-symbols-outlined" style={{ fontSize: '15px', color: 'rgba(255,255,255,0.6)' }}>{icon}</span>
+                          </a>
+                        ))}
+                      </div>
                     </div>
                   </div>
 
-                  {/* Actions */}
-                  <div
-                    className='flex flex-wrap gap-4 justify-center lg:justify-start pt-4 animate-slide-in-up'
-                    style={{ animationDelay: '0.4s' }}
-                  >
-                    <a href="/developer-kush-resume.pdf" download>
-                    <button
-                      className='flex items-center gap-2 h-12 px-8 text-white font-bold rounded-lg transition-all shadow-[0_0_20px_rgba(13,162,231,0.3)] hover:shadow-[0_0_30px_rgba(13,162,231,0.5)] transform hover:-translate-y-1'
-                      style={{
-                        backgroundColor: primary // bg-primary
-                      }}
-                    >
-                      <span className='material-symbols-outlined text-[20px]'>
-                        download
-                      </span>
-                      Download CV
-                    </button>
-                    </a>
-                    <a href="#skill">
-                    <button className='flex items-center gap-2 h-12 px-8 bg-transparent hover:bg-white/5 text-white border border-white/20 hover:border-white/40 font-bold rounded-lg transition-all transform hover:-translate-y-1'>
-                      View Tech Stack
-                    </button></a>
-                  </div>
+                  {/* Corner accent */}
+                  <div className="absolute top-4 right-4 pointer-events-none" style={{
+                    width: 28, height: 28, borderTop: `2px solid ${P}`, borderRight: `2px solid ${P}`,
+                    borderTopRightRadius: 6, opacity: 0.5,
+                  }} />
+                  <div className="absolute bottom-[165px] left-4 pointer-events-none" style={{
+                    width: 28, height: 28, borderBottom: `2px solid ${P}`, borderLeft: `2px solid ${P}`,
+                    borderBottomLeftRadius: 6, opacity: 0.5,
+                  }} />
+                </div>
+
+                {/* Floating stat badge */}
+                <div data-reveal data-delay="500"
+                  className="absolute -right-4 top-10 px-3 py-2 rounded-xl"
+                  style={{
+                    background: 'rgba(10,22,28,0.9)', backdropFilter: 'blur(16px)',
+                    border: '1px solid rgba(13,162,231,0.2)',
+                    boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
+                  }}
+                >
+                  <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '1.6rem', color: '#fff', lineHeight: 1, letterSpacing: '0.04em' }}>10+</div>
+                  <div style={{ fontFamily: "'DM Mono', monospace", fontSize: '9px', color: P, letterSpacing: '0.12em', textTransform: 'uppercase', marginTop: 2 }}>Projects</div>
+                </div>
+              </div>
+            </div>
+
+            {/* ── RIGHT: Content ── */}
+            <div className="lg:col-span-7 order-1 lg:order-2 flex flex-col gap-8 text-center lg:text-left">
+
+              {/* Headline */}
+              <div data-reveal="right" data-delay="200" className="space-y-2">
+                <div className="kd-display text-[4.8rem] md:text-[6rem] lg:text-[6.5rem] text-white leading-none">
+                  Turning <span className="kd-gradient">Ideas</span>
+                </div>
+                <div className="kd-display text-[4.8rem] md:text-[6rem] lg:text-[6.5rem] leading-none"
+                  style={{ WebkitTextStroke: '1.5px rgba(255,255,255,0.25)', color: 'transparent' }}>
+                  Into Reality
                 </div>
               </div>
 
-              {/* Extra Info Section (Skill Tags) */}
-              <div className='mt-24 border-t border-white/10 pt-10'>
-                <div className='flex flex-wrap justify-center gap-x-8 gap-y-4 text-gray-500 text-sm font-medium uppercase tracking-wider'>
-                  <div className='flex items-center gap-2'>
-                    <span
-                      className='material-symbols-outlined text-lg'
-                      style={{ color: primary }}
-                    >
-                      code
-                    </span>
-                    React / vite
+              {/* Body copy */}
+              <div data-reveal="right" data-delay="300" className="space-y-4 max-w-xl mx-auto lg:mx-0">
+                <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '1.0rem', fontWeight: 300, color: 'rgba(255,255,255,0.6)', lineHeight: 1.8 }}>
+                  I'm a <span style={{ color: '#fff', fontWeight: 500 }}>Full-Stack Web Developer</span> obsessed with clean interfaces and performant systems — building apps that look beautiful and work flawlessly.
+                </p>
+                <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '0.95rem', fontWeight: 300, color: 'rgba(255,255,255,0.45)', lineHeight: 1.8 }}>
+                  React · Node.js · Tailwind · MongoDB · REST APIs — I own the full product from pixel to deployment.
+                </p>
+              </div>
+
+              {/* Stat cards */}
+              <div data-reveal="right" data-delay="400" className="grid grid-cols-3 gap-3 max-w-xl mx-auto lg:mx-0 w-full">
+                {STATS.map(({ val, label, sub }) => (
+                  <div key={label} className="kd-stat rounded-2xl p-4 lg:p-5 flex flex-col gap-1">
+                    <div className="kd-counter text-white">{val}</div>
+                    <div style={{ fontFamily: "'Syne', sans-serif", fontWeight: 700, fontSize: '0.75rem', color: 'rgba(255,255,255,0.85)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>{label}</div>
+                    <div style={{ fontFamily: "'DM Mono', monospace", fontSize: '0.65rem', color: P, letterSpacing: '0.1em', textTransform: 'uppercase' }}>{sub}</div>
                   </div>
-                  <div className='flex items-center gap-2'>
-                    <span
-                      className='material-symbols-outlined text-lg'
-                      style={{ color: primary }}
-                    >
-                      dns
-                    </span>
-                    Node.js / Express
+                ))}
+              </div>
+
+              {/* CTA row */}
+              <div data-reveal="right" data-delay="500" className="flex flex-wrap gap-3 justify-center lg:justify-start">
+                <a href="/developer-kush-resume.pdf" download>
+                  <button className="kd-btn-primary flex items-center gap-2.5 h-12 px-7 rounded-xl text-white font-bold" style={{ fontFamily: "'Syne', sans-serif", fontSize: '0.85rem', letterSpacing: '0.04em' }}>
+                    <span className="material-symbols-outlined" style={{ fontSize: '17px' }}>download</span>
+                    Download CV
+                  </button>
+                </a>
+                <a href="#skill">
+                  <button className="kd-btn-ghost flex items-center gap-2.5 h-12 px-7 rounded-xl text-white font-bold" style={{ fontFamily: "'Syne', sans-serif", fontSize: '0.85rem', letterSpacing: '0.04em' }}>
+                    View Tech Stack
+                    <span className="material-symbols-outlined" style={{ fontSize: '16px', color: P }}>arrow_forward</span>
+                  </button>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {/* ─── BOTTOM TICKER STRIP ─── */}
+          <div data-reveal data-delay="600" className="mt-24 relative" style={{ borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '1.75rem' }}>
+            <div style={{ overflow: 'hidden', maskImage: 'linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)' }}>
+              <div className="kd-ticker-track">
+                {[...TAGS, ...TAGS, ...TAGS, ...TAGS].map(({ icon, text }, i) => (
+                  <div key={i} className="kd-tag-item flex items-center gap-2" style={{ fontFamily: "'DM Mono', monospace", fontSize: '11px', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)', whiteSpace: 'nowrap' }}>
+                    <span className="kd-tag-icon material-symbols-outlined" style={{ fontSize: '14px', color: 'rgba(13,162,231,0.5)' }}>{icon}</span>
+                    {text}
+                    <span style={{ color: 'rgba(13,162,231,0.25)', marginLeft: '1rem' }}>✦</span>
                   </div>
-                  <div className='flex items-center gap-2'>
-                    <span
-                      className='material-symbols-outlined text-lg'
-                      style={{ color: primary }}
-                    >
-                      brush
-                    </span>
-                    Tailwind / Figma
-                  </div>
-                  <div className='flex items-center gap-2'>
-                    <span
-                      className='material-symbols-outlined text-lg'
-                      style={{ color: primary }}
-                    >
-                      database
-                    </span>
-                    MongoDB / SQL
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
           </div>
         </div>
-
-        {/* Footer */}
-      </div>
-    </div>
-  )
+      </section>
+    </>
+  );
 }
-
-export default About

@@ -1,0 +1,79 @@
+hye see i will give you some backgrounds for some section you have to edit that section and add that background directly so first color bends this is for my hero section just add directly in hero section i will installl npx shadcn@latest add @react-bits/ColorBends-JS-TW in my system before run so make this change and edit the hero section. 
+
+<div style={{ width: '1080px', height: '1080px', position: 'relative' }}>
+  <ColorBends
+    rotation={215}
+    speed={0.45}
+    colors={["#5227FF","#FF9FFC","#7cff67"]}
+    transparent
+    autoRotate={0}
+    scale={1}
+    frequency={1}
+    warpStrength={1}
+    mouseInfluence={1}
+    parallax={0.5}
+    noise={0.15}
+    iterations={1}
+    intensity={1.5}
+    bandWidth={6}
+  />
+</div>
+
+
+i have this background 
+<div style={{ width: '1080px', height: '1080px', position: 'relative' }}>
+  <Orb
+    hue={247}
+    hoverIntensity={1.3}
+    rotateOnHover
+    forceHoverState={false}
+  />
+</div>
+i think this is good for about section.
+
+
+
+here is another background for i think skill section , what you thing ??? 
+where it look good. i think in  skills , for skills i given you too background hyper and dot. i think dot will be best for skills and hyper for projects section.
+import { hyperspeedPresets } from './HyperSpeedPresets';
+// Using "Akira" preset
+<div style={{ width: '1080px', height: '1080px', position: 'relative' }}>
+  <Hyperspeed
+    effectOptions={hyperspeedPresets.two}
+  />
+</div>
+
+<div style={{ width: '1080px', height: '1080px', position: 'relative' }}>
+  <DotField
+    dotRadius={3}
+    dotSpacing={18}
+    cursorRadius={400}
+    cursorForce={0.2}
+    bulgeOnly
+    bulgeStrength={67}
+    glowRadius={160}
+    sparkle={false}
+    waveAmplitude={0}
+    gradientFrom="rgba(168, 85, 247, 0.35)"
+    gradientTo="rgba(180, 151, 207, 0.25)"
+    glowColor="#120F17"
+  />
+</div>
+
+and this background in journey secion 
+
+<div style={{ width: '1080px', height: '1080px', position: 'relative' }}>
+  <SplashCursor
+    SIM_RESOLUTION={128}
+    DYE_RESOLUTION={1440}
+    DENSITY_DISSIPATION={3.5}
+    VELOCITY_DISSIPATION={2}
+    PRESSURE={0.1}
+    CURL={3}
+    SPLAT_RADIUS={0.2}
+    SPLAT_FORCE={6000}
+    COLOR_UPDATE_SPEED={10}
+  />
+</div>
+
+these all background i will install in my project in my system so you just have to add properly and the project section that you made was very boring and bad such huge and bad design of the section i did accept. make something humanize fantastic section, and other section that you created new like services , pricing , testimonal  follow the old fashion of layout design , nothing new no creativity show something that have no words to explain.
