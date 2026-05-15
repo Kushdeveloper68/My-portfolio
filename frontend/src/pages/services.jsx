@@ -1,3 +1,6 @@
+import { useState, useEffect, useRef } from 'react';
+import FloatingLines from '../components/FloatingLines';
+
 const P = '#0da2e7';
 
 const SERVICES = [
@@ -8,7 +11,6 @@ const SERVICES = [
     desc: 'Pixel-perfect, responsive UIs built with React, Tailwind CSS, and modern animation libraries. Fast, accessible, and visually stunning.',
     tags: ['React', 'Tailwind CSS', 'Vite', 'Framer Motion'],
     color: '#0da2e7',
-    glow: 'rgba(13,162,231,0.25)',
   },
   {
     icon: 'dns',
@@ -17,7 +19,6 @@ const SERVICES = [
     desc: 'Scalable REST APIs, authentication flows, database design, and server-side logic using Node.js, Express, and MongoDB.',
     tags: ['Node.js', 'Express', 'MongoDB', 'JWT'],
     color: '#22c55e',
-    glow: 'rgba(34,197,94,0.25)',
   },
   {
     icon: 'deployed_code',
@@ -26,7 +27,6 @@ const SERVICES = [
     desc: 'End-to-end MERN stack applications — from database schema to polished UI — designed and deployed for real users.',
     tags: ['MERN Stack', 'REST API', 'Deployment', 'MongoDB Atlas'],
     color: '#a855f7',
-    glow: 'rgba(168,85,247,0.25)',
   },
   {
     icon: 'design_services',
@@ -35,7 +35,6 @@ const SERVICES = [
     desc: 'Clean, modern interface design with Figma. From wireframes to high-fidelity prototypes with a focus on user experience.',
     tags: ['Figma', 'Wireframing', 'Prototyping', 'Design Systems'],
     color: '#f97316',
-    glow: 'rgba(249,115,22,0.25)',
   },
   {
     icon: 'integration_instructions',
@@ -44,7 +43,6 @@ const SERVICES = [
     desc: 'Seamless third-party API integrations — payment gateways, social auth, maps, cloud storage, and more.',
     tags: ['REST APIs', 'OAuth', 'Stripe', 'Cloudinary'],
     color: '#eab308',
-    glow: 'rgba(234,179,8,0.25)',
   },
   {
     icon: 'speed',
@@ -53,83 +51,167 @@ const SERVICES = [
     desc: 'Code optimization, lazy loading, bundle splitting, and SEO best practices to make your site fast and discoverable.',
     tags: ['Core Web Vitals', 'SEO', 'Lighthouse', 'Code Splitting'],
     color: '#ec4899',
-    glow: 'rgba(236,72,153,0.25)',
   },
 ];
 
 export default function ServicesPage() {
-  return (
-    <section id="services" style={{ backgroundColor: '#0b1720', color: '#fff', fontFamily: '"Space Grotesk", sans-serif' }}>
-      <div className="relative overflow-hidden">
-        {/* Background grid */}
-        <div className="absolute inset-0 pointer-events-none opacity-[0.04]" style={{ backgroundImage: 'linear-gradient(to right,#1f3a4a 1px,transparent 1px),linear-gradient(to bottom,#1f3a4a 1px,transparent 1px)', backgroundSize: '48px 48px' }} />
-        {/* Glow orbs */}
-        <div className="absolute top-[-15%] left-[-5%] w-[40vw] h-[40vw] rounded-full blur-[120px] pointer-events-none" style={{ backgroundColor: 'rgba(13,162,231,0.07)' }} />
-        <div className="absolute bottom-[-10%] right-[-5%] w-[35vw] h-[35vw] rounded-full blur-[100px] pointer-events-none" style={{ backgroundColor: 'rgba(168,85,247,0.06)' }} />
+  const sectionRef = useRef(null);
+  const [hovered, setHovered] = useState(null);
 
-        <div className="relative z-10 max-w-7xl mx-auto px-5 md:px-10 py-24 md:py-32">
-          {/* Header */}
-          <div className="text-center max-w-2xl mx-auto mb-16 md:mb-20">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border mb-5" style={{ backgroundColor: 'rgba(13,162,231,0.08)', borderColor: 'rgba(13,162,231,0.2)' }}>
-              <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: P }} />
-              <span className="text-[11px] font-bold uppercase tracking-widest" style={{ color: P }}>What I Offer</span>
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const items = el.querySelectorAll('[data-reveal]');
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('revealed'); io.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    items.forEach(i => io.observe(i));
+    return () => io.disconnect();
+  }, []);
+
+  return (
+    <>
+  
+      <section id="services" ref={sectionRef} style={{ backgroundColor: '#0b1720', color: '#fff', position: 'relative', overflow: 'hidden' }}>
+
+        {/* FloatingLines bg — elegant flowing waves perfect for services */}
+        <div className="absolute inset-0 z-0 pointer-events-none" style={{ opacity: 0.55 }}>
+          <FloatingLines
+            enabledWaves={["top", "middle", "bottom"]}
+            lineCount={8}
+            lineDistance={8}
+            bendRadius={8}
+            bendStrength={-2}
+            interactive={false}
+            parallax={false}
+            animationSpeed={0.8}
+            gradientStart="#e945f5"
+            gradientMid="#0da2e7"
+            gradientEnd="#6a6a6a"
+          />
+        </div>
+
+        {/* Grid overlay */}
+        <div className="srv-grid-bg absolute inset-0 pointer-events-none z-[1]" style={{ opacity: 0.6 }} />
+
+        {/* Dark vignette so text pops */}
+        <div className="absolute inset-0 z-[2] pointer-events-none"
+          style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(11,23,32,0.4) 0%, rgba(11,23,32,0.85) 70%)' }} />
+
+        {/* Ambient glows */}
+        <div className="absolute top-0 left-0 w-[420px] h-[320px] pointer-events-none z-[2]"
+          style={{ background: 'radial-gradient(ellipse at 0% 0%, rgba(229,69,245,0.06) 0%, transparent 65%)' }} />
+        <div className="absolute bottom-0 right-0 w-[420px] h-[320px] pointer-events-none z-[2]"
+          style={{ background: 'radial-gradient(ellipse at 100% 100%, rgba(13,162,231,0.06) 0%, transparent 65%)' }} />
+
+        {/* Vertical side label */}
+        <div className="absolute right-4 top-1/2 -translate-y-1/2 hidden xl:flex items-center gap-2 z-10 opacity-25 pointer-events-none">
+          <div style={{ width: 1, height: 80, background: 'linear-gradient(to bottom, transparent, rgba(229,69,245,0.5), transparent)' }} />
+          <span className="srv-vert" style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.2em', color: '#e945f5' }}>SERVICES — 2025</span>
+        </div>
+
+        <div className="relative z-10 max-w-[1200px] mx-auto px-6 md:px-12 py-24 lg:py-32">
+
+          {/* ── HEADER ── */}
+          <div className="mb-16 lg:mb-20">
+            <div data-reveal className="flex items-center gap-3 mb-8 justify-center lg:justify-start">
+              <div style={{ display: 'inline-block', width: '2.5rem', height: '2px', background: '#e945f5', borderRadius: 2 }} />
+              <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '11px', letterSpacing: '0.2em', color: '#e945f5', textTransform: 'uppercase' }}>
+                004 / Services
+              </span>
             </div>
-            <h2 className="text-4xl md:text-[3.2rem] font-bold tracking-tight leading-tight mb-4">
-              Services &amp; <span className="text-gradient">Expertise</span>
-            </h2>
-            <p className="text-gray-400 text-base leading-relaxed">
-              From concept to deployment — I deliver complete digital solutions tailored to your needs with precision and passion.
-            </p>
+
+            <div className="flex flex-col lg:flex-row lg:items-end gap-8 lg:gap-16">
+              <div data-reveal data-delay="100">
+                <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 'clamp(4rem, 8vw, 6.5rem)', lineHeight: 0.92, letterSpacing: '0.04em', color: '#fff' }}>
+                  Services &amp;
+                </div>
+                <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 'clamp(4rem, 8vw, 6.5rem)', lineHeight: 0.92, letterSpacing: '0.04em', WebkitTextStroke: '1.5px rgba(255,255,255,0.2)', color: 'transparent' }}>
+                  Expertise
+                </div>
+              </div>
+              <div data-reveal data-delay="200" className="lg:mb-3 max-w-sm">
+                <p style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 300, fontSize: '0.95rem', color: 'rgba(255,255,255,0.45)', lineHeight: 1.8 }}>
+                  From concept to deployment — complete digital solutions built with precision, passion, and a focus on real results.
+                </p>
+              </div>
+            </div>
           </div>
 
-          {/* Services Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {SERVICES.map(({ icon, num, title, desc, tags, color, glow }) => (
-              <div key={num} className="group relative rounded-2xl p-7 border border-white/5 transition-all duration-500 cursor-default overflow-hidden hover:-translate-y-2"
-                style={{ background: 'linear-gradient(145deg,rgba(255,255,255,0.03) 0%,rgba(255,255,255,0.01) 100%)', backdropFilter: 'blur(12px)' }}
-              >
-                {/* Hover glow bg */}
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-2xl" style={{ background: `radial-gradient(ellipse at 20% 20%, ${glow} 0%, transparent 65%)` }} />
-                {/* Hover border */}
-                <div className="absolute inset-0 rounded-2xl border border-transparent group-hover:border-white/10 transition-all duration-500 pointer-events-none" style={{ boxShadow: `0 0 0 0 ${color}00` }} />
+          {/* ── SERVICES GRID ── */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-16">
+            {SERVICES.map(({ icon, num, title, desc, tags, color }, i) => (
+              <div key={num} data-reveal data-delay={`${(i % 3 + 1) * 100}`}>
+                <div
+                  className="srv-card"
+                  onMouseEnter={() => setHovered(num)}
+                  onMouseLeave={() => setHovered(null)}
+                >
+                  {/* Ghost number watermark */}
+                  <div className="srv-corner-num" style={{ color }}>{num}</div>
 
-                {/* Number */}
-                <span className="absolute top-5 right-5 text-xs font-mono font-bold opacity-20 group-hover:opacity-60 transition-opacity" style={{ color }}>{num}</span>
+                  {/* Glow */}
+                  <div className="srv-glow" style={{ background: `radial-gradient(ellipse at 20% 20%, ${color}15 0%, transparent 65%)` }} />
 
-                {/* Icon */}
-                <div className="mb-5 size-12 rounded-xl flex items-center justify-center transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: `${color}18`, border: `1px solid ${color}30` }}>
-                  <span className="material-symbols-outlined text-2xl" style={{ color }}>{icon}</span>
-                </div>
+                  {/* Icon box */}
+                  <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
+                    style={{ background: `${color}14`, border: `1px solid ${color}28` }}>
+                    <span className="material-symbols-outlined" style={{ fontSize: '20px', color }}>{icon}</span>
+                  </div>
 
-                <h3 className="text-lg font-bold text-white mb-2.5 group-hover:text-white transition-colors" style={{ '--hover-color': color }}>
-                  {title}
-                </h3>
-                <p className="text-gray-400 text-sm leading-relaxed mb-5">{desc}</p>
+                  {/* Title */}
+                  <div>
+                    <h3 style={{ fontFamily: "'Syne', sans-serif", fontWeight: 700, fontSize: '0.95rem', color: '#fff', letterSpacing: '0.02em', lineHeight: 1.3, marginBottom: '0.5rem' }}>
+                      {title}
+                    </h3>
+                    <p style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 300, fontSize: '0.82rem', color: 'rgba(255,255,255,0.42)', lineHeight: 1.75 }}>
+                      {desc}
+                    </p>
+                  </div>
 
-                {/* Tags */}
-                <div className="flex flex-wrap gap-1.5">
-                  {tags.map(t => (
-                    <span key={t} className="px-2.5 py-1 rounded-lg text-[10px] font-semibold uppercase tracking-wide border transition-all duration-300" style={{ backgroundColor: `${color}10`, borderColor: `${color}25`, color }}>
-                      {t}
-                    </span>
-                  ))}
+                  {/* Tags */}
+                  <div className="flex flex-wrap gap-1.5 mt-auto pt-2" style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+                    {tags.map(t => (
+                      <span key={t} className="srv-tag" style={{ backgroundColor: `${color}0e`, borderColor: `${color}28`, color }}>
+                        {t}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </div>
             ))}
           </div>
 
-          {/* Bottom CTA */}
-          <div className="mt-16 text-center">
-            <p className="text-gray-500 text-sm mb-5">Have a project in mind? Let's discuss it.</p>
-            <a href="#connect">
-              <button className="inline-flex items-center gap-2 h-12 px-8 text-white font-bold rounded-xl transition-all hover:-translate-y-1 hover:shadow-[0_0_24px_rgba(13,162,231,0.4)]" style={{ backgroundColor: P }}>
-                <span className="material-symbols-outlined text-[18px]">send</span>
-                Start a Conversation
-              </button>
+          {/* ── DIVIDER ── */}
+          <div data-reveal className="srv-divider mb-12" />
+
+          {/* ── CTA ── */}
+          <div data-reveal data-delay="200" className="text-center">
+            <p style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', color: 'rgba(255,255,255,0.25)', letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '1rem' }}>
+              Have a project in mind?
+            </p>
+            <a href="#connect" className="srv-btn">
+              <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>send</span>
+              Start a Conversation
             </a>
           </div>
         </div>
-      </div>
-    </section>
+
+        {/* Ticker */}
+        <div className="relative z-10 py-5 overflow-hidden" style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+          <div style={{ maskImage: 'linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)' }}>
+            <div className="srv-ticker">
+              {[...SERVICES, ...SERVICES, ...SERVICES].map(({ title, icon, color }, i) => (
+                <div key={i} className="flex items-center gap-2" style={{ fontFamily: "'DM Mono', monospace", fontSize: '11px', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.25)', whiteSpace: 'nowrap' }}>
+                  <span className="material-symbols-outlined" style={{ fontSize: '12px', color: `${color}88` }}>{icon}</span>
+                  {title}
+                  <span style={{ color: 'rgba(229,69,245,0.25)', marginLeft: '1.5rem' }}>✦</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
   );
 }

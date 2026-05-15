@@ -102,7 +102,7 @@ export default function Hero() {
             NAVBAR
         ════════════════════════════════════════ */}
         <header
-          className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+          className={`fixed top-0 left-0 right-0 z-5000 transition-all duration-500 ${
             scrolled
               ? "bg-black/[0.72] backdrop-blur-2xl border-b border-[rgba(123,63,255,0.12)]"
               : "bg-transparent"

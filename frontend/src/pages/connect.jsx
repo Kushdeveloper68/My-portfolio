@@ -1,26 +1,72 @@
 import { useRef, useEffect } from 'react';
 import { useForm, ValidationError } from '@formspree/react';
+import LightRays from '../components/LightRays';
 
-const P = '#0da2e7';
-
+/* ─── Data ──────────────────────────────────────────────── */
 const SOCIALS = [
-  { href: 'https://github.com/Kushdeveloper68', icon: 'code', title: 'GitHub' },
-  { href: 'https://www.linkedin.com/in/kushdeveloper', icon: 'work', title: 'LinkedIn', target: '_blank' },
-  { href: 'https://www.instagram.com/kushdev.js', icon: 'chat_bubble', title: 'Instagram', target: '_blank' },
-  { href: 'https://x.com/kushdeveloper68', icon: 'palette', title: 'Twitter/X', target: '_blank' },
+  { href: 'https://github.com/Kushdeveloper68',          icon: 'code',         title: 'GitHub',    sub: 'Kushdeveloper68'    },
+  { href: 'https://www.linkedin.com/in/kushdeveloper',   icon: 'work',         title: 'LinkedIn',  sub: 'kushdeveloper'      },
+  { href: 'https://www.instagram.com/kushdev.js',        icon: 'chat_bubble',  title: 'Instagram', sub: 'kushdev.js'         },
+  { href: 'https://x.com/kushdeveloper68',               icon: 'palette',      title: 'Twitter/X', sub: 'kushdeveloper68'    },
 ];
 
 const NAV_LINKS = [
-  { href: '#hero', label: 'Home' },
-  { href: '#about', label: 'About' },
-  { href: '#skill', label: 'Skills' },
-  { href: '#services', label: 'Services' },
-  { href: '#project', label: 'Projects' },
-  { href: '#experience', label: 'Experience' },
-  { href: '#certificate', label: 'Certificates' },
+  { href: '#hero',         label: 'Home'         },
+  { href: '#about',        label: 'About'        },
+  { href: '#skill',        label: 'Skills'       },
+  { href: '#services',     label: 'Services'     },
+  { href: '#project',      label: 'Projects'     },
+  { href: '#experience',   label: 'Experience'   },
+  { href: '#certificate',  label: 'Certificates' },
   { href: '#testimonials', label: 'Testimonials' },
-  { href: '#pricing', label: 'Pricing' },
+  { href: '#pricing',      label: 'Pricing'      },
 ];
+
+/* ─── Keyframes ONLY ─────────────────────────────────────── */
+const KF = `
+  @keyframes connFadeUp {
+    from { opacity:0; transform:translateY(30px); }
+    to   { opacity:1; transform:translateY(0);    }
+  }
+  @keyframes connFadeIn {
+    from { opacity:0; }
+    to   { opacity:1; }
+  }
+  @keyframes connPulse {
+    0%,100% { box-shadow: 0 0 0 0   rgba(255,255,255,0.4); }
+    50%     { box-shadow: 0 0 0 6px rgba(255,255,255,0);   }
+  }
+  @keyframes connLineExpand {
+    from { width:0;     opacity:0; }
+    to   { width:100%;  opacity:1; }
+  }
+  @keyframes connShimmer {
+    0%   { transform:translateX(-100%); }
+    100% { transform:translateX(200%);  }
+  }
+  @keyframes connBeam {
+    0%,100% { opacity:0.06; transform:scaleY(1);    }
+    50%     { opacity:0.12; transform:scaleY(1.04); }
+  }
+
+  .conn-a1 { animation: connFadeUp 0.75s cubic-bezier(0.22,1,0.36,1) 0.05s both; }
+  .conn-a2 { animation: connFadeUp 0.75s cubic-bezier(0.22,1,0.36,1) 0.18s both; }
+  .conn-a3 { animation: connFadeUp 0.75s cubic-bezier(0.22,1,0.36,1) 0.30s both; }
+  .conn-a4 { animation: connFadeUp 0.75s cubic-bezier(0.22,1,0.36,1) 0.42s both; }
+  .conn-a5 { animation: connFadeUp 0.75s cubic-bezier(0.22,1,0.36,1) 0.54s both; }
+  .conn-pulse    { animation: connPulse     2.4s ease         infinite; }
+  .conn-shimmer  { animation: connShimmer   2.2s ease-in-out  infinite; }
+  .conn-beam     { animation: connBeam      3.5s ease-in-out  infinite; }
+  .conn-divider  { animation: connLineExpand 1s  ease          0.4s both; }
+
+  /* Input focus glow — can't do with pure Tailwind */
+  .conn-input:focus {
+    border-color: rgba(255,255,255,0.35) !important;
+    box-shadow: 0 0 0 3px rgba(255,255,255,0.07), 0 0 20px rgba(255,255,255,0.06);
+    outline: none;
+  }
+  .conn-input::placeholder { color: rgba(255,255,255,0.2); }
+`;
 
 export default function ConnectPage() {
   const [state, handleSubmit] = useForm('meoprnge');
@@ -30,145 +76,472 @@ export default function ConnectPage() {
     if (state.succeeded && formRef.current) formRef.current.reset();
   }, [state.succeeded]);
 
-  return (
-    <section id="connect" style={{ backgroundColor: '#101c22', color: '#fff', fontFamily: '"Space Grotesk", sans-serif' }}>
-      <div className="relative min-h-screen flex flex-col overflow-x-hidden">
-        {/* Backdrop */}
-        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-          <div className="absolute inset-0 z-10" style={{ backgroundColor: 'rgba(16,28,34,0.88)' }} />
-          <div className="absolute inset-0 bg-cover bg-center opacity-20 mix-blend-overlay z-0 scale-105" style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuBQwGLep3dcnNrTba0cA57-tw8k8qADUfLXjVcFaIYFOd1inZ1fOIf9nzSXAfg6ByUdg1nkVuHSiqaPsUbvyFR6gOr_Ccaro2eLJElCoNTerO-_D0I46rz9TcVyCLUWdZ4UztdatwE9msBqStTffQnI8LduKiVszxM0SfGXnG2rvVge8ZxjfYz7eAi1DvYIe_IPTQjWZUf7RS738gZt8nAkbycgYRMl1V9fMZHzWtRCUyIzc3wsKwSVIVr0zyDHbyg-gaS0rzKzWhc')" }} />
-          <div className="absolute top-[-20%] left-[20%] rounded-full blur-[120px] animate-pulse" style={{ width: '600px', height: '600px', backgroundColor: 'rgba(13,162,231,0.14)', zIndex: 11 }} />
-          <div className="absolute bottom-[-10%] right-[-10%] rounded-full blur-[100px]" style={{ width: '500px', height: '500px', backgroundColor: 'rgba(8,145,178,0.08)', zIndex: 11 }} />
-        </div>
+  /* font objects */
+  const fBebas = { fontFamily: "'Bebas Neue', sans-serif" };
+  const fSyne  = { fontFamily: "'Syne', sans-serif"       };
+  const fMono  = { fontFamily: "'DM Mono', monospace"     };
+  const fDM    = { fontFamily: "'DM Sans', sans-serif"    };
 
-        <main className="relative z-20 flex-grow flex flex-col justify-center max-w-7xl mx-auto w-full px-5 md:px-10 py-16 md:py-24">
-          {/* Header */}
-          <div className="flex flex-col items-center mb-14 gap-4 text-center">
-            <div className="flex items-center gap-2 px-3 py-1 rounded-full border" style={{ borderColor: 'rgba(13,162,231,0.3)', backgroundColor: 'rgba(13,162,231,0.08)' }}>
-              <span className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: P }} />
-              <span className="text-[11px] font-bold uppercase tracking-[0.2em]" style={{ color: P }}>System Online</span>
-            </div>
-            <h2 className="text-5xl md:text-7xl font-bold tracking-tighter text-transparent bg-clip-text" style={{ backgroundImage: 'linear-gradient(to bottom,#fff,rgba(255,255,255,0.55))' }}>
-              LET&apos;S BUILD<br className="hidden md:block" /> THE FUTURE
-            </h2>
+  return (
+    <>
+      <style>{KF}</style>
+
+      <section
+        id="connect"
+        className="relative isolate overflow-hidden text-white"
+        style={{ backgroundColor: '#0a0b10' }}
+      >
+
+        {/* ── Background: LightRays + overlays ── */}
+        <div className="absolute inset-0 z-0 pointer-events-none">
+
+          {/* LightRays canvas */}
+          <div className="absolute inset-0 pointer-events-auto" style={{ opacity: 0.85 }}>
+            <LightRays
+              raysOrigin="top-center"
+              raysColor="#ffffff"
+              raysSpeed={1}
+              lightSpread={0.5}
+              rayLength={3}
+              followMouse={true}
+              mouseInfluence={0.1}
+              noiseAmount={0}
+              distortion={0}
+              pulsating={false}
+              fadeDistance={1}
+              saturation={1}
+            />
           </div>
 
-          {/* Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 max-w-6xl mx-auto w-full">
-            {/* Left */}
-            <div className="lg:col-span-5 flex flex-col justify-between gap-10">
-              <div className="space-y-6">
-                <div>
-                  <p className="text-[#315768] text-xs font-bold tracking-widest uppercase mb-2">Status</p>
-                  <p className="text-lg text-slate-300 font-light leading-relaxed">Currently available for freelance projects and open to full-time opportunities.</p>
-                </div>
-                <div>
-                  <p className="text-[#315768] text-xs font-bold tracking-widest uppercase mb-2">Communicate</p>
-                  <a href="mailto:kushpandit68775@gmail.com" className="group block w-fit">
-                    <p className="text-xl md:text-2xl font-bold text-white group-hover:text-[#0da2e7] transition-colors duration-300 break-all">kushpandit68775@gmail.com</p>
-                    <div className="h-0.5 w-0 bg-[#0da2e7] group-hover:w-full transition-all duration-500 mt-1" />
-                  </a>
+          {/* Dark overlay — keeps text readable */}
+          <div className="absolute inset-0" style={{ background: 'rgba(10,11,16,0.6)' }} />
+
+          {/* Top radial — brightens around the ray source */}
+          <div
+            className="absolute top-0 left-0 right-0 h-[55%] pointer-events-none"
+            style={{ background: 'radial-gradient(ellipse 60% 50% at 50% 0%, rgba(255,255,255,0.05) 0%, transparent 100%)' }}
+          />
+
+          {/* Bottom vignette */}
+          <div
+            className="absolute bottom-0 left-0 right-0 h-64 pointer-events-none"
+            style={{ background: 'linear-gradient(to top, #0a0b10, transparent)' }}
+          />
+
+          {/* Subtle animated beam lines */}
+          {[25, 50, 75].map(x => (
+            <div
+              key={x}
+              className="conn-beam absolute top-0 bottom-0 pointer-events-none"
+              style={{
+                left: `${x}%`,
+                width: '1px',
+                background: `linear-gradient(to bottom, rgba(255,255,255,0.08), transparent)`,
+                animationDelay: `${x * 0.02}s`,
+              }}
+            />
+          ))}
+        </div>
+
+        {/* ════════════════════════════════════════
+            MAIN CONTENT
+        ════════════════════════════════════════ */}
+        <main className="relative z-10 min-h-screen flex flex-col justify-center max-w-[1300px] mx-auto w-full px-6 md:px-10 py-20 md:py-28">
+
+          {/* ── Header ── */}
+          <div className="conn-a1 flex flex-col items-center text-center mb-16 md:mb-20">
+
+            {/* Status badge */}
+            <div
+              className="inline-flex items-center gap-[10px] rounded-full px-5 py-[9px] mb-8 border"
+              style={{ background: 'rgba(255,255,255,0.05)', borderColor: 'rgba(255,255,255,0.12)' }}
+            >
+              <span className="conn-pulse block w-[7px] h-[7px] rounded-full bg-white shrink-0" />
+              <span className="text-white/70 uppercase tracking-[0.2em]" style={{ ...fMono, fontSize: '9.5px' }}>
+                System Online · Available for Work
+              </span>
+            </div>
+
+            {/* Giant Bebas headline */}
+            <div className="relative">
+              {/* Ghost watermark */}
+              <div
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none whitespace-nowrap"
+                style={{ ...fBebas, fontSize: 'clamp(80px,16vw,180px)', color: 'rgba(255,255,255,0.03)', letterSpacing: '0.1em', lineHeight: 1 }}
+              >
+                CONNECT
+              </div>
+
+              <h2
+                className="relative leading-[0.88] tracking-[0.03em]"
+                style={{ ...fBebas, fontSize: 'clamp(3.5rem,10vw,8.5rem)' }}
+              >
+                <span className="block text-white">LET&apos;S</span>
+                <span
+                  className="block bg-clip-text text-transparent"
+                  style={{ backgroundImage: 'linear-gradient(130deg, #fff 0%, rgba(255,255,255,0.55) 100%)' }}
+                >
+                  BUILD THE
+                </span>
+                <span
+                  className="block bg-clip-text text-transparent"
+                  style={{ backgroundImage: 'linear-gradient(130deg, rgba(255,255,255,0.9) 0%, rgba(180,190,220,0.6) 100%)', WebkitTextStroke: '1px rgba(255,255,255,0.12)' }}
+                >
+                  FUTURE
+                </span>
+              </h2>
+            </div>
+
+            {/* Divider */}
+            <div
+              className="conn-divider mt-8 max-w-xs w-full rounded-sm"
+              style={{ height: '1px', background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent)' }}
+            />
+
+            {/* Sub text */}
+            <p
+              className="mt-6 text-white/35 max-w-[460px] leading-[1.8]"
+              style={{ ...fDM, fontWeight: 300, fontStyle: 'italic', fontSize: 'clamp(13px,1.8vw,16px)' }}
+            >
+              Currently open for freelance projects &amp; full-time roles.{' '}
+              <span className="not-italic font-medium text-white/60">Let&apos;s create something remarkable together.</span>
+            </p>
+          </div>
+
+          {/* ── Two-column grid ── */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 max-w-[1100px] mx-auto w-full">
+
+            {/* ── LEFT: Info ── */}
+            <div className="lg:col-span-5 flex flex-col justify-between gap-10 conn-a2">
+
+              {/* Email block */}
+              <div>
+                <p
+                  className="text-white/30 uppercase tracking-[0.2em] mb-2"
+                  style={{ ...fMono, fontSize: '9px' }}
+                >
+                  Direct line
+                </p>
+                <a
+                  href="mailto:kushpandit68775@gmail.com"
+                  className="group block w-fit no-underline"
+                >
+                  <p
+                    className="text-white transition-all duration-300 group-hover:text-white/80 break-all"
+                    style={{ ...fSyne, fontSize: 'clamp(15px,2.5vw,21px)', fontWeight: 700 }}
+                  >
+                    kushpandit68775@gmail.com
+                  </p>
+                  {/* Underline grow */}
+                  <div
+                    className="h-px w-0 group-hover:w-full transition-all duration-500 mt-[3px] rounded-sm"
+                    style={{ background: 'linear-gradient(90deg, rgba(255,255,255,0.6), transparent)' }}
+                  />
+                </a>
+              </div>
+
+              {/* Location */}
+              <div>
+                <p
+                  className="text-white/30 uppercase tracking-[0.2em] mb-2"
+                  style={{ ...fMono, fontSize: '9px' }}
+                >
+                  Based in
+                </p>
+                <div className="flex items-center gap-2">
+                  <span className="material-symbols-outlined text-white/50 text-[18px]">location_on</span>
+                  <span className="text-white/70" style={{ ...fSyne, fontSize: '15px', fontWeight: 600 }}>
+                    Gandhidham, Gujarat, IN
+                  </span>
                 </div>
               </div>
+
+              {/* Social links */}
               <div>
-                <p className="text-[#315768] text-xs font-bold tracking-widest uppercase mb-4">Network</p>
-                <div className="flex flex-wrap gap-3">
-                  {SOCIALS.map(({ href, icon, title }) => (
-                    <a key={title} href={href} target="_blank" rel="noopener noreferrer" title={title}
-                      className="group flex items-center justify-center w-13 h-13 rounded-xl border transition-all duration-300 hover:-translate-y-1 hover:border-[#0da2e7] hover:shadow-[0_0_14px_rgba(13,162,231,0.5)]"
-                      style={{ backgroundColor: '#182b34', borderColor: '#315768', width: '52px', height: '52px' }}>
-                      <span className="material-symbols-outlined text-white group-hover:text-[#0da2e7] transition-colors text-xl">{icon}</span>
+                <p
+                  className="text-white/30 uppercase tracking-[0.2em] mb-5"
+                  style={{ ...fMono, fontSize: '9px' }}
+                >
+                  Network
+                </p>
+
+                <div className="flex flex-col gap-3">
+                  {SOCIALS.map(({ href, icon, title, sub }) => (
+                    <a
+                      key={title}
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={[
+                        'group relative flex items-center gap-4 rounded-[13px] px-4 py-3 no-underline overflow-hidden',
+                        'border border-white/[0.06] bg-white/[0.025] backdrop-blur-sm',
+                        'transition-all duration-300',
+                        'hover:border-white/[0.18] hover:bg-white/[0.05]',
+                        'hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.4)]',
+                      ].join(' ')}
+                    >
+                      {/* shimmer */}
+                      <div className="conn-shimmer absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.04] to-transparent opacity-0 group-hover:opacity-100 pointer-events-none" />
+
+                      <div
+                        className="w-9 h-9 rounded-[9px] flex items-center justify-center shrink-0 transition-all duration-300 group-hover:bg-white/[0.12]"
+                        style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}
+                      >
+                        <span className="material-symbols-outlined text-white/50 group-hover:text-white transition-colors duration-300 text-[18px]">{icon}</span>
+                      </div>
+
+                      <div className="flex-1 min-w-0">
+                        <p
+                          className="text-white/80 group-hover:text-white transition-colors duration-300 leading-none mb-[3px]"
+                          style={{ ...fSyne, fontSize: '13px', fontWeight: 700 }}
+                        >
+                          {title}
+                        </p>
+                        <p
+                          className="text-white/30 truncate"
+                          style={{ ...fMono, fontSize: '9.5px', letterSpacing: '0.06em' }}
+                        >
+                          {sub}
+                        </p>
+                      </div>
+
+                      <span className="material-symbols-outlined text-white/20 group-hover:text-white/50 transition-all duration-300 group-hover:translate-x-0.5 text-[16px]">
+                        arrow_outward
+                      </span>
                     </a>
                   ))}
                 </div>
               </div>
             </div>
 
-            {/* Right — Form */}
-            <div className="lg:col-span-7">
-              <div className="rounded-2xl border border-white/5 p-6 md:p-8 relative overflow-hidden" style={{ backgroundColor: 'rgba(24,43,52,0.65)', backdropFilter: 'blur(18px)' }}>
-                <div className="absolute top-0 right-0 p-4 opacity-10 pointer-events-none">
-                  <span className="material-symbols-outlined text-6xl" style={{ color: P }}>forward_to_inbox</span>
+            {/* ── RIGHT: Form ── */}
+            <div className="lg:col-span-7 conn-a3">
+              <div
+                className="relative rounded-2xl overflow-hidden"
+                style={{
+                  background: 'rgba(255,255,255,0.035)',
+                  border: '1px solid rgba(255,255,255,0.09)',
+                  backdropFilter: 'blur(20px)',
+                  boxShadow: '0 24px 80px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.06)',
+                }}
+              >
+                {/* Top accent bar */}
+                <div
+                  className="absolute top-0 left-0 right-0 h-[1.5px] rounded-t-2xl"
+                  style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.4), rgba(255,255,255,0.2), transparent)' }}
+                />
+
+                {/* Spotlight corner glow */}
+                <div
+                  className="absolute -top-12 left-1/2 -translate-x-1/2 w-72 h-28 rounded-full blur-[60px] pointer-events-none"
+                  style={{ background: 'rgba(255,255,255,0.07)' }}
+                />
+
+                {/* Decorative icon */}
+                <div className="absolute top-5 right-6 opacity-[0.06] pointer-events-none">
+                  <span className="material-symbols-outlined text-white" style={{ fontSize: '64px' }}>forward_to_inbox</span>
                 </div>
-                <form ref={formRef} onSubmit={handleSubmit} className="space-y-5 relative z-10">
-                  {state.succeeded && (
-                    <div className="p-4 rounded-xl border text-sm font-medium" style={{ backgroundColor: 'rgba(13,162,231,0.08)', borderColor: 'rgba(13,162,231,0.2)', color: P }}>
-                      ✓ Thanks! Your message has been sent.
-                    </div>
-                  )}
-                  {state.errors && Array.isArray(state.errors) && state.errors.length > 0 && (
-                    <div className="p-3 rounded-xl border border-red-600/40 text-red-300 text-sm bg-red-900/15">
-                      {state.errors.map((e, i) => <div key={i}>{e.message || 'Submission failed. Please try again.'}</div>)}
-                    </div>
-                  )}
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="flex flex-col gap-1.5">
-                      <label className="text-slate-400 text-xs font-semibold ml-0.5">Name</label>
-                      <input type="text" name="name" placeholder="Your name" disabled={state.submitting || state.succeeded}
-                        className="w-full rounded-xl border text-white placeholder-slate-600 focus:border-[#0da2e7] focus:ring-1 focus:ring-[#0da2e7] h-12 px-4 outline-none transition-all text-sm"
-                        style={{ backgroundColor: '#0e1c24', borderColor: '#315768' }} />
-                      <ValidationError prefix="Name" field="name" errors={state.errors} />
-                    </div>
-                    <div className="flex flex-col gap-1.5">
-                      <label className="text-slate-400 text-xs font-semibold ml-0.5">Email</label>
-                      <input type="email" name="email" placeholder="your@email.com" disabled={state.submitting || state.succeeded}
-                        className="w-full rounded-xl border text-white placeholder-slate-600 focus:border-[#0da2e7] focus:ring-1 focus:ring-[#0da2e7] h-12 px-4 outline-none transition-all text-sm"
-                        style={{ backgroundColor: '#0e1c24', borderColor: '#315768' }} />
-                      <ValidationError prefix="Email" field="email" errors={state.errors} />
-                    </div>
+                <div className="relative z-10 p-7 md:p-9">
+
+                  {/* Form header */}
+                  <div className="mb-7">
+                    <p
+                      className="text-white/30 uppercase tracking-[0.2em] mb-2"
+                      style={{ ...fMono, fontSize: '9px' }}
+                    >
+                      Initialize Transmission
+                    </p>
+                    <h3
+                      className="text-white leading-tight"
+                      style={{ ...fSyne, fontSize: 'clamp(20px,3vw,26px)', fontWeight: 800 }}
+                    >
+                      Send a Message
+                    </h3>
                   </div>
 
-                  <div className="flex flex-col gap-1.5">
-                    <label className="text-slate-400 text-xs font-semibold ml-0.5">Message</label>
-                    <textarea name="message" placeholder="Tell me about your project..." disabled={state.submitting || state.succeeded} rows={5}
-                      className="w-full rounded-xl border text-white placeholder-slate-600 focus:border-[#0da2e7] focus:ring-1 focus:ring-[#0da2e7] p-4 resize-none outline-none transition-all bg-grid-pattern text-sm"
-                      style={{ backgroundColor: '#0e1c24', borderColor: '#315768' }} />
-                    <ValidationError prefix="Message" field="message" errors={state.errors} />
-                  </div>
+                  <form ref={formRef} onSubmit={handleSubmit} className="space-y-5">
 
-                  <button type="submit" disabled={state.submitting || state.succeeded} aria-busy={state.submitting}
-                    className="group relative w-full overflow-hidden rounded-xl font-bold text-white h-12 transition-all hover:shadow-[0_0_24px_rgba(13,162,231,0.5)] active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed"
-                    style={{ backgroundColor: P }}>
-                    <span className="relative z-10 flex items-center justify-center gap-2 text-sm">
-                      {state.submitting ? 'Sending…' : state.succeeded ? '✓ Sent!' : 'Initialize Transmission'}
-                      {!state.succeeded && <span className="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">send</span>}
-                    </span>
-                    <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/15 to-transparent group-hover:animate-[shimmer_1.5s_infinite]" />
-                  </button>
-                </form>
+                    {/* Success */}
+                    {state.succeeded && (
+                      <div
+                        className="p-4 rounded-xl flex items-center gap-3"
+                        style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.15)' }}
+                      >
+                        <span className="material-symbols-outlined text-white text-[20px]">check_circle</span>
+                        <span className="text-white/80" style={{ ...fSyne, fontSize: '13px', fontWeight: 600 }}>
+                          Message sent! I'll get back to you soon.
+                        </span>
+                      </div>
+                    )}
+
+                    {/* Error */}
+                    {state.errors && Array.isArray(state.errors) && state.errors.length > 0 && (
+                      <div className="p-4 rounded-xl border border-red-500/30 bg-red-900/15 text-red-300" style={{ ...fMono, fontSize: '12px' }}>
+                        {state.errors.map((e, i) => <div key={i}>{e.message || 'Submission failed. Please try again.'}</div>)}
+                      </div>
+                    )}
+
+                    {/* Name + Email */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {[
+                        { label: 'Name',  name: 'name',  type: 'text',  placeholder: 'Your name',      field: 'Name'  },
+                        { label: 'Email', name: 'email', type: 'email', placeholder: 'your@email.com', field: 'Email' },
+                      ].map(f => (
+                        <div key={f.name} className="flex flex-col gap-[6px]">
+                          <label
+                            className="text-white/35 uppercase tracking-[0.14em] ml-[2px]"
+                            style={{ ...fMono, fontSize: '8.5px' }}
+                          >
+                            {f.label}
+                          </label>
+                          <input
+                            type={f.type}
+                            name={f.name}
+                            placeholder={f.placeholder}
+                            disabled={state.submitting || state.succeeded}
+                            className="conn-input w-full h-12 px-4 rounded-xl text-white transition-all duration-300 disabled:opacity-50"
+                            style={{
+                              ...fDM,
+                              fontSize: '14px',
+                              background: 'rgba(255,255,255,0.04)',
+                              border: '1px solid rgba(255,255,255,0.1)',
+                            }}
+                          />
+                          <ValidationError prefix={f.field} field={f.name} errors={state.errors} />
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Message */}
+                    <div className="flex flex-col gap-[6px]">
+                      <label
+                        className="text-white/35 uppercase tracking-[0.14em] ml-[2px]"
+                        style={{ ...fMono, fontSize: '8.5px' }}
+                      >
+                        Message
+                      </label>
+                      <textarea
+                        name="message"
+                        placeholder="Tell me about your project…"
+                        disabled={state.submitting || state.succeeded}
+                        rows={5}
+                        className="conn-input w-full p-4 rounded-xl text-white resize-none transition-all duration-300 disabled:opacity-50"
+                        style={{
+                          ...fDM,
+                          fontSize: '14px',
+                          background: 'rgba(255,255,255,0.04)',
+                          border: '1px solid rgba(255,255,255,0.1)',
+                        }}
+                      />
+                      <ValidationError prefix="Message" field="message" errors={state.errors} />
+                    </div>
+
+                    {/* Submit */}
+                    <button
+                      type="submit"
+                      disabled={state.submitting || state.succeeded}
+                      className={[
+                        'group relative w-full overflow-hidden rounded-xl text-black font-bold',
+                        'h-[52px] transition-all duration-300',
+                        'hover:-translate-y-[2px]',
+                        'hover:shadow-[0_12px_40px_rgba(255,255,255,0.18)]',
+                        'active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed',
+                      ].join(' ')}
+                      style={{ background: 'linear-gradient(135deg, #ffffff 0%, #d0d8f0 100%)' }}
+                    >
+                      {/* shimmer */}
+                      <div className="conn-shimmer absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent opacity-0 group-hover:opacity-100 pointer-events-none" />
+
+                      <span
+                        className="relative z-10 flex items-center justify-center gap-[9px] text-black/80"
+                        style={{ ...fSyne, fontSize: '11px', fontWeight: 800, letterSpacing: '0.14em', textTransform: 'uppercase' }}
+                      >
+                        {state.submitting ? (
+                          'Sending…'
+                        ) : state.succeeded ? (
+                          <>
+                            <span className="material-symbols-outlined text-[17px]">check_circle</span>
+                            Message Sent!
+                          </>
+                        ) : (
+                          <>
+                            <span className="material-symbols-outlined text-[17px] group-hover:translate-x-0.5 transition-transform duration-300">send</span>
+                            Initialize Transmission
+                          </>
+                        )}
+                      </span>
+                    </button>
+
+                  </form>
+                </div>
               </div>
             </div>
           </div>
         </main>
 
-        {/* Footer */}
-        <footer className="relative z-20 border-t border-white/5" style={{ backgroundColor: 'rgba(16,28,34,0.8)', backdropFilter: 'blur(10px)' }}>
-          <div className="max-w-7xl mx-auto px-5 py-7">
-            <div className="flex flex-col md:flex-row justify-between items-center gap-5 text-xs text-slate-500 font-mono">
-              <p>© 2025 Designed &amp; Built by <span className="text-slate-400 font-semibold">Kush Pandit</span></p>
-              {/* Footer nav */}
-              <div className="flex flex-wrap justify-center gap-x-4 gap-y-1">
+        {/* ════════════════════════════════════════
+            FOOTER
+        ════════════════════════════════════════ */}
+        <footer
+          className="relative z-10"
+          style={{ borderTop: '1px solid rgba(255,255,255,0.05)', background: 'rgba(10,11,16,0.85)', backdropFilter: 'blur(16px)' }}
+        >
+          <div className="max-w-[1300px] mx-auto px-6 py-7">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-5">
+
+              {/* Left: copyright */}
+              <p
+                className="text-white/25"
+                style={{ ...fMono, fontSize: '10px', letterSpacing: '0.06em' }}
+              >
+                © 2025{' '}
+                <span className="text-white/50">Designed &amp; Built by Kush Pandit</span>
+              </p>
+
+              {/* Center: nav links */}
+              <div className="flex flex-wrap justify-center gap-x-5 gap-y-1">
                 {NAV_LINKS.map(({ href, label }) => (
-                  <a key={href} href={href} className="hover:text-[#0da2e7] transition-colors">{label}</a>
+                  <a
+                    key={href}
+                    href={href}
+                    className="text-white/25 hover:text-white/70 transition-colors duration-200 no-underline"
+                    style={{ ...fMono, fontSize: '9.5px', letterSpacing: '0.07em' }}
+                  >
+                    {label}
+                  </a>
                 ))}
               </div>
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg" style={{ backgroundColor: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.05)' }}>
-                  <span className="material-symbols-outlined text-[#0da2e7] text-sm">location_on</span>
-                  <span>Gandhidham, Gujarat</span>
+
+              {/* Right: location + top */}
+              <div className="flex items-center gap-3">
+                <div
+                  className="flex items-center gap-[6px] px-3 py-[7px] rounded-[9px]"
+                  style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)' }}
+                >
+                  <span className="material-symbols-outlined text-white/40 text-[15px]">location_on</span>
+                  <span className="text-white/35" style={{ ...fMono, fontSize: '9.5px', letterSpacing: '0.06em' }}>Gandhidham, GJ</span>
                 </div>
-                <a href="#hero">
-                  <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg cursor-pointer hover:border-[#0da2e7]/30 transition-all" style={{ backgroundColor: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.05)' }}>
-                    <span className="material-symbols-outlined text-[#0da2e7] text-sm">arrow_upward</span>
-                    <span>Top</span>
-                  </div>
+
+                <a
+                  href="#hero"
+                  className={[
+                    'flex items-center gap-[6px] px-3 py-[7px] rounded-[9px] no-underline',
+                    'transition-all duration-300',
+                    'hover:bg-white/[0.08] hover:border-white/20',
+                    'hover:-translate-y-0.5',
+                  ].join(' ')}
+                  style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)' }}
+                >
+                  <span className="material-symbols-outlined text-white/40 text-[15px]">arrow_upward</span>
+                  <span className="text-white/35" style={{ ...fMono, fontSize: '9.5px', letterSpacing: '0.06em' }}>Top</span>
                 </a>
               </div>
             </div>
           </div>
         </footer>
-      </div>
-    </section>
+
+      </section>
+    </>
   );
 }
