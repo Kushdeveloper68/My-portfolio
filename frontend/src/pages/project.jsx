@@ -60,7 +60,7 @@ const PROJECTS = [
     img1: '/projectImage/truebuild.png',
     img2: '/projectImage/truebuild-2.png',
     tags: ['React.js', 'Node.js', 'MongoDB', 'Tailwind CSS'],
-    link: 'https://github.com/Kushdeveloper68/worker-project',
+    link: 'https://github.com/Kushdeveloper68/apex-web',
     year: '2026',
     color: '#c084fc',
   },
