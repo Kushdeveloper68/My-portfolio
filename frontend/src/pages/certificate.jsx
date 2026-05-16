@@ -89,41 +89,7 @@ const CERTS = [
 ];
 
 /* ─── Keyframes — the ONLY css in this file ─────────────── */
-const KF = `
-  @keyframes certFadeUp {
-    from { opacity:0; transform:translateY(32px); }
-    to   { opacity:1; transform:translateY(0);    }
-  }
-  @keyframes certLineGrow {
-    from { transform:scaleX(0); }
-    to   { transform:scaleX(1); }
-  }
-  @keyframes certPulse {
-    0%,100% { opacity:0.6; transform:scale(1);   }
-    50%     { opacity:1;   transform:scale(1.18); }
-  }
-  @keyframes certFloat {
-    0%,100% { transform:translateY(0); }
-    50%     { transform:translateY(-10px); }
-  }
-  @keyframes certOrbit {
-    from { transform:rotate(0deg) translateX(44px) rotate(0deg); }
-    to   { transform:rotate(360deg) translateX(44px) rotate(-360deg); }
-  }
-  @keyframes certShimmer {
-    0%   { transform:translateX(-100%); }
-    100% { transform:translateX(200%);  }
-  }
 
-  .cert-a1 { animation: certFadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.05s both; }
-  .cert-a2 { animation: certFadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.15s both; }
-  .cert-a3 { animation: certFadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.25s both; }
-  .cert-float  { animation: certFloat  5s ease-in-out infinite; }
-  .cert-pulse  { animation: certPulse  2.4s ease infinite; }
-  .cert-orbit  { animation: certOrbit  8s linear infinite; }
-  .cert-shimmer{ animation: certShimmer 2.2s ease-in-out infinite; }
-  .cert-line-grow { animation: certLineGrow 0.9s cubic-bezier(0.22,1,0.36,1) 0.3s both; transform-origin: left; }
-`;
 
 /* ─── Individual Card ────────────────────────────────────── */
 function CertCard({ num, icon, iconBg, iconIsSymbol, isImg, accent, accentRgb, category, title, desc, issuer, date, href }) {
@@ -262,12 +228,12 @@ export default function CertificatesPage() {
 
   return (
     <>
-      <style>{KF}</style>
+      
 
       <section
         id="certificate"
         className="relative isolate z-0 overflow-hidden min-h-screen"
-        style={{ backgroundColor: '#07080f', color: '#fff' }}
+        style={{  color: '#fff' }}
       >
 
         {/* ── Aurora background ── */}

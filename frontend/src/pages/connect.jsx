@@ -89,7 +89,7 @@ export default function ConnectPage() {
       <section
         id="connect"
         className="relative isolate z-0 overflow-hidden text-white"
-        style={{ backgroundColor: '#0a0b10' }}
+        
       >
 
         {/* ── Background: LightRays + overlays ── */}

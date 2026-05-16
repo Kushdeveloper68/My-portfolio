@@ -72,7 +72,7 @@ export default function ServicesPage() {
   return (
     <>
   
-      <section id="services" ref={sectionRef} style={{ backgroundColor: '#0b1720', color: '#fff', position: 'relative', zIndex: 0, overflow: 'hidden' }}>
+      <section id="services" ref={sectionRef} style={{ color: '#fff', position: 'relative', zIndex: 0, overflow: 'hidden' }}>
 
         {/* FloatingLines bg — elegant flowing waves perfect for services */}
         <div className="absolute inset-0 z-0 pointer-events-none" style={{ opacity: 0.55 }}>
@@ -95,9 +95,7 @@ export default function ServicesPage() {
         <div className="srv-grid-bg absolute inset-0 pointer-events-none z-[1]" style={{ opacity: 0.6 }} />
 
         {/* Dark vignette so text pops */}
-        <div className="absolute inset-0 z-[2] pointer-events-none"
-          style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(11,23,32,0.4) 0%, rgba(11,23,32,0.85) 70%)' }} />
-
+      
         {/* Ambient glows */}
         <div className="absolute top-0 left-0 w-[420px] h-[320px] pointer-events-none z-[2]"
           style={{ background: 'radial-gradient(ellipse at 0% 0%, rgba(229,69,245,0.06) 0%, transparent 65%)' }} />

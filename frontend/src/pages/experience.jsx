@@ -107,7 +107,7 @@ export default function Experience() {
       <section
         id="experience"
         ref={sectionRef}
-        style={{ backgroundColor: '#101c22', color: '#fff', position: 'relative', zIndex: 0, overflow: 'hidden', minHeight: '100vh' }}
+        style={{  color: '#fff', position: 'relative', zIndex: 0, overflow: 'hidden', minHeight: '100vh' }}
       >
         {/* SplashCursor bg */}
         <div className="absolute inset-0 pointer-events-none z-0 opacity-55">

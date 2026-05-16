@@ -298,7 +298,7 @@ export default function SkillsPage() {
         {/* ═══════════════════════════════════════
             CAPABILITIES
         ═══════════════════════════════════════ */}
-        <div className="kds-alt-bg relative z-10 py-20 px-6 md:px-12">
+        <div className="kds-alt-bg relative z-10 py-20 px-6 md:px-12 bg-transparent">
           <div className="kds-divider mb-12" />
           <div className="max-w-[1200px] mx-auto">
 

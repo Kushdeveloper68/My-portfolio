@@ -69,7 +69,7 @@ export default function PricingPage() {
   const [yearly, setYearly] = useState(false);
 
   return (
-    <section id="pricing" style={{ backgroundColor: '#080f16', color: '#fff', position: 'relative', zIndex: 0, fontFamily: '"Space Grotesk", sans-serif' }}>
+    <section id="pricing" style={{  color: '#fff', position: 'relative', zIndex: 0, fontFamily: '"Space Grotesk", sans-serif' }}>
       <div className="relative overflow-hidden py-24 md:py-32">
         {/* Background */}
         <div className="absolute inset-0 pointer-events-none">
