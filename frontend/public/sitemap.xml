@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <url>
+    <loc>https://kushdeveloper.me/</loc>
+    <priority>1.0</priority>
+  </url>
+
+  <url>
+    <loc>https://kushdeveloper.me/#about</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://kushdeveloper.me/#skill</loc>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://kushdeveloper.me/#services</loc>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://kushdeveloper.me/#project</loc>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://kushdeveloper.me/#experience</loc>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>https://kushdeveloper.me/#connect</loc>
+    <priority>0.2</priority>
+  </url>
+
+</urlset>
