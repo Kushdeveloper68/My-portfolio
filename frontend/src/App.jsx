@@ -8,8 +8,43 @@ import CertificatesPage from './pages/certificate';
 import TestimonialsPage from './pages/testimonials';
 import PricingPage from './pages/pricing';
 import ConnectPage from './pages/connect';
+import { useEffect } from 'react';
+import Lenis from 'lenis';
+import  gsap  from 'gsap';
 
 function App() {
+  useEffect(() => {
+
+    // LENIS INIT
+    const lenis = new Lenis({
+      duration: 1.2,
+      smoothWheel: true,
+      wheelMultiplier: 1,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    });
+
+    // RAF LOOP
+    function update(time) {
+      lenis.raf(time);
+      requestAnimationFrame(update);
+    }
+
+    requestAnimationFrame(update);
+
+    // GSAP SYNC
+    lenis.on("scroll", () => {
+      gsap.ticker.tick();
+    });
+
+    gsap.ticker.lagSmoothing(0);
+
+    // CLEANUP
+    return () => {
+      lenis.destroy();
+    };
+
+  }, []);
+
   return (
     <>
       <Hero />

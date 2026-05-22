@@ -3,7 +3,7 @@
 /* ===== BASE ===== */
 html,
 body {
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
   width: 100%;
   overflow-x: hidden;
   background: #000;
