@@ -114,13 +114,9 @@ export default function Hero() {
             <a href="#hero" className="flex items-center gap-[11px] no-underline">
               <div
                 className="w-10 h-10 rounded-[11px] flex items-center justify-center shrink-0"
-                style={{
-                  background: "linear-gradient(135deg,rgba(107,47,255,0.22),rgba(232,74,240,0.14))",
-                  border: "1px solid rgba(107,47,255,0.32)",
-                  boxShadow: "0 0 22px rgba(107,47,255,0.22),inset 0 1px 0 rgba(255,255,255,0.08)",
-                }}
+                
               >
-                <span className="material-symbols-outlined text-[#c49bff] text-[19px]">code_blocks</span>
+               <img src="/heroback.jpg" alt="" />
               </div>
               <div>
                 <div
@@ -222,9 +218,9 @@ export default function Hero() {
             <div className="flex items-center gap-[10px]">
               <div
                 className="w-[34px] h-[34px] rounded-[9px] flex items-center justify-center"
-                style={{ background: "rgba(107,47,255,0.18)", border: "1px solid rgba(107,47,255,0.3)" }}
+                
               >
-                <span className="material-symbols-outlined text-[#c49bff] text-[17px]">code_blocks</span>
+<img src="/heroback.jpg" alt="" />
               </div>
               <div className="tracking-[0.08em]" style={{ ...fBebas, fontSize: "22px" }}>KUSH</div>
             </div>
