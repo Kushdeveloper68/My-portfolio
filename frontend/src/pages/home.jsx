@@ -139,7 +139,7 @@ export default function Hero() {
             </a>
 
             {/* Desktop nav */}
-            <nav className="hidden md:flex items-center gap-7">
+            <nav className="hidden md:flex items-center gap-7" aria-label="Main navigation">
               {NAV_LINKS.map(({ href, label }) => (
                 <a
                   key={href}
@@ -214,6 +214,8 @@ export default function Hero() {
             background: "rgba(4,0,12,0.97)",
             transform: mobileOpen ? "translateX(0)" : "translateX(100%)",
           }}
+           aria-label="Mobile navigation"
+  aria-hidden={!mobileOpen}
         >
           {/* Panel header */}
           <div className="flex items-center justify-between px-[18px] py-[18px] border-b border-white/5">

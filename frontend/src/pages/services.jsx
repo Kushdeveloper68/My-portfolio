@@ -56,6 +56,18 @@ const SERVICES = [
 
 export default function ServicesPage() {
   const sectionRef = useRef(null);
+  const [floatVisible, setFloatVisible] = useState(false);
+
+useEffect(() => {
+  const el = sectionRef.current;
+  if (!el) return;
+  const io = new IntersectionObserver(
+    ([entry]) => { setFloatVisible(entry.isIntersecting); },
+    { threshold: 0.05 }
+  );
+  io.observe(el);
+  return () => io.disconnect();
+}, []);
   const [hovered, setHovered] = useState(null);
 
   useEffect(() => {
@@ -76,20 +88,22 @@ export default function ServicesPage() {
 
         {/* FloatingLines bg — elegant flowing waves perfect for services */}
         <div className="absolute inset-0 z-0 pointer-events-none" style={{ opacity: 0.55 }}>
-          <FloatingLines
-            enabledWaves={["top", "middle", "bottom"]}
-            lineCount={8}
-            lineDistance={8}
-            bendRadius={8}
-            bendStrength={-2}
-            interactive={false}
-            parallax={false}
-            animationSpeed={0.8}
-            gradientStart="#e945f5"
+  {floatVisible && (
+    <FloatingLines
+      enabledWaves={["top", "middle", "bottom"]}
+      lineCount={8}
+      lineDistance={8}
+      bendRadius={8}
+      bendStrength={-2}
+      interactive={false}
+      parallax={false}
+      animationSpeed={0.8}
+       gradientStart="#e945f5"
             gradientMid="#0da2e7"
             gradientEnd="#6a6a6a"
-          />
-        </div>
+    />
+  )}
+</div>
 
         {/* Grid overlay */}
         <div className="srv-grid-bg absolute inset-0 pointer-events-none z-[1]" style={{ opacity: 0.6 }} />
@@ -121,12 +135,12 @@ export default function ServicesPage() {
 
             <div className="flex flex-col lg:flex-row lg:items-end gap-8 lg:gap-16">
               <div data-reveal data-delay="100">
-                <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 'clamp(4rem, 8vw, 6.5rem)', lineHeight: 0.92, letterSpacing: '0.04em', color: '#fff' }}>
+                <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 'clamp(4rem, 8vw, 6.5rem)', lineHeight: 0.92, letterSpacing: '0.04em', color: '#fff' }}>
                   Services &amp;
-                </div>
-                <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 'clamp(4rem, 8vw, 6.5rem)', lineHeight: 0.92, letterSpacing: '0.04em', WebkitTextStroke: '1.5px rgba(255,255,255,0.2)', color: 'transparent' }}>
+                </h2>
+                <p style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 'clamp(4rem, 8vw, 6.5rem)', lineHeight: 0.92, letterSpacing: '0.04em', WebkitTextStroke: '1.5px rgba(255,255,255,0.2)', color: 'transparent' }}>
                   Expertise
-                </div>
+                </p>
               </div>
               <div data-reveal data-delay="200" className="lg:mb-3 max-w-sm">
                 <p style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 300, fontSize: '0.95rem', color: 'rgba(255,255,255,0.45)', lineHeight: 1.8 }}>

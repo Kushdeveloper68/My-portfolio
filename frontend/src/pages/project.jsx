@@ -106,6 +106,7 @@ export default function Projects() {
   const [active, setActive] = useState(0);
   const [hoveredCard, setHoveredCard] = useState(null);
   const sectionRef = useRef(null);
+  const [hyperspeedVisible, setHyperspeedVisible] = useState(false);
   const imgRef = useRef(null);
 
   /* Scroll reveal */
@@ -119,6 +120,21 @@ export default function Projects() {
     items.forEach(i => io.observe(i));
     return () => io.disconnect();
   }, []);
+
+  useEffect(() => {
+  const el = sectionRef.current;
+  if (!el) return;
+  const io = new IntersectionObserver(
+    ([entry]) => {
+      if (entry.isIntersecting) setHyperspeedVisible(true);
+      else setHyperspeedVisible(false);
+    },
+    { threshold: 0.05 }
+  );
+  io.observe(el);
+  return () => io.disconnect();
+}, []);
+
 
   /* Swap image on active change */
   useEffect(() => {
@@ -146,9 +162,9 @@ export default function Projects() {
         style={{ color: '#fff', position: 'relative', zIndex: 0, overflow: 'hidden' }}
       >
         {/* Hyperspeed background */}
-        <div className="absolute inset-0 z-0 pointer-events-none opacity-80">
-          <Hyperspeed />
-        </div>
+    <div className="absolute inset-0 z-0 pointer-events-none opacity-80">
+  {hyperspeedVisible && <Hyperspeed />}
+</div>
 
         {/* Grid overlay */}
         <div className="kdp-grid-bg absolute inset-0 pointer-events-none z-[1]" style={{ opacity: 0.7 }} />
@@ -180,12 +196,12 @@ export default function Projects() {
 
             <div className="flex flex-col lg:flex-row lg:items-end gap-6 lg:gap-16">
               <div data-reveal data-delay="100">
-                <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 'clamp(4.5rem, 9vw, 7.5rem)', lineHeight: 0.9, letterSpacing: '0.04em', color: '#fff' }}>
+                <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 'clamp(4.5rem, 9vw, 7.5rem)', lineHeight: 0.9, letterSpacing: '0.04em', color: '#fff' }}>
                   Selected
-                </div>
-                <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 'clamp(4.5rem, 9vw, 7.5rem)', lineHeight: 0.9, letterSpacing: '0.04em', WebkitTextStroke: '1.5px rgba(255,255,255,0.2)', color: 'transparent' }}>
+                </h2>
+                <p style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 'clamp(4.5rem, 9vw, 7.5rem)', lineHeight: 0.9, letterSpacing: '0.04em', WebkitTextStroke: '1.5px rgba(255,255,255,0.2)', color: 'transparent' }}>
                   Work
-                </div>
+                </p>
               </div>
               <div data-reveal data-delay="200" className="lg:mb-3 lg:max-w-xs">
                 <p style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 300, fontSize: '0.9rem', color: 'rgba(255,255,255,0.45)', lineHeight: 1.8 }}>
@@ -279,13 +295,14 @@ export default function Projects() {
             <div className="lg:col-span-7 relative overflow-hidden kdp-img-wrap" style={{ minHeight: '420px', backgroundColor: '#060d14' }}>
               {/* Image */}
               <img
-                ref={imgRef}
-                src={cur.img1}
-                alt={cur.title}
-                className="kdp-img absolute inset-0 w-full h-full object-cover object-top"
-                loading="lazy"
-                decoding="async"
-              />
+  ref={imgRef}
+  src={cur.img1}
+  alt={`Screenshot of ${cur.title} — ${cur.type} project`}
+  className="kdp-img absolute inset-0 w-full h-full object-cover object-top"
+  width="800"
+  height="500"
+  decoding="async"
+/>
 
               {/* Scanline */}
               <div className="kdp-scanline absolute inset-0" />
@@ -352,7 +369,15 @@ export default function Projects() {
                   transform: active === i ? 'scale(1.02)' : 'scale(1)',
                 }}
               >
-                <img src={p.img1} alt={p.title} className="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105" loading="lazy" decoding="async" />
+<img
+  src={p.img1}
+  alt={`${p.title} project thumbnail`}
+  className="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+  width="400"
+  height="225"
+  loading="lazy"
+  decoding="async"
+/>
                 <div className="absolute inset-0" style={{ background: `linear-gradient(to top, rgba(8,15,22,0.9) 0%, rgba(8,15,22,0.3) 100%)` }} />
 
                 {/* Active indicator */}

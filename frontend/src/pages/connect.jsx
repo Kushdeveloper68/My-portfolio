@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { useForm, ValidationError } from '@formspree/react';
 import LightRays from '../components/LightRays';
 
@@ -23,55 +23,25 @@ const NAV_LINKS = [
 ];
 
 /* ─── Keyframes ONLY ─────────────────────────────────────── */
-const KF = `
-  @keyframes connFadeUp {
-    from { opacity:0; transform:translateY(30px); }
-    to   { opacity:1; transform:translateY(0);    }
-  }
-  @keyframes connFadeIn {
-    from { opacity:0; }
-    to   { opacity:1; }
-  }
-  @keyframes connPulse {
-    0%,100% { box-shadow: 0 0 0 0   rgba(255,255,255,0.4); }
-    50%     { box-shadow: 0 0 0 6px rgba(255,255,255,0);   }
-  }
-  @keyframes connLineExpand {
-    from { width:0;     opacity:0; }
-    to   { width:100%;  opacity:1; }
-  }
-  @keyframes connShimmer {
-    0%   { transform:translateX(-100%); }
-    100% { transform:translateX(200%);  }
-  }
-  @keyframes connBeam {
-    0%,100% { opacity:0.06; transform:scaleY(1);    }
-    50%     { opacity:0.12; transform:scaleY(1.04); }
-  }
 
-  .conn-a1 { animation: connFadeUp 0.75s cubic-bezier(0.22,1,0.36,1) 0.05s both; }
-  .conn-a2 { animation: connFadeUp 0.75s cubic-bezier(0.22,1,0.36,1) 0.18s both; }
-  .conn-a3 { animation: connFadeUp 0.75s cubic-bezier(0.22,1,0.36,1) 0.30s both; }
-  .conn-a4 { animation: connFadeUp 0.75s cubic-bezier(0.22,1,0.36,1) 0.42s both; }
-  .conn-a5 { animation: connFadeUp 0.75s cubic-bezier(0.22,1,0.36,1) 0.54s both; }
-  .conn-pulse    { animation: connPulse     2.4s ease         infinite; }
-  .conn-shimmer  { animation: connShimmer   2.2s ease-in-out  infinite; }
-  .conn-beam     { animation: connBeam      3.5s ease-in-out  infinite; }
-  .conn-divider  { animation: connLineExpand 1s  ease          0.4s both; }
-
-  /* Input focus glow — can't do with pure Tailwind */
-  .conn-input:focus {
-    border-color: rgba(255,255,255,0.35) !important;
-    box-shadow: 0 0 0 3px rgba(255,255,255,0.07), 0 0 20px rgba(255,255,255,0.06);
-    outline: none;
-  }
-  .conn-input::placeholder { color: rgba(255,255,255,0.2); }
-`;
 
 export default function ConnectPage() {
   const [state, handleSubmit] = useForm('meoprnge');
   const formRef = useRef(null);
+  const sectionRef = useRef(null);
+const [lightVisible, setLightVisible] = useState(false);
 
+useEffect(() => {                                          // ADD
+    const el = sectionRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => { setLightVisible(entry.isIntersecting); },
+      { threshold: 0.05 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  
   useEffect(() => {
     if (state.succeeded && formRef.current) formRef.current.reset();
   }, [state.succeeded]);
@@ -84,34 +54,32 @@ export default function ConnectPage() {
 
   return (
     <>
-      <style>{KF}</style>
 
-      <section
-        id="connect"
-        className="relative isolate z-0 overflow-hidden text-white"
-        
-      >
+      <section id="connect" ref={sectionRef} className="relative isolate z-0 overflow-hidden text-white">
 
         {/* ── Background: LightRays + overlays ── */}
         <div className="absolute inset-0 z-0 pointer-events-none">
 
           {/* LightRays canvas */}
           <div className="absolute inset-0 pointer-events-auto" style={{ opacity: 0.85 }}>
-            <LightRays
-              raysOrigin="top-center"
-              raysColor="#ffffff"
-              raysSpeed={1}
-              lightSpread={0.5}
-              rayLength={3}
-              followMouse={true}
-              mouseInfluence={0.1}
-              noiseAmount={0}
-              distortion={0}
-              pulsating={false}
-              fadeDistance={1}
-              saturation={1}
-            />
-          </div>
+  {lightVisible && (
+    <LightRays
+      raysOrigin="top-center"
+      raysColor="#ffffff"
+      raysSpeed={1}
+      lightSpread={0.5}
+      rayLength={3}
+      followMouse={true}
+      mouseInfluence={0.1}
+      noiseAmount={0}
+      distortion={0}
+      pulsating={false}
+      fadeDistance={1}
+      saturation={1}
+    />
+  )}
+</div>
+
 
           {/* Dark overlay — keeps text readable */}
           <div className="absolute inset-0" style={{ background: 'rgba(10,11,16,0.6)' }} />

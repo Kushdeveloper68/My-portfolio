@@ -78,6 +78,7 @@ const EXPERIENCES = [
 
 export default function Experience() {
   const sectionRef = useRef(null);
+  const [splashVisible, setSplashVisible] = useState(false);
   const trackRef = useRef(null);
   const [active, setActive] = useState(4); // latest = active by default
   const [progress, setProgress] = useState(100);
@@ -93,6 +94,19 @@ export default function Experience() {
     items.forEach(i => io.observe(i));
     return () => io.disconnect();
   }, []);
+
+  useEffect(() => {
+  const el = sectionRef.current;
+  if (!el) return;
+  const io = new IntersectionObserver(
+    ([entry]) => {
+      setSplashVisible(entry.isIntersecting);
+    },
+    { threshold: 0.05 }
+  );
+  io.observe(el);
+  return () => io.disconnect();
+}, []);
 
   /* Progress bar based on active */
   useEffect(() => {
@@ -111,18 +125,20 @@ export default function Experience() {
       >
         {/* SplashCursor bg */}
         <div className="absolute inset-0 pointer-events-none z-0 opacity-55">
-          <SplashCursor
-            SIM_RESOLUTION={128}
-            DYE_RESOLUTION={1440}
-            DENSITY_DISSIPATION={3.5}
-            VELOCITY_DISSIPATION={2}
-            PRESSURE={0.1}
-            CURL={3}
-            SPLAT_RADIUS={0.2}
-            SPLAT_FORCE={6000}
-            COLOR_UPDATE_SPEED={10}
-          />
-        </div>
+  {splashVisible && (
+    <SplashCursor
+      SIM_RESOLUTION={128}
+      DYE_RESOLUTION={1440}
+      DENSITY_DISSIPATION={3.5}
+      VELOCITY_DISSIPATION={2}
+      PRESSURE={0.1}
+      CURL={3}
+      SPLAT_RADIUS={0.2}
+      SPLAT_FORCE={6000}
+      COLOR_UPDATE_SPEED={10}
+    />
+  )}
+</div>
 
         {/* Grid bg */}
         <div className="kde-grid absolute inset-0 pointer-events-none z-[1]" style={{ opacity: 0.6 }} />
@@ -152,12 +168,12 @@ export default function Experience() {
 
             <div className="flex flex-col lg:flex-row lg:items-end gap-6 lg:gap-16">
               <div data-reveal data-delay="100">
-                <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 'clamp(4.5rem, 9vw, 7.5rem)', lineHeight: 0.9, letterSpacing: '0.04em', color: '#fff' }}>
+                <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 'clamp(4.5rem, 9vw, 7.5rem)', lineHeight: 0.9, letterSpacing: '0.04em', color: '#fff' }}>
                   Professional
-                </div>
-                <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 'clamp(4.5rem, 9vw, 7.5rem)', lineHeight: 0.9, letterSpacing: '0.04em', WebkitTextStroke: '1.5px rgba(255,255,255,0.2)', color: 'transparent' }}>
+                </h2>
+                <p style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 'clamp(4.5rem, 9vw, 7.5rem)', lineHeight: 0.9, letterSpacing: '0.04em', WebkitTextStroke: '1.5px rgba(255,255,255,0.2)', color: 'transparent' }}>
                   Journey
-                </div>
+                </p>
               </div>
               <div data-reveal data-delay="200" className="lg:mb-3 max-w-xs">
                 <p style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 300, fontSize: '0.9rem', color: 'rgba(255,255,255,0.45)', lineHeight: 1.8 }}>

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef , useState} from 'react';
 import { Orb } from '../components';
 
 const P = '#0da2e7';
@@ -26,6 +26,19 @@ const SOCIAL = [
 
 export default function About() {
   const containerRef = useRef(null);
+  const [orbVisible, setOrbVisible] = useState(false);
+
+useEffect(() => {
+  const el = containerRef.current;
+  if (!el) return;
+  const io = new IntersectionObserver(
+    ([entry]) => { setOrbVisible(entry.isIntersecting); },
+    { threshold: 0.1 }
+  );
+  io.observe(el);
+  return () => io.disconnect();
+}, []);
+
   const cardRef = useRef(null);
   const wrapRef = useRef(null);
 
@@ -72,9 +85,9 @@ export default function About() {
       >
         {/* Grid bg */}
         {/* Orb — top right */}
-        <div className="absolute -top-16 -right-16 w-[520px] h-[520px] pointer-events-auto opacity-70">
-          <Orb hue={247} hoverIntensity={1.3} rotateOnHover forceHoverState={false} backgroundColor="#0c1a20" />
-        </div>
+<div className="absolute -top-16 -right-16 w-[520px] h-[520px] pointer-events-auto opacity-70">
+  {orbVisible && <Orb hue={247} hoverIntensity={1.3} rotateOnHover forceHoverState={false} backgroundColor="#0c1a20" />}
+</div>
 
         {/* Ambient glow bottom-left */}
         <div className="absolute bottom-0 left-0 w-[400px] h-[300px] pointer-events-none"
@@ -124,7 +137,12 @@ export default function About() {
                   }}
                 >
                   {/* Photo */}
-                  <div className="absolute inset-0 bg-cover bg-center bg-no-repeat" style={{ backgroundImage: "url('/profilepic.png')" }} />
+<div
+  className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+  style={{ backgroundImage: "url('/profilepic.png')" }}
+  role="img"
+  aria-label="Kush Pandit - Full Stack Web Developer from Gandhidham, Gujarat"
+/>
 
                   {/* Gradient overlay */}
                   <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, #0c1a20 0%, rgba(12,26,32,0.5) 45%, rgba(12,26,32,0.1) 100%)' }} />
@@ -200,13 +218,13 @@ export default function About() {
 
               {/* Headline */}
               <div data-reveal="right" data-delay="200" className="space-y-2">
-                <div className="kd-display text-[4.8rem] md:text-[6rem] lg:text-[6.5rem] text-white leading-none">
+                <h2 className="kd-display text-[4.8rem] md:text-[6rem] lg:text-[6.5rem] text-white leading-none">
                   Turning <span className="kd-gradient">Ideas</span>
-                </div>
-                <div className="kd-display text-[4.8rem] md:text-[6rem] lg:text-[6.5rem] leading-none"
+                </h2>
+                <p className="kd-display text-[4.8rem] md:text-[6rem] lg:text-[6.5rem] leading-none"
                   style={{ WebkitTextStroke: '1.5px rgba(255,255,255,0.25)', color: 'transparent' }}>
                   Into Reality
-                </div>
+                </p>
               </div>
 
               {/* Body copy */}

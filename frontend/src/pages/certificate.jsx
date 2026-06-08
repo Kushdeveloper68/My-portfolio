@@ -1,3 +1,4 @@
+import { useRef, useEffect, useState } from 'react';
 import Aurora from '../components/Aurora';
 
 /* ─── Data ──────────────────────────────────────────────── */
@@ -155,8 +156,12 @@ function CertCard({ num, icon, iconBg, iconIsSymbol, isImg, accent, accentRgb, c
             style={{ backgroundColor: iconBg }}
           >
             {isImg ? (
-              <img src={icon} alt={title} className="w-full h-full object-cover opacity-75 group-hover:opacity-100 transition-opacity" loading="lazy" />
-            ) : (
+<img
+  src={icon}
+  alt={`${title} certificate issued by ${issuer}`}
+  className="w-full h-full object-cover opacity-75 group-hover:opacity-100 transition-opacity"
+  loading="lazy"
+/>            ) : (
               <span className="material-symbols-outlined text-[22px]" style={{ color: accent }}>{icon}</span>
             )}
           </div>
@@ -225,25 +230,33 @@ export default function CertificatesPage() {
   const fSyne  = { fontFamily: "'Syne', sans-serif"       };
   const fMono  = { fontFamily: "'DM Mono', monospace"     };
   const fDM    = { fontFamily: "'DM Sans', sans-serif"    };
+const sectionRef = useRef(null);   
+ const [auroraVisible, setAuroraVisible] = useState(false);  // ADD
 
+  useEffect(() => {                           // ADD
+    const el = sectionRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => { setAuroraVisible(entry.isIntersecting); },
+      { threshold: 0.05 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
   return (
     <>
       
 
       <section
         id="certificate"
+         ref={sectionRef}
         className="relative isolate z-0 overflow-hidden min-h-screen"
         style={{  color: '#fff' }}
       >
 
         {/* ── Aurora background ── */}
         <div className="absolute inset-0 z-0 pointer-events-none">
-          <Aurora
-            colorStops={["#7cff67","#B497CF","#5227FF"]}
-            blend={0.5}
-            amplitude={1.0}
-            speed={1}
-          />
+  {auroraVisible && <Aurora colorStops={["#7cff67","#B497CF","#5227FF"]} blend={0.5} amplitude={1.0} speed={1} />}
           {/* Dark overlay so text stays readable */}
           <div className="absolute inset-0" style={{ background: 'rgba(7,8,15,0.72)' }} />
           {/* Top vignette */}
