@@ -674,7 +674,7 @@ function SplashCursor({
     initFramebuffers();
     let lastUpdateTime = Date.now();
     let colorUpdateTimer = 0.0;
-
+let animFrameId;
     function updateFrame() {
       const dt = calcDeltaTime();
       if (resizeCanvas()) initFramebuffers();
@@ -682,9 +682,9 @@ function SplashCursor({
       applyInputs();
       step(dt);
       render(null);
-      requestAnimationFrame(updateFrame);
+    animFrameId = requestAnimationFrame(updateFrame);
     }
-
+animFrameId = requestAnimationFrame(updateFrame);
     function calcDeltaTime() {
       let now = Date.now();
       let dt = (now - lastUpdateTime) / 1000;
@@ -1045,6 +1045,11 @@ function SplashCursor({
     });
 
     updateFrame();
+    // useEffect ke end mein return karo
+return () => {
+  cancelAnimationFrame(animFrameId);
+  // ... baaki cleanup already hai
+};
   }, [
     SIM_RESOLUTION,
     DYE_RESOLUTION,

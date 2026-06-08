@@ -68,7 +68,10 @@ const DotField = memo(({
 
     function buildDots(w, h) {
       const p = propsRef.current;
-      const step = p.dotRadius + p.dotSpacing;
+      const isMobile = window.innerWidth < 768;
+  const mobileMultiplier = isMobile ? 1.8 : 1;
+  const step = (p.dotRadius + p.dotSpacing) * mobileMultiplier; 
+     
       const cols = Math.floor(w / step);
       const rows = Math.floor(h / step);
       const padX = (w % step) / 2;
