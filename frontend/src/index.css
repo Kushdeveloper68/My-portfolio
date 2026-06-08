@@ -1540,3 +1540,54 @@ textarea::-webkit-scrollbar-thumb:hover {
   animation: certLineGrow 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
   transform-origin: left;
 }
+
+
+
+
+
+
+
+
+
+  @keyframes connFadeUp {
+    from { opacity:0; transform:translateY(30px); }
+    to   { opacity:1; transform:translateY(0);    }
+  }
+  @keyframes connFadeIn {
+    from { opacity:0; }
+    to   { opacity:1; }
+  }
+  @keyframes connPulse {
+    0%,100% { box-shadow: 0 0 0 0   rgba(255,255,255,0.4); }
+    50%     { box-shadow: 0 0 0 6px rgba(255,255,255,0);   }
+  }
+  @keyframes connLineExpand {
+    from { width:0;     opacity:0; }
+    to   { width:100%;  opacity:1; }
+  }
+  @keyframes connShimmer {
+    0%   { transform:translateX(-100%); }
+    100% { transform:translateX(200%);  }
+  }
+  @keyframes connBeam {
+    0%,100% { opacity:0.06; transform:scaleY(1);    }
+    50%     { opacity:0.12; transform:scaleY(1.04); }
+  }
+
+  .conn-a1 { animation: connFadeUp 0.75s cubic-bezier(0.22,1,0.36,1) 0.05s both; }
+  .conn-a2 { animation: connFadeUp 0.75s cubic-bezier(0.22,1,0.36,1) 0.18s both; }
+  .conn-a3 { animation: connFadeUp 0.75s cubic-bezier(0.22,1,0.36,1) 0.30s both; }
+  .conn-a4 { animation: connFadeUp 0.75s cubic-bezier(0.22,1,0.36,1) 0.42s both; }
+  .conn-a5 { animation: connFadeUp 0.75s cubic-bezier(0.22,1,0.36,1) 0.54s both; }
+  .conn-pulse    { animation: connPulse     2.4s ease         infinite; }
+  .conn-shimmer  { animation: connShimmer   2.2s ease-in-out  infinite; }
+  .conn-beam     { animation: connBeam      3.5s ease-in-out  infinite; }
+  .conn-divider  { animation: connLineExpand 1s  ease          0.4s both; }
+
+  /* Input focus glow — can't do with pure Tailwind */
+  .conn-input:focus {
+    border-color: rgba(255,255,255,0.35) !important;
+    box-shadow: 0 0 0 3px rgba(255,255,255,0.07), 0 0 20px rgba(255,255,255,0.06);
+    outline: none;
+  }
+  .conn-input::placeholder { color: rgba(255,255,255,0.2); }
