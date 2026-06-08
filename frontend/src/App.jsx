@@ -1,21 +1,24 @@
-import Hero from './pages/home';
-import About from './pages/about';
-import SkillsPage from './pages/skill';
-import PremiumProjects from './pages/project';
-import ServicesPage from './pages/services';
-import ExperiencePage from './pages/experience';
-import CertificatesPage from './pages/certificate';
-import TestimonialsPage from './pages/testimonials';
-import PricingPage from './pages/pricing';
-import ConnectPage from './pages/connect';
-import { useEffect } from 'react';
+import { useEffect, lazy, Suspense } from 'react';
 import Lenis from 'lenis';
-import  gsap  from 'gsap';
+import gsap from 'gsap';
+
+// Hero eagerly load karo — above the fold hai
+import Hero from './pages/home';
+
+// Baaki sab lazy load karo
+const About         = lazy(() => import('./pages/about'));
+const SkillsPage    = lazy(() => import('./pages/skill'));
+const ServicesPage  = lazy(() => import('./pages/services'));
+const PremiumProjects = lazy(() => import('./pages/project'));
+const ExperiencePage  = lazy(() => import('./pages/experience'));
+const CertificatesPage = lazy(() => import('./pages/certificate'));
+const TestimonialsPage = lazy(() => import('./pages/testimonials'));
+const PricingPage   = lazy(() => import('./pages/pricing'));
+const ConnectPage   = lazy(() => import('./pages/connect'));
 
 function App() {
   useEffect(() => {
-
-    // LENIS INIT
+    // LENIS + GSAP — sahi tarika (double tick nahi hoga)
     const lenis = new Lenis({
       duration: 1.2,
       smoothWheel: true,
@@ -23,40 +26,32 @@ function App() {
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     });
 
-    // RAF LOOP
-    function update(time) {
-      lenis.raf(time);
-      requestAnimationFrame(update);
-    }
-
-    requestAnimationFrame(update);
-
-    // GSAP SYNC
-    lenis.on("scroll", () => {
-      gsap.ticker.tick();
+    // SAHI TARIKA: GSAP ticker mein lenis.raf integrate karo
+    gsap.ticker.add((time) => {
+      lenis.raf(time * 1000);
     });
-
     gsap.ticker.lagSmoothing(0);
 
-    // CLEANUP
     return () => {
       lenis.destroy();
+      gsap.ticker.remove((time) => lenis.raf(time * 1000));
     };
-
   }, []);
 
   return (
     <>
       <Hero />
-      <About />
-      <SkillsPage />
-      <ServicesPage />
-      <PremiumProjects />
-      <ExperiencePage />
-      <CertificatesPage />
-      <TestimonialsPage />
-      <PricingPage />
-      <ConnectPage />
+      <Suspense fallback={null}>
+        <About />
+        <SkillsPage />
+        <ServicesPage />
+        <PremiumProjects />
+        <ExperiencePage />
+        <CertificatesPage />
+        <TestimonialsPage />
+        <PricingPage />
+        <ConnectPage />
+      </Suspense>
     </>
   );
 }
