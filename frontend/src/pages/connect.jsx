@@ -1,6 +1,7 @@
 import { useRef, useEffect, useState } from 'react';
 import { useForm, ValidationError } from '@formspree/react';
 import LightRays from '../components/LightRays';
+import KushParticleFooter from '../components/KushFooterGlow';
 
 /* ─── Data ──────────────────────────────────────────────── */
 const SOCIALS = [
@@ -453,8 +454,9 @@ useEffect(() => {                                          // ADD
         ════════════════════════════════════════ */}
         <footer
           className="relative z-10"
-          style={{ borderTop: '1px solid rgba(255,255,255,0.05)', background: 'rgba(10,11,16,0.85)', backdropFilter: 'blur(16px)' }}
+          style={{ borderTop: '1px solid rgba(255,255,255,0.05)', background: '#000', backdropFilter: 'blur(16px)' }}
         >
+           <KushParticleFooter />
           <div className="max-w-[1300px] mx-auto px-6 py-7">
             <div className="flex flex-col md:flex-row justify-between items-center gap-5">
 
@@ -463,7 +465,7 @@ useEffect(() => {                                          // ADD
                 className="text-white/25"
                 style={{ ...fMono, fontSize: '10px', letterSpacing: '0.06em' }}
               >
-                © 2025{' '}
+                © 2026{' '}
                 <span className="text-white/50">Designed &amp; Built by Kush Pandit</span>
               </p>
 
