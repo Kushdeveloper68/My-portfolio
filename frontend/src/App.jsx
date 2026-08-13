@@ -1,6 +1,7 @@
 import { useEffect, lazy, Suspense } from 'react';
 import Lenis from 'lenis';
 import gsap from 'gsap';
+import { SectionBoundary } from './components';
 
 // Hero eagerly load karo — above the fold hai
 import Hero from './pages/home';
@@ -38,19 +39,23 @@ function App() {
     };
   }, []);
 
+  // Har section apni SectionBoundary mein wrapped hai — agar kisi ek section
+  // ka WebGL/canvas background kisi purane GPU ya browser pe fail ho jaaye,
+  // toh sirf wahi section skip hoga, neeche ke saare sections normally render
+  // hote rahenge (poora page blank nahi hoga).
   return (
     <>
       <Hero />
       <Suspense fallback={null}>
-        <About />
-        <SkillsPage />
-        <ServicesPage />
-        <PremiumProjects />
-        <ExperiencePage />
-        <CertificatesPage />
-        <TestimonialsPage />
-        <PricingPage />
-        <ConnectPage />
+        <SectionBoundary name="about"><About /></SectionBoundary>
+        <SectionBoundary name="skill"><SkillsPage /></SectionBoundary>
+        <SectionBoundary name="services"><ServicesPage /></SectionBoundary>
+        <SectionBoundary name="project"><PremiumProjects /></SectionBoundary>
+        <SectionBoundary name="experience"><ExperiencePage /></SectionBoundary>
+        <SectionBoundary name="certificate"><CertificatesPage /></SectionBoundary>
+        <SectionBoundary name="testimonials"><TestimonialsPage /></SectionBoundary>
+        <SectionBoundary name="pricing"><PricingPage /></SectionBoundary>
+        <SectionBoundary name="connect"><ConnectPage /></SectionBoundary>
       </Suspense>
     </>
   );

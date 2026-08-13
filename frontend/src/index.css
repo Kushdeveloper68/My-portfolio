@@ -1541,6 +1541,33 @@ textarea::-webkit-scrollbar-thumb:hover {
   transform-origin: left;
 }
 
+/* ── Credential Vault (certificate.jsx redesign) ── */
+.vault-badge {
+  cursor: pointer;
+  transition: transform 0.35s cubic-bezier(0.22,1,0.36,1), border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.vault-badge:hover,
+.vault-badge:focus-visible {
+  transform: translateY(-4px);
+  outline: none;
+}
+@keyframes vaultModalIn {
+  from { opacity: 0; transform: translateY(16px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.vault-modal-anim { animation: vaultModalIn 0.32s cubic-bezier(0.22,1,0.36,1) both; }
+@keyframes vaultBackdropIn {
+  from { opacity: 0; } to { opacity: 1; }
+}
+.vault-backdrop-anim { animation: vaultBackdropIn 0.25s ease both; }
+.vault-tab {
+  transition: color 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+  white-space: nowrap;
+}
+@media (prefers-reduced-motion: reduce) {
+  .vault-modal-anim, .vault-backdrop-anim { animation: none !important; }
+}
+
 
 
 
@@ -1591,3 +1618,59 @@ textarea::-webkit-scrollbar-thumb:hover {
     outline: none;
   }
   .conn-input::placeholder { color: rgba(255,255,255,0.2); }
+
+/* ══════════════════════════════════════════════════
+   NEURAL SKILL GRAPH (skill.jsx) — "nsg-" prefix
+   Signature element for the Skills section.
+   ══════════════════════════════════════════════════ */
+
+.nsg-scroll {
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.nsg-scroll::-webkit-scrollbar { display: none; }
+
+.nsg-node {
+  cursor: pointer;
+  transition: transform 0.35s cubic-bezier(0.22,1,0.36,1);
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.nsg-node:hover,
+.nsg-node:focus-visible {
+  transform: scale(1.08);
+  outline: none;
+}
+.nsg-node:focus-visible circle.nsg-ring {
+  stroke: #fff;
+}
+
+.nsg-ring {
+  transition: stroke 0.3s ease, stroke-width 0.3s ease, filter 0.3s ease;
+}
+
+.nsg-path {
+  transition: stroke-opacity 0.4s ease, stroke-width 0.4s ease;
+}
+
+@keyframes nsg-core-breathe {
+  0%, 100% { filter: drop-shadow(0 0 10px rgba(13,162,231,0.35)); }
+  50%      { filter: drop-shadow(0 0 22px rgba(13,162,231,0.6));  }
+}
+.nsg-core-glow { animation: nsg-core-breathe 3.2s ease-in-out infinite; }
+
+@keyframes nsg-panel-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0);   }
+}
+.nsg-panel-anim { animation: nsg-panel-in 0.35s cubic-bezier(0.22,1,0.36,1) both; }
+
+@keyframes nsg-drift {
+  0%, 100% { transform: translateX(0); }
+  50%      { transform: translateX(6px); }
+}
+.nsg-hint { animation: nsg-drift 1.6s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .nsg-core-glow, .nsg-hint { animation: none !important; }
+}

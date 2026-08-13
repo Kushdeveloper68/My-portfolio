@@ -45,14 +45,270 @@ const BACKEND = [
   { label: "REST APIs", icon: "api", accent: "#c084fc", mono: "Interface" },
 ];
 
-const TOOLS = [
-  { icon: "code", label: "VS Code", color: "#22d3ee" },
-  { icon: "terminal", label: "CLI", color: "#4ade80" },
-  { icon: "terminal", label: "Linux", color: "#f97316" },
-  { icon: "code", label: "Git", color: "#f472b6" },
-  { icon: "design_services", label: "Figma", color: "#a78bfa" },
-  { icon: "api", label: "Postman", color: "#fb923c" },
+/* ─── Neural Skill Graph data ───────────────────────────────
+   One core node → 3 category hubs → 12 leaf skills.
+   Straight-line "circuit" connections, positioned with polar
+   coordinates so the whole thing stays cleanly responsive.
+──────────────────────────────────────────────────────────── */
+const GRAPH_CENTER = { x: 500, y: 300 };
+const HUB_RADIUS = 175;
+const LEAF_RADIUS = 140;
+const LEAF_SPREAD = 100; // degrees
+
+function polar(cx, cy, r, angleDeg) {
+  const rad = (angleDeg * Math.PI) / 180;
+  return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
+}
+
+const HUB_DEFS = [
+  { id: "frontend", label: "Frontend", icon: "code_blocks", color: "#22d3ee", angle: 210 },
+  { id: "backend",  label: "Backend",  icon: "dns",          color: "#c084fc", angle: 330 },
+  { id: "tools",    label: "Tools & Platforms", icon: "construction", color: "#fb923c", angle: 90 },
 ];
+
+const SKILL_DEFS = {
+  frontend: [
+    { id: "react",     label: "React",        icon: "code",        core: true,  level: "Core Stack",       desc: "Primary UI library — component architecture, hooks, and state-driven interfaces.", usedIn: "StyleForge, EventCure" },
+    { id: "nextjs",    label: "Next.js",       icon: "layers",      core: false, level: "Actively Building", desc: "Framework layer for routing and production-ready React apps.", usedIn: "Personal Portfolio" },
+    { id: "typescript",label: "TypeScript",    icon: "data_object", core: false, level: "Actively Building", desc: "Typed JavaScript for safer refactors and fewer runtime surprises.", usedIn: "Newer builds" },
+    { id: "tailwind",  label: "Tailwind CSS",  icon: "css",         core: true,  level: "Core Stack",       desc: "Utility-first styling — fast iteration without ever leaving the markup.", usedIn: "EventCure, StyleForge" },
+  ],
+  backend: [
+    { id: "node",    label: "Node.js",   icon: "dns",      core: true,  level: "Core Stack",  desc: "Server runtime powering APIs, business logic, and backend services.", usedIn: "EventCure backend" },
+    { id: "mongodb", label: "MongoDB",   icon: "database", core: true,  level: "Core Stack",  desc: "Document database for flexible, schema-driven data models.", usedIn: "EventCure, Toolify" },
+    { id: "graphql", label: "GraphQL",   icon: "hub",      core: false, level: "Exploring",   desc: "Query layer explored for precise, client-driven data fetching.", usedIn: "API experiments" },
+    { id: "rest",    label: "REST APIs", icon: "api",      core: false, level: "Comfortable", desc: "Designing and consuming clean, predictable HTTP interfaces.", usedIn: "StyleForge, Toolify" },
+  ],
+  tools: [
+    { id: "git",    label: "Git",    icon: "commit",          core: false, level: "Daily Driver", desc: "Version control — branching, history, and collaborative workflows.", usedIn: "Every project" },
+    { id: "kali",   label: "Kali Linux", icon: "security",     core: false, level: "Comfortable", desc: "Security-focused Linux environment for testing and exploration.", usedIn: "Dual-boot dev setup" },
+    { id: "figma",  label: "Figma",  icon: "design_services", core: false, level: "Comfortable", desc: "Interface design — wireframes, prototypes, and brand direction.", usedIn: "EventCure brand identity" },
+    { id: "vscode", label: "VS Code", icon: "terminal",       core: false, level: "Daily Driver", desc: "Editor of choice — extensions, debugging, and terminal workflows.", usedIn: "Every project" },
+  ],
+};
+
+function buildGraph() {
+  const hubs = HUB_DEFS.map((h) => ({ ...h, ...polar(GRAPH_CENTER.x, GRAPH_CENTER.y, HUB_RADIUS, h.angle) }));
+  const leaves = [];
+  hubs.forEach((hub) => {
+    const skills = SKILL_DEFS[hub.id];
+    const count = skills.length;
+    skills.forEach((s, i) => {
+      const angle = hub.angle - LEAF_SPREAD / 2 + (i * LEAF_SPREAD) / (count - 1);
+      const pos = polar(hub.x, hub.y, LEAF_RADIUS, angle);
+      leaves.push({ ...s, ...pos, hubId: hub.id, color: hub.color });
+    });
+  });
+  return { hubs, leaves };
+}
+
+const GRAPH = buildGraph();
+
+function NeuralSkillGraph() {
+  const [activeId, setActiveId] = useState("react");
+  const [reduceMotion, setReduceMotion] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReduceMotion(mq.matches);
+  }, []);
+
+  const activeSkill = GRAPH.leaves.find((l) => l.id === activeId) || GRAPH.leaves[0];
+  const activeHub = GRAPH.hubs.find((h) => h.id === activeSkill.hubId);
+
+  return (
+    <div data-reveal data-delay="300">
+      {/* Legend */}
+      <div className="flex flex-wrap justify-center gap-4 sm:gap-6 mb-6">
+        {HUB_DEFS.map((h) => (
+          <div key={h.id} className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full" style={{ background: h.color, boxShadow: `0 0 8px ${h.color}` }} />
+            <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.45)' }}>
+              {h.label}
+            </span>
+          </div>
+        ))}
+      </div>
+
+      {/* Mobile swipe hint */}
+      <div className="flex md:hidden items-center justify-center gap-1.5 mb-3 opacity-40">
+        <span className="material-symbols-outlined nsg-hint" style={{ fontSize: '14px', color: P }}>swipe</span>
+        <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '9px', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.5)' }}>
+          Swipe to explore
+        </span>
+      </div>
+
+      {/* Graph */}
+      <div className="nsg-scroll w-full overflow-x-auto md:overflow-visible rounded-2xl" style={{ border: '1px solid rgba(255,255,255,0.06)', background: 'rgba(255,255,255,0.015)' }}>
+        <svg viewBox="0 0 1000 700" style={{ minWidth: '680px', width: '100%', height: 'auto', display: 'block' }} role="img" aria-label="Interactive skill graph">
+          {/* Core → Hub connections */}
+          {GRAPH.hubs.map((hub) => {
+            const isActive = activeHub?.id === hub.id;
+            return (
+              <g key={`core-${hub.id}`}>
+                <path
+                  className="nsg-path"
+                  d={`M${GRAPH_CENTER.x},${GRAPH_CENTER.y} L${hub.x},${hub.y}`}
+                  stroke={hub.color}
+                  strokeWidth={isActive ? 2 : 1}
+                  strokeOpacity={isActive ? 0.55 : 0.18}
+                  fill="none"
+                />
+                {!reduceMotion && (
+                  <circle r="3" fill={hub.color}>
+                    <animateMotion
+                      dur="2.6s"
+                      repeatCount="indefinite"
+                      path={`M${GRAPH_CENTER.x},${GRAPH_CENTER.y} L${hub.x},${hub.y}`}
+                    />
+                  </circle>
+                )}
+              </g>
+            );
+          })}
+
+          {/* Hub → Leaf connections */}
+          {GRAPH.leaves.map((leaf) => {
+            const hub = GRAPH.hubs.find((h) => h.id === leaf.hubId);
+            const isActive = activeId === leaf.id;
+            return (
+              <g key={`edge-${leaf.id}`}>
+                <path
+                  className="nsg-path"
+                  d={`M${hub.x},${hub.y} L${leaf.x},${leaf.y}`}
+                  stroke={leaf.color}
+                  strokeWidth={isActive ? 2 : 1}
+                  strokeOpacity={isActive ? 0.6 : 0.15}
+                  fill="none"
+                />
+                {!reduceMotion && (
+                  <circle r="2.2" fill={leaf.color} opacity="0.85">
+                    <animateMotion
+                      dur="2s"
+                      repeatCount="indefinite"
+                      begin={`${(leaf.id.length % 5) * 0.3}s`}
+                      path={`M${hub.x},${hub.y} L${leaf.x},${leaf.y}`}
+                    />
+                  </circle>
+                )}
+              </g>
+            );
+          })}
+
+          {/* Core node */}
+          <g className="nsg-core-glow">
+            <circle cx={GRAPH_CENTER.x} cy={GRAPH_CENTER.y} r="48" fill="rgba(13,162,231,0.1)" stroke={P} strokeWidth="1.5" />
+            <circle cx={GRAPH_CENTER.x} cy={GRAPH_CENTER.y} r="34" fill="#0c1a20" stroke={P} strokeOpacity="0.4" />
+            <foreignObject x={GRAPH_CENTER.x - 30} y={GRAPH_CENTER.y - 30} width="60" height="60">
+              <div className="w-full h-full flex flex-col items-center justify-center gap-0.5" style={{ overflow: 'hidden' }}>
+                <span className="material-symbols-outlined" style={{ fontSize: '20px', color: P, lineHeight: 1 }}>memory</span>
+              </div>
+            </foreignObject>
+            <text x={GRAPH_CENTER.x} y={GRAPH_CENTER.y + 62} textAnchor="middle" fill="#fff" style={{ fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: '13px', letterSpacing: '0.08em' }}>
+              KUSH.DEV
+            </text>
+          </g>
+
+          {/* Hub nodes */}
+          {GRAPH.hubs.map((hub) => (
+            <g key={hub.id} transform={`translate(${hub.x},${hub.y})`}>
+              <circle r="30" fill="rgba(255,255,255,0.03)" stroke={hub.color} strokeOpacity="0.5" strokeWidth="1.5" />
+              <foreignObject x="-16" y="-16" width="32" height="32">
+                <div className="w-full h-full flex items-center justify-center" style={{ overflow: 'hidden' }}>
+                  <span className="material-symbols-outlined" style={{ fontSize: '17px', color: hub.color, lineHeight: 1 }}>{hub.icon}</span>
+                </div>
+              </foreignObject>
+              <text
+                y={hub.angle === 90 ? 52 : -42}
+                textAnchor="middle"
+                fill="#fff"
+                style={{ fontFamily: "'DM Mono', monospace", fontSize: '10.5px', letterSpacing: '0.1em', textTransform: 'uppercase', opacity: 0.75 }}
+              >
+                {hub.label}
+              </text>
+            </g>
+          ))}
+
+          {/* Leaf nodes */}
+          {GRAPH.leaves.map((leaf) => {
+            const isActive = activeId === leaf.id;
+            const labelBelow = leaf.y > GRAPH_CENTER.y;
+            return (
+              <g
+                key={leaf.id}
+                className="nsg-node"
+                transform={`translate(${leaf.x},${leaf.y})`}
+                role="button"
+                tabIndex={0}
+                aria-label={`${leaf.label} — ${leaf.desc}`}
+                onMouseEnter={() => setActiveId(leaf.id)}
+                onFocus={() => setActiveId(leaf.id)}
+                onClick={() => setActiveId(leaf.id)}
+                onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") setActiveId(leaf.id); }}
+              >
+                <circle
+                  className="nsg-ring"
+                  r={leaf.core ? 21 : 18}
+                  fill={isActive ? `${leaf.color}22` : "rgba(255,255,255,0.02)"}
+                  stroke={leaf.color}
+                  strokeOpacity={isActive ? 1 : 0.45}
+                  strokeWidth={leaf.core ? 2 : 1.2}
+                  strokeDasharray={leaf.core ? "0" : "2 2"}
+                />
+                <foreignObject x="-11" y="-11" width="22" height="22">
+                  <div className="w-full h-full flex items-center justify-center" style={{ overflow: 'hidden' }}>
+                    <span className="material-symbols-outlined" style={{ fontSize: '13px', color: leaf.color, lineHeight: 1 }}>{leaf.icon}</span>
+                  </div>
+                </foreignObject>
+                <text
+                  y={labelBelow ? 34 : -28}
+                  textAnchor="middle"
+                  fill="#fff"
+                  style={{ fontFamily: "'Syne', sans-serif", fontWeight: 700, fontSize: '10.5px', opacity: isActive ? 1 : 0.65, letterSpacing: '0.02em' }}
+                >
+                  {leaf.label}
+                </text>
+              </g>
+            );
+          })}
+        </svg>
+      </div>
+
+      {/* Signal panel */}
+      <div key={activeSkill.id} className="nsg-panel-anim mt-6 mb-6 rounded-2xl p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6"
+        style={{ background: 'rgba(255,255,255,0.025)', border: `1px solid ${activeSkill.color}33` }}>
+        <div className="flex items-center gap-3 sm:gap-4 shrink-0">
+          <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0" style={{ background: `${activeSkill.color}18`, border: `1px solid ${activeSkill.color}40` }}>
+            <span className="material-symbols-outlined" style={{ fontSize: '22px', color: activeSkill.color }}>{activeSkill.icon}</span>
+          </div>
+          <div className="sm:hidden">
+            <h4 style={{ fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: '1rem', color: '#fff' }}>{activeSkill.label}</h4>
+            <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '9px', letterSpacing: '0.12em', textTransform: 'uppercase', color: activeSkill.color }}>{activeSkill.level}</span>
+          </div>
+        </div>
+        <div className="flex-1">
+          <div className="hidden sm:flex items-center gap-2.5 mb-1.5">
+            <h4 style={{ fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: '1.05rem', color: '#fff' }}>{activeSkill.label}</h4>
+            <span className="px-2 py-[2px] rounded-full" style={{ fontFamily: "'DM Mono', monospace", fontSize: '9px', letterSpacing: '0.1em', textTransform: 'uppercase', color: activeSkill.color, background: `${activeSkill.color}18`, border: `1px solid ${activeSkill.color}35` }}>
+              {activeSkill.level}
+            </span>
+            {activeSkill.core && (
+              <span className="px-2 py-[2px] rounded-full" style={{ fontFamily: "'DM Mono', monospace", fontSize: '9px', letterSpacing: '0.1em', textTransform: 'uppercase', color: P, background: 'rgba(13,162,231,0.12)', border: '1px solid rgba(13,162,231,0.3)' }}>
+                Core
+              </span>
+            )}
+          </div>
+          <p style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 300, fontSize: '0.85rem', color: 'rgba(255,255,255,0.55)', lineHeight: 1.7 }}>
+            {activeSkill.desc}
+          </p>
+          <p className="mt-2" style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', letterSpacing: '0.06em', color: 'rgba(255,255,255,0.35)' }}>
+            used in — <span style={{ color: 'rgba(255,255,255,0.6)' }}>{activeSkill.usedIn}</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 function CapCard({ icon, title, desc, tag, index }) {
   const [hovered, setHovered] = useState(false);
@@ -96,39 +352,6 @@ function CapCard({ icon, title, desc, tag, index }) {
       {/* Hover glow corner */}
       <div className="kds-cap-glow absolute -bottom-10 -right-10 w-32 h-32 rounded-full pointer-events-none"
         style={{ background: 'radial-gradient(circle, rgba(13,162,231,0.12) 0%, transparent 70%)', opacity: hovered ? 1 : 0, transition: 'opacity 0.4s' }} />
-    </div>
-  );
-}
-
-function SkillOrb({ label, icon, accent, mono, index }) {
-  return (
-    <div className="kds-orb group flex flex-col items-center gap-3" style={{ animationDelay: `${index * 0.15}s` }}>
-      {/* Ring */}
-      <div className="relative">
-        <div className="kds-orb-ring absolute inset-0 rounded-full pointer-events-none"
-          style={{ border: `1px solid ${accent}22`, transform: 'scale(1.35)' }} />
-        <div
-          className="kds-orb-body relative w-24 h-24 md:w-28 md:h-28 rounded-full flex flex-col items-center justify-center gap-1.5"
-          style={{
-            background: `radial-gradient(circle at 30% 30%, ${accent}18, rgba(255,255,255,0.03) 70%)`,
-            border: `1px solid ${accent}30`,
-          }}
-        >
-          {/* Glow bg */}
-          <div className="kds-orb-glow absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500"
-            style={{ background: `radial-gradient(circle, ${accent}22 0%, transparent 70%)`, filter: 'blur(8px)' }} />
-
-          <span className="material-symbols-outlined relative z-10 transition-transform duration-300 group-hover:scale-110"
-            style={{ fontSize: '26px', color: accent }}>{icon}</span>
-          <span className="relative z-10" style={{ fontFamily: "'Syne', sans-serif", fontWeight: 700, fontSize: '9px', color: 'rgba(255,255,255,0.9)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-            {label}
-          </span>
-        </div>
-      </div>
-      {/* Mono label below */}
-      <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '9px', color: `${accent}77`, letterSpacing: '0.15em', textTransform: 'uppercase' }}>
-        {mono}
-      </span>
     </div>
   );
 }
@@ -239,7 +462,7 @@ export default function SkillsPage() {
               </div>
 
               <div data-reveal data-delay="500" className="flex flex-wrap gap-3 justify-center lg:justify-start">
-                <a href="#services">
+                <a href="#skill-graph">
                   <button className="kds-btn-primary">Explore Skills</button>
                 </a>
                 <a href="#project">
@@ -327,102 +550,24 @@ export default function SkillsPage() {
         </div>
 
         {/* ═══════════════════════════════════════
-            SKILLS UNIVERSE
+            NEURAL SKILL GRAPH
         ═══════════════════════════════════════ */}
-        <div className="relative z-10 py-24 px-6 md:px-12">
+        <div id="skill-graph" className="relative z-10 py-24 px-6 md:px-12">
           <div className="max-w-[1200px] mx-auto">
 
-            {/* Universe header */}
-            <div data-reveal className="text-center mb-20">
+            {/* Header */}
+            <div data-reveal className="text-center mb-4">
               <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 'clamp(3rem, 6vw, 5rem)', lineHeight: 0.95, letterSpacing: '0.04em' }}>
-                <span className="kds-gradient">Skills</span>
+                <span className="kds-gradient">Skill</span>
                 {' '}
-                <span style={{ WebkitTextStroke: '1.5px rgba(255,255,255,0.2)', color: 'transparent' }}>Universe</span>
+                <span style={{ WebkitTextStroke: '1.5px rgba(255,255,255,0.2)', color: 'transparent' }}>Circuit</span>
               </div>
-              <p data-reveal data-delay="200" style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 300, fontSize: '0.9rem', color: 'rgba(255,255,255,0.4)', marginTop: '0.75rem', letterSpacing: '0.02em' }}>
-                An interactive constellation of technologies powering my capabilities.
+              <p data-reveal data-delay="200" style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 300, fontSize: '0.9rem', color: 'rgba(255,255,255,0.4)', marginTop: '0.75rem', letterSpacing: '0.02em', maxWidth: '46ch', marginLeft: 'auto', marginRight: 'auto' }}>
+                Every technology traces back to one source. Tap a node to see how it connects.
               </p>
             </div>
 
-            {/* Frontend Galaxy */}
-            <div data-reveal className="mb-20">
-              <div className="flex items-center gap-4 mb-10" style={{ borderLeft: '1px solid rgba(255,255,255,0.06)', paddingLeft: '1rem' }}>
-                <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
-                  style={{ background: 'rgba(34,211,238,0.1)', border: '1px solid rgba(34,211,238,0.2)' }}>
-                  <span className="material-symbols-outlined" style={{ fontSize: '18px', color: '#22d3ee' }}>code_blocks</span>
-                </div>
-                <div>
-                  <h4 style={{ fontFamily: "'Syne', sans-serif", fontWeight: 700, fontSize: '1rem', color: '#fff', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
-                    Frontend <span style={{ color: '#22d3ee' }}>Galaxy</span>
-                  </h4>
-                </div>
-                <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '9px', color: 'rgba(34,211,238,0.35)', letterSpacing: '0.18em', textTransform: 'uppercase', marginLeft: 'auto' }} className="hidden sm:block">
-                  02 // Visual
-                </span>
-              </div>
-              <div className="flex flex-wrap justify-center gap-10 md:gap-16 py-6">
-                {FRONTEND.map((b, i) => (
-                  <div key={b.label} data-reveal data-delay={`${(i + 1) * 100}`}>
-                    <SkillOrb {...b} index={i} />
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Divider */}
-            <div data-reveal className="kds-divider my-16" />
-
-            {/* Backend Nebula */}
-            <div data-reveal className="mb-20">
-              <div className="flex items-center justify-end gap-4 mb-10" style={{ borderRight: '1px solid rgba(255,255,255,0.06)', paddingRight: '1rem' }}>
-                <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '9px', color: 'rgba(168,85,247,0.35)', letterSpacing: '0.18em', textTransform: 'uppercase', marginRight: 'auto' }} className="hidden sm:block">
-                  03 // System
-                </span>
-                <div>
-                  <h4 style={{ fontFamily: "'Syne', sans-serif", fontWeight: 700, fontSize: '1rem', color: '#fff', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
-                    Backend <span style={{ color: '#c084fc' }}>Nebula</span>
-                  </h4>
-                </div>
-                <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
-                  style={{ background: 'rgba(192,132,252,0.1)', border: '1px solid rgba(192,132,252,0.2)' }}>
-                  <span className="material-symbols-outlined" style={{ fontSize: '18px', color: '#c084fc' }}>dns</span>
-                </div>
-              </div>
-              <div className="flex flex-wrap justify-center gap-10 md:gap-16 py-6">
-                {BACKEND.map((b, i) => (
-                  <div key={b.label} data-reveal data-delay={`${(i + 1) * 100}`}>
-                    <SkillOrb {...b} index={i} />
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Divider */}
-            <div data-reveal className="kds-divider mb-16" />
-
-            {/* Tools & Platforms */}
-            <div data-reveal className="mb-20">
-              <div className="flex justify-center mb-10">
-                <div className="flex items-center gap-2.5 px-6 py-2.5 rounded-full" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(13,162,231,0.18)', boxShadow: '0 0 20px rgba(13,162,231,0.08)' }}>
-                  <span className="material-symbols-outlined" style={{ fontSize: '16px', color: P }}>construction</span>
-                  <span style={{ fontFamily: "'Syne', sans-serif", fontWeight: 700, fontSize: '11px', color: 'rgba(255,255,255,0.8)', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
-                    Tools & Platforms
-                  </span>
-                </div>
-              </div>
-              <div className="grid grid-cols-3 sm:grid-cols-6 gap-3 max-w-2xl mx-auto">
-                {TOOLS.map(({ icon, label, color }, i) => (
-                  <div key={label} data-reveal data-delay={`${(i + 1) * 80}`} className="kds-tool group">
-                    <div className="kds-tool-glow" style={{ background: `radial-gradient(circle at 50% 100%, ${color}18 0%, transparent 70%)` }} />
-                    <span className="material-symbols-outlined relative z-10 transition-colors duration-300"
-                      style={{ fontSize: '22px', color: `${color}99` }}>{icon}</span>
-                    <span className="relative z-10 transition-colors duration-300" style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', color: 'rgba(255,255,255,0.4)', letterSpacing: '0.08em' }}>
-                      {label}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <NeuralSkillGraph />
 
             {/* ── CTA Block ── */}
             <div data-reveal data-delay="200">

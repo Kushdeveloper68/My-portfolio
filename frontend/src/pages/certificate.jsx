@@ -92,135 +92,144 @@ const CERTS = [
 /* ─── Keyframes — the ONLY css in this file ─────────────── */
 
 
-/* ─── Individual Card ────────────────────────────────────── */
-function CertCard({ num, icon, iconBg, iconIsSymbol, isImg, accent, accentRgb, category, title, desc, issuer, date, href }) {
-  /* font objects — fontFamily has no default Tailwind utility */
+/* ─── Category → accent color map (for filter tabs) ────────── */
+const CATEGORY_COLORS = {
+  'Frontend Development': '#7cff67',
+  'Full Stack Development': '#f87171',
+  'Professional Membership': '#818cf8',
+  'MERN Stack Development': '#B497CF',
+};
+function categoryColor(cat) {
+  return CATEGORY_COLORS[cat] || '#0da2e7';
+}
+
+/* ─── Compact Badge (Vault grid tile) ───────────────────────── */
+function CredentialBadge({ cert, onOpen }) {
+  const fSyne = { fontFamily: "'Syne', sans-serif" };
+  return (
+    <button
+      type="button"
+      onClick={() => onOpen(cert)}
+      className="vault-badge group relative flex flex-col items-center gap-2.5 rounded-2xl p-4 text-center"
+      style={{
+        background: 'rgba(255,255,255,0.025)',
+        border: `1px solid rgba(${cert.accentRgb},0.22)`,
+      }}
+      onMouseEnter={(e) => { e.currentTarget.style.boxShadow = `0 14px 34px rgba(${cert.accentRgb},0.16)`; e.currentTarget.style.borderColor = `rgba(${cert.accentRgb},0.5)`; }}
+      onMouseLeave={(e) => { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.borderColor = `rgba(${cert.accentRgb},0.22)`; }}
+    >
+      <div
+        className="w-14 h-14 rounded-xl flex items-center justify-center overflow-hidden border shrink-0"
+        style={{ backgroundColor: cert.iconBg, borderColor: `rgba(${cert.accentRgb},0.3)` }}
+      >
+        {cert.isImg ? (
+          <img src={cert.icon} alt="" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" loading="lazy" />
+        ) : (
+          <span className="material-symbols-outlined text-[24px]" style={{ color: cert.accent }}>{cert.icon}</span>
+        )}
+      </div>
+      <span
+        className="text-white/75 group-hover:text-white transition-colors leading-tight line-clamp-2"
+        style={{ ...fSyne, fontSize: '11px', fontWeight: 700 }}
+      >
+        {cert.title}
+      </span>
+      <span
+        className="w-1.5 h-1.5 rounded-full absolute top-3 right-3"
+        style={{ background: cert.accent, boxShadow: `0 0 6px ${cert.accent}` }}
+      />
+    </button>
+  );
+}
+
+/* ─── Detail Modal ───────────────────────────────────────────── */
+function CertModal({ cert, onClose }) {
   const fBebas = { fontFamily: "'Bebas Neue', sans-serif" };
-  const fSyne  = { fontFamily: "'Syne', sans-serif"       };
-  const fMono  = { fontFamily: "'DM Mono', monospace"     };
-  const fDM    = { fontFamily: "'DM Sans', sans-serif"    };
+  const fSyne  = { fontFamily: "'Syne', sans-serif" };
+  const fMono  = { fontFamily: "'DM Mono', monospace" };
+  const fDM    = { fontFamily: "'DM Sans', sans-serif" };
+
+  useEffect(() => {
+    const onKey = (e) => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', onKey);
+    document.body.style.overflow = 'hidden';
+    return () => { window.removeEventListener('keydown', onKey); document.body.style.overflow = ''; };
+  }, [onClose]);
+
+  if (!cert) return null;
 
   return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className={[
-        /* base */
-        'group relative flex flex-col rounded-2xl overflow-hidden no-underline',
-        'transition-all duration-500 ease-out',
-        /* glass surface */
-        'bg-white/[0.025] border border-white/[0.07]',
-        'backdrop-blur-xl',
-        /* hover lift + glow */
-        'hover:-translate-y-2',
-        'hover:border-white/[0.14]',
-      ].join(' ')}
-      style={{
-        boxShadow: '0 2px 24px rgba(0,0,0,0.35)',
-        transition: 'transform .45s cubic-bezier(0.22,1,0.36,1), box-shadow .45s ease, border-color .3s',
-      }}
-      onMouseEnter={e => { e.currentTarget.style.boxShadow = `0 20px 60px rgba(${accentRgb},0.18), 0 2px 24px rgba(0,0,0,0.4)`; }}
-      onMouseLeave={e => { e.currentTarget.style.boxShadow = '0 2px 24px rgba(0,0,0,0.35)'; }}
+    <div
+      className="vault-backdrop-anim fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6"
+      style={{ background: 'rgba(5,6,12,0.78)', backdropFilter: 'blur(6px)' }}
+      onClick={onClose}
     >
-      {/* Top accent bar — grows on hover */}
       <div
-        className="cert-line-grow absolute top-0 left-0 right-0 h-[2px] rounded-t-2xl origin-left transition-opacity duration-300"
-        style={{ background: `linear-gradient(90deg, ${accent}, transparent)` }}
-      />
+        className="vault-modal-anim relative w-full max-w-md rounded-2xl overflow-hidden"
+        style={{ background: '#0c0d16', border: `1px solid rgba(${cert.accentRgb},0.3)`, boxShadow: `0 30px 80px rgba(0,0,0,0.5), 0 0 60px rgba(${cert.accentRgb},0.08)` }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ background: `linear-gradient(90deg, ${cert.accent}, transparent)` }} />
 
-      {/* Shimmer on hover */}
-      <div className="cert-shimmer absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.04] to-transparent opacity-0 group-hover:opacity-100 pointer-events-none" />
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Close"
+          className="absolute top-4 right-4 z-10 w-8 h-8 rounded-lg flex items-center justify-center border border-white/10 bg-white/[0.04] hover:bg-white/[0.1] transition-colors"
+        >
+          <span className="material-symbols-outlined text-[16px] text-white/70">close</span>
+        </button>
 
-      {/* Corner glow */}
-      <div
-        className="absolute -top-10 -right-10 w-32 h-32 rounded-full blur-[60px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-        style={{ backgroundColor: `rgba(${accentRgb},0.2)` }}
-      />
-
-      <div className="relative z-10 p-6 flex flex-col h-full">
-
-        {/* Top row: number + open icon */}
-        <div className="flex items-start justify-between mb-5">
-          {/* Big number */}
-          <span
-            className="leading-none transition-all duration-300 group-hover:opacity-100"
-            style={{ ...fBebas, fontSize: '52px', color: `rgba(${accentRgb},0.18)`, lineHeight: 1 }}
-          >
-            {num}
-          </span>
-
-          {/* Icon box */}
+        <div className="p-7 sm:p-8">
           <div
-            className="w-12 h-12 rounded-xl flex items-center justify-center overflow-hidden border border-white/[0.06] group-hover:border-white/[0.15] transition-colors duration-300 shrink-0"
-            style={{ backgroundColor: iconBg }}
+            className="w-16 h-16 rounded-xl flex items-center justify-center overflow-hidden border mb-5"
+            style={{ backgroundColor: cert.iconBg, borderColor: `rgba(${cert.accentRgb},0.35)` }}
           >
-            {isImg ? (
-<img
-  src={icon}
-  alt={`${title} certificate issued by ${issuer}`}
-  className="w-full h-full object-cover opacity-75 group-hover:opacity-100 transition-opacity"
-  loading="lazy"
-/>            ) : (
-              <span className="material-symbols-outlined text-[22px]" style={{ color: accent }}>{icon}</span>
+            {cert.isImg ? (
+              <img src={cert.icon} alt="" className="w-full h-full object-cover" loading="lazy" />
+            ) : (
+              <span className="material-symbols-outlined text-[28px]" style={{ color: cert.accent }}>{cert.icon}</span>
             )}
           </div>
-        </div>
 
-        {/* Category chip */}
-        <div className="flex items-center gap-2 mb-3">
           <span
-            className="inline-block rounded-full px-3 py-[4px] uppercase tracking-[0.14em] border"
-            style={{
-              ...fMono,
-              fontSize: '8.5px',
-              color: accent,
-              borderColor: `rgba(${accentRgb},0.3)`,
-              background: `rgba(${accentRgb},0.08)`,
-            }}
+            className="inline-block rounded-full px-3 py-[4px] uppercase tracking-[0.14em] border mb-4"
+            style={{ ...fMono, fontSize: '8.5px', color: cert.accent, borderColor: `rgba(${cert.accentRgb},0.3)`, background: `rgba(${cert.accentRgb},0.08)` }}
           >
-            {category}
+            {cert.category}
           </span>
-        </div>
 
-        {/* Title */}
-        <h3
-          className="text-white mb-3 leading-tight transition-colors duration-300 group-hover:text-white"
-          style={{ ...fSyne, fontSize: '17px', fontWeight: 800 }}
-        >
-          {title}
-        </h3>
+          <h3 className="text-white leading-tight mb-3" style={{ ...fSyne, fontSize: '20px', fontWeight: 800 }}>
+            {cert.title}
+          </h3>
 
-        {/* Desc */}
-        <p
-          className="text-white/40 leading-relaxed line-clamp-2 flex-1"
-          style={{ ...fDM, fontSize: '13px', fontWeight: 300 }}
-        >
-          {desc}
-        </p>
+          <p className="text-white/45 leading-relaxed mb-6" style={{ ...fDM, fontSize: '13.5px', fontWeight: 300 }}>
+            {cert.desc}
+          </p>
 
-        {/* Footer */}
-        <div className="mt-5 pt-4 flex justify-between items-center" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-          <span className="text-white/35 truncate mr-2" style={{ ...fMono, fontSize: '9.5px', letterSpacing: '0.08em' }}>{issuer}</span>
-          <span
-            className="shrink-0 px-2 py-[3px] rounded-full"
-            style={{ ...fMono, fontSize: '9px', letterSpacing: '0.1em', color: accent, background: `rgba(${accentRgb},0.1)` }}
-          >
-            {date}
-          </span>
-        </div>
-
-        {/* Open in new — bottom right corner reveal */}
-        <div className="absolute bottom-5 right-5 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-1 group-hover:translate-y-0">
-          <div
-            className="w-7 h-7 rounded-lg flex items-center justify-center"
-            style={{ background: `rgba(${accentRgb},0.15)`, border: `1px solid rgba(${accentRgb},0.3)` }}
-          >
-            <span className="material-symbols-outlined text-[14px]" style={{ color: accent }}>open_in_new</span>
+          <div className="flex items-center justify-between mb-6 pt-4" style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}>
+            <span className="text-white/40" style={{ ...fMono, fontSize: '10px', letterSpacing: '0.08em' }}>{cert.issuer}</span>
+            <span
+              className="px-2 py-[3px] rounded-full"
+              style={{ ...fMono, fontSize: '9px', letterSpacing: '0.1em', color: cert.accent, background: `rgba(${cert.accentRgb},0.1)` }}
+            >
+              {cert.date}
+            </span>
           </div>
+
+          <a
+            href={cert.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center gap-2 w-full h-12 rounded-xl no-underline text-black uppercase tracking-[0.12em] transition-transform duration-300 hover:-translate-y-[2px]"
+            style={{ ...fSyne, fontSize: '11px', fontWeight: 800, background: `linear-gradient(135deg, ${cert.accent}, ${cert.accent}cc)` }}
+          >
+            <span className="material-symbols-outlined text-[16px]">open_in_new</span>
+            View Certificate
+          </a>
         </div>
       </div>
-    </a>
+    </div>
   );
 }
 
@@ -232,6 +241,8 @@ export default function CertificatesPage() {
   const fDM    = { fontFamily: "'DM Sans', sans-serif"    };
 const sectionRef = useRef(null);   
  const [auroraVisible, setAuroraVisible] = useState(false);  // ADD
+ const [activeCategory, setActiveCategory] = useState('All');
+ const [activeCert, setActiveCert] = useState(null);
 
   useEffect(() => {                           // ADD
     const el = sectionRef.current;
@@ -243,6 +254,10 @@ const sectionRef = useRef(null);
     io.observe(el);
     return () => io.disconnect();
   }, []);
+
+  const categories = ['All', ...new Set(CERTS.map((c) => c.category))];
+  const visibleCerts = activeCategory === 'All' ? CERTS : CERTS.filter((c) => c.category === activeCategory);
+
   return (
     <>
       
@@ -268,7 +283,7 @@ const sectionRef = useRef(null);
         <div className="relative z-10 max-w-[1300px] mx-auto px-6 md:px-10 py-24 md:py-32">
 
           {/* ══ Section Header ══════════════════════════════ */}
-          <div className="cert-a1 flex flex-col items-center text-center mb-20">
+          <div className="cert-a1 flex flex-col items-center text-center mb-14">
 
             {/* Badge */}
             <div
@@ -288,19 +303,19 @@ const sectionRef = useRef(null);
                 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none whitespace-nowrap"
                 style={{ ...fBebas, fontSize: 'clamp(80px,15vw,160px)', color: 'rgba(124,255,103,0.04)', letterSpacing: '0.06em', lineHeight: 1 }}
               >
-                CERTS
+                VAULT
               </div>
 
               <h2
                 className="relative leading-none tracking-[0.04em]"
                 style={{ ...fBebas, fontSize: 'clamp(3.2rem,9vw,7.5rem)' }}
               >
-                <span className="block text-white">MY</span>
+                <span className="block text-white">CREDENTIAL</span>
                 <span
                   className="block bg-clip-text text-transparent"
                   style={{ backgroundImage: 'linear-gradient(130deg, #7cff67 0%, #B497CF 55%, #818cf8 100%)' }}
                 >
-                  ACCREDITATIONS
+                  VAULT
                 </span>
               </h2>
             </div>
@@ -320,12 +335,48 @@ const sectionRef = useRef(null);
               <span className="not-italic font-medium text-white/65">full-stack development skills</span>
               {' '}and hands-on experience.
             </p>
+
+            {/* Stat strip */}
+            <div className="mt-7 flex items-center gap-2.5" style={{ ...fMono, fontSize: '10px', letterSpacing: '0.1em', color: 'rgba(255,255,255,0.4)' }}>
+              <span className="text-[#7cff67] font-bold">{CERTS.length}</span> CREDENTIALS UNLOCKED
+              <span className="w-1 h-1 rounded-full bg-white/20" />
+              <span className="text-[#B497CF] font-bold">{categories.length - 1}</span> CATEGORIES
+            </div>
           </div>
 
-          {/* ══ Cards Grid ══════════════════════════════════ */}
-          <div className="cert-a2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {CERTS.map(c => <CertCard key={c.title} {...c} />)}
+          {/* ══ Category Filter Tabs ══════════════════════════ */}
+          <div className="cert-a2 flex items-center gap-2.5 overflow-x-auto pb-2 mb-8 justify-start md:justify-center" style={{ scrollbarWidth: 'none' }}>
+            {categories.map((cat) => {
+              const isActive = activeCategory === cat;
+              const color = cat === 'All' ? '#0da2e7' : categoryColor(cat);
+              return (
+                <button
+                  key={cat}
+                  type="button"
+                  onClick={() => setActiveCategory(cat)}
+                  className="vault-tab shrink-0 rounded-full px-4 py-2 border uppercase tracking-[0.1em]"
+                  style={{
+                    ...fMono,
+                    fontSize: '10px',
+                    color: isActive ? color : 'rgba(255,255,255,0.4)',
+                    background: isActive ? `${color}18` : 'rgba(255,255,255,0.02)',
+                    borderColor: isActive ? color + '55' : 'rgba(255,255,255,0.08)',
+                  }}
+                >
+                  {cat}
+                </button>
+              );
+            })}
           </div>
+
+          {/* ══ Vault Grid ══════════════════════════════════ */}
+          <div className="cert-a2 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3.5 max-w-3xl mx-auto">
+            {visibleCerts.map((c) => (
+              <CredentialBadge key={c.title} cert={c} onOpen={setActiveCert} />
+            ))}
+          </div>
+
+          <CertModal cert={activeCert} onClose={() => setActiveCert(null)} />
 
           {/* ══ GCP Featured Block ══════════════════════════ */}
           <div className="cert-a3 mt-16">
@@ -387,7 +438,7 @@ const sectionRef = useRef(null);
                   </p>
 
                   <a
-                    href="https://www.skills.google/public_profiles/19b83dbf-4185-4074-94d3-5273184803d2"
+                    href="https://www.skills.google/public_profiles/19acfd63-116f-4f5a-8db6-3d0342ae5b4f"
                     target="_blank"
                     rel="noopener noreferrer"
                     className={[
