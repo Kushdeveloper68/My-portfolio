@@ -263,7 +263,7 @@ const KushParticleFooter = () => {
         ref={subRef}
         className="pointer-events-none absolute bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap font-mono text-[10px] uppercase tracking-[0.28em] text-white/20 transition-colors duration-500"
       >
-        Full Stack Developer · Kush Pandit · 2025
+        Full Stack Developer · Kush Pandit · 2026
       </span>
     </div>
   );

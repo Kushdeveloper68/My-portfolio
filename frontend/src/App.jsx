@@ -13,7 +13,7 @@ const ServicesPage  = lazy(() => import('./pages/services'));
 const PremiumProjects = lazy(() => import('./pages/project'));
 const ExperiencePage  = lazy(() => import('./pages/experience'));
 const CertificatesPage = lazy(() => import('./pages/certificate'));
-const TestimonialsPage = lazy(() => import('./pages/testimonials'));
+const DeveloperSignal = lazy(() => import('./pages/testimonials'));
 const PricingPage   = lazy(() => import('./pages/pricing'));
 const ConnectPage   = lazy(() => import('./pages/connect'));
 
@@ -53,7 +53,7 @@ function App() {
         <SectionBoundary name="project"><PremiumProjects /></SectionBoundary>
         <SectionBoundary name="experience"><ExperiencePage /></SectionBoundary>
         <SectionBoundary name="certificate"><CertificatesPage /></SectionBoundary>
-        <SectionBoundary name="testimonials"><TestimonialsPage /></SectionBoundary>
+        <SectionBoundary name="testimonials"><DeveloperSignal /></SectionBoundary>
         <SectionBoundary name="pricing"><PricingPage /></SectionBoundary>
         <SectionBoundary name="connect"><ConnectPage /></SectionBoundary>
       </Suspense>
