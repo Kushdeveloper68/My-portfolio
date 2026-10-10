@@ -54,6 +54,9 @@ const SERVICES = [
   },
 ];
 
+// stable reference — an inline array here used to restart the WebGL background on every hover
+const FLOAT_WAVES = ["top", "middle", "bottom"];
+
 export default function ServicesPage() {
   const sectionRef = useRef(null);
   const [floatVisible, setFloatVisible] = useState(false);
@@ -68,7 +71,6 @@ useEffect(() => {
   io.observe(el);
   return () => io.disconnect();
 }, []);
-  const [hovered, setHovered] = useState(null);
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -90,7 +92,7 @@ useEffect(() => {
         <div className="absolute inset-0 z-0 pointer-events-none" style={{ opacity: 0.55 }}>
   {floatVisible && (
     <FloatingLines
-      enabledWaves={["top", "middle", "bottom"]}
+      enabledWaves={FLOAT_WAVES}
       lineCount={8}
       lineDistance={8}
       bendRadius={8}
@@ -154,11 +156,7 @@ useEffect(() => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-16">
             {SERVICES.map(({ icon, num, title, desc, tags, color }, i) => (
               <div key={num} data-reveal data-delay={`${(i % 3 + 1) * 100}`}>
-                <div
-                  className="srv-card"
-                  onMouseEnter={() => setHovered(num)}
-                  onMouseLeave={() => setHovered(null)}
-                >
+                <div className="srv-card">
                   {/* Ghost number watermark */}
                   <div className="srv-corner-num" style={{ color }}>{num}</div>
 

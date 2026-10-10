@@ -124,7 +124,7 @@ const SKILLS = [
     level: 4,
     core: true,
     desc: "Server runtime powering APIs, business logic, and backend services.",
-    usedIn: ["EventCure backend", "Toolify"],
+    usedIn: ["EventCure", "Social Media App", "Worker Manager"],
   },
   {
     id: "express",
@@ -133,7 +133,7 @@ const SKILLS = [
     level: 4,
     core: true,
     desc: "Routing, middleware, authentication flows and clean REST APIs.",
-    usedIn: ["EventCure", "StyleForge", "Toolify"],
+    usedIn: ["EventCure", "E-Commerce", "Social Media App"],
   },
   {
     id: "mongodb",
@@ -142,7 +142,7 @@ const SKILLS = [
     level: 4,
     core: true,
     desc: "Document database used for flexible, application-driven data models.",
-    usedIn: ["EventCure", "Toolify"],
+    usedIn: ["EventCure", "E-Commerce", "Worker Manager"],
   },
   {
     id: "python",

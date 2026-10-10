@@ -1,4 +1,12 @@
-import { useEffect, useRef } from 'react';
+import { memo, useEffect, useRef } from 'react';
+
+// Stable defaults — inline `[...]` / `{...}` defaults are new objects on every render, which
+// used to dispose and rebuild the whole WebGL renderer whenever the parent re-rendered
+// (e.g. hovering a service card).
+const DEFAULT_WAVES = ['top', 'middle', 'bottom'];
+const DEFAULT_LINE_COUNT = [6];
+const DEFAULT_LINE_DISTANCE = [5];
+const DEFAULT_BOTTOM_WAVE = { x: 2.0, y: -0.7, rotate: -1 };
 import {
   Clock,
   Mesh,
@@ -227,14 +235,14 @@ function hexToVec3(hex) {
   return new Vector3(r / 255, g / 255, b / 255);
 }
 
-export default function FloatingLines({
+function FloatingLines({
   linesGradient,
-  enabledWaves = ['top', 'middle', 'bottom'],
-  lineCount = [6],
-  lineDistance = [5],
+  enabledWaves = DEFAULT_WAVES,
+  lineCount = DEFAULT_LINE_COUNT,
+  lineDistance = DEFAULT_LINE_DISTANCE,
   topWavePosition,
   middleWavePosition,
-  bottomWavePosition = { x: 2.0, y: -0.7, rotate: -1 },
+  bottomWavePosition = DEFAULT_BOTTOM_WAVE,
   animationSpeed = 1,
   interactive = true,
   bendRadius = 5.0,
@@ -245,6 +253,15 @@ export default function FloatingLines({
   mixBlendMode = 'screen'
 }) {
   const containerRef = useRef(null);
+  const depKey = JSON.stringify([
+    linesGradient,
+    enabledWaves,
+    lineCount,
+    lineDistance,
+    topWavePosition,
+    middleWavePosition,
+    bottomWavePosition
+  ]);
   const targetMouseRef = useRef(new Vector2(-1000, -1000));
   const currentMouseRef = useRef(new Vector2(-1000, -1000));
   const targetInfluenceRef = useRef(0);
@@ -285,8 +302,8 @@ export default function FloatingLines({
     const camera = new OrthographicCamera(-1, 1, 1, -1, 0, 1);
     camera.position.z = 1;
 
-    const renderer = new WebGLRenderer({ antialias: true, alpha: false });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    const renderer = new WebGLRenderer({ antialias: false, alpha: false, powerPreference: 'high-performance' });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
     renderer.domElement.style.width = '100%';
     renderer.domElement.style.height = '100%';
     container.appendChild(renderer.domElement);
@@ -461,13 +478,7 @@ export default function FloatingLines({
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    linesGradient,
-    enabledWaves,
-    lineCount,
-    lineDistance,
-    topWavePosition,
-    middleWavePosition,
-    bottomWavePosition,
+    depKey,
     animationSpeed,
     interactive,
     bendRadius,
@@ -487,3 +498,5 @@ export default function FloatingLines({
     />
   );
 }
+
+export default memo(FloatingLines);

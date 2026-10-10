@@ -1,5 +1,9 @@
 'use client';
-import { useEffect, useRef } from 'react';
+import { memo, useEffect, useRef } from 'react';
+
+// Module-level constant: a fresh `{}` default on every render used to change the
+// effect deps and tear down + rebuild the whole fluid sim on each parent re-render.
+const DEFAULT_BACK_COLOR = { r: 0.5, g: 0, b: 0 };
 
 function SplashCursor({
   SIM_RESOLUTION = 128,
@@ -14,7 +18,7 @@ function SplashCursor({
   SPLAT_FORCE = 6000,
   SHADING = true,
   COLOR_UPDATE_SPEED = 10,
-  BACK_COLOR = { r: 0.5, g: 0, b: 0 },
+  BACK_COLOR = DEFAULT_BACK_COLOR,
   TRANSPARENT = true,
   RAINBOW_MODE = true,
   COLOR = '#ff0000'
@@ -674,17 +678,19 @@ function SplashCursor({
     initFramebuffers();
     let lastUpdateTime = Date.now();
     let colorUpdateTimer = 0.0;
-let animFrameId;
+let animFrameId = 0;
+    let running = true;
     function updateFrame() {
+      if (!running) return;
       const dt = calcDeltaTime();
       if (resizeCanvas()) initFramebuffers();
       updateColors(dt);
       applyInputs();
       step(dt);
       render(null);
-    animFrameId = requestAnimationFrame(updateFrame);
+      animFrameId = requestAnimationFrame(updateFrame);
     }
-animFrameId = requestAnimationFrame(updateFrame);
+    animFrameId = requestAnimationFrame(updateFrame);
     function calcDeltaTime() {
       let now = Date.now();
       let dt = (now - lastUpdateTime) / 1000;
@@ -960,7 +966,7 @@ animFrameId = requestAnimationFrame(updateFrame);
     }
 
     function scaleByPixelRatio(input) {
-      const pixelRatio = window.devicePixelRatio || 1;
+      const pixelRatio = 1; // capped on purpose: soft background, no need for retina resolution
       return Math.floor(input * pixelRatio);
     }
 
@@ -974,82 +980,88 @@ animFrameId = requestAnimationFrame(updateFrame);
       return hash;
     }
 
-    window.addEventListener('mousedown', e => {
-      let pointer = pointers[0];
-      let posX = scaleByPixelRatio(e.clientX);
-      let posY = scaleByPixelRatio(e.clientY);
-      updatePointerDownData(pointer, -1, posX, posY);
+    /* ---------- input ----------
+       Coordinates are converted to the CANVAS's own space (the canvas is the size of the
+       section, not the viewport) and ignored when the pointer is outside the section. */
+    let inside = false;
+
+    function localPoint(clientX, clientY) {
+      const r = canvas.getBoundingClientRect();
+      const x = clientX - r.left;
+      const y = clientY - r.top;
+      return {
+        x: scaleByPixelRatio(x),
+        y: scaleByPixelRatio(y),
+        inside: x >= 0 && y >= 0 && x <= r.width && y <= r.height
+      };
+    }
+
+    function handleMove(clientX, clientY) {
+      const pointer = pointers[0];
+      const pt = localPoint(clientX, clientY);
+      if (!pt.inside) {
+        inside = false;
+        pointer.moved = false;
+        return;
+      }
+      if (!inside) {
+        // entering the section: jump to the position instead of dragging a huge splat across it
+        inside = true;
+        updatePointerDownData(pointer, -1, pt.x, pt.y);
+        pointer.down = false;
+        return;
+      }
+      updatePointerMoveData(pointer, pt.x, pt.y, pointer.color);
+    }
+
+    const onMouseDown = e => {
+      const pt = localPoint(e.clientX, e.clientY);
+      if (!pt.inside) return;
+      const pointer = pointers[0];
+      updatePointerDownData(pointer, -1, pt.x, pt.y);
       clickSplat(pointer);
-    });
+    };
+    const onMouseMove = e => handleMove(e.clientX, e.clientY);
+    const onTouchStart = e => {
+      const t = e.targetTouches[0];
+      if (!t) return;
+      const pt = localPoint(t.clientX, t.clientY);
+      if (!pt.inside) return;
+      inside = true;
+      updatePointerDownData(pointers[0], t.identifier, pt.x, pt.y);
+    };
+    const onTouchMove = e => {
+      const t = e.targetTouches[0];
+      if (t) handleMove(t.clientX, t.clientY);
+    };
+    const onTouchEnd = () => {
+      updatePointerUpData(pointers[0]);
+    };
 
-    document.body.addEventListener('mousemove', function handleFirstMouseMove(e) {
-      let pointer = pointers[0];
-      let posX = scaleByPixelRatio(e.clientX);
-      let posY = scaleByPixelRatio(e.clientY);
-      let color = generateColor();
-      updateFrame();
-      updatePointerMoveData(pointer, posX, posY, color);
-      document.body.removeEventListener('mousemove', handleFirstMouseMove);
-    });
+    window.addEventListener('mousedown', onMouseDown);
+    window.addEventListener('mousemove', onMouseMove, { passive: true });
+    window.addEventListener('touchstart', onTouchStart, { passive: true });
+    window.addEventListener('touchmove', onTouchMove, { passive: true });
+    window.addEventListener('touchend', onTouchEnd, { passive: true });
 
-    window.addEventListener('mousemove', e => {
-      let pointer = pointers[0];
-      let posX = scaleByPixelRatio(e.clientX);
-      let posY = scaleByPixelRatio(e.clientY);
-      let color = pointer.color;
-      updatePointerMoveData(pointer, posX, posY, color);
-    });
-
-    document.body.addEventListener('touchstart', function handleFirstTouchStart(e) {
-      const touches = e.targetTouches;
-      let pointer = pointers[0];
-      for (let i = 0; i < touches.length; i++) {
-        let posX = scaleByPixelRatio(touches[i].clientX);
-        let posY = scaleByPixelRatio(touches[i].clientY);
-        updateFrame();
-        updatePointerDownData(pointer, touches[i].identifier, posX, posY);
-      }
-      document.body.removeEventListener('touchstart', handleFirstTouchStart);
-    });
-
-    window.addEventListener('touchstart', e => {
-      const touches = e.targetTouches;
-      let pointer = pointers[0];
-      for (let i = 0; i < touches.length; i++) {
-        let posX = scaleByPixelRatio(touches[i].clientX);
-        let posY = scaleByPixelRatio(touches[i].clientY);
-        updatePointerDownData(pointer, touches[i].identifier, posX, posY);
-      }
-    });
-
-    window.addEventListener(
-      'touchmove',
-      e => {
-        const touches = e.targetTouches;
-        let pointer = pointers[0];
-        for (let i = 0; i < touches.length; i++) {
-          let posX = scaleByPixelRatio(touches[i].clientX);
-          let posY = scaleByPixelRatio(touches[i].clientY);
-          updatePointerMoveData(pointer, posX, posY, pointer.color);
+    return () => {
+      running = false;
+      cancelAnimationFrame(animFrameId);
+      window.removeEventListener('mousedown', onMouseDown);
+      window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('touchstart', onTouchStart);
+      window.removeEventListener('touchmove', onTouchMove);
+      window.removeEventListener('touchend', onTouchEnd);
+      // Release the GPU context only when the canvas is really gone. Under React StrictMode
+      // (dev) the effect is cleaned up and re-run on the SAME canvas, and a lost context
+      // would crash the re-run.
+      setTimeout(() => {
+        if (!canvas.isConnected) {
+          const lose = gl.getExtension('WEBGL_lose_context');
+          if (lose) lose.loseContext();
         }
-      },
-      false
-    );
-
-    window.addEventListener('touchend', e => {
-      const touches = e.changedTouches;
-      let pointer = pointers[0];
-      for (let i = 0; i < touches.length; i++) {
-        updatePointerUpData(pointer);
-      }
-    });
-
-    updateFrame();
-    // useEffect ke end mein return karo
-return () => {
-  cancelAnimationFrame(animFrameId);
-  // ... baaki cleanup already hai
-};
+      }, 0);
+    };
   }, [
     SIM_RESOLUTION,
     DYE_RESOLUTION,
@@ -1076,4 +1088,4 @@ return () => {
   );
 }
 
-export default SplashCursor;
+export default memo(SplashCursor);

@@ -6,9 +6,9 @@ const P_DIM = 'rgba(13,162,231,0.12)';
 const P_BORDER = 'rgba(13,162,231,0.25)';
 
 const STATS = [
-  { val: '1.5+', label: 'Years', sub: 'Experience' },
+  { val: '2.5+', label: 'Years', sub: 'Experience' },
   { val: '10+', label: 'Projects', sub: 'Delivered' },
-  { val: '2+', label: 'Internships', sub: 'Completed' },
+  { val: '2', label: 'Internships', sub: 'Completed' },
 ];
 
 const TAGS = [
@@ -85,7 +85,7 @@ useEffect(() => {
       >
         {/* Grid bg */}
         {/* Orb — top right */}
-<div className="absolute -top-16 -right-16 w-[520px] h-[520px] pointer-events-auto opacity-70">
+<div className="absolute top-16 right-16 w-[520px] h-[520px] pointer-events-auto opacity-70">
   {orbVisible && <Orb hue={247} hoverIntensity={1.3} rotateOnHover forceHoverState={false} backgroundColor="#0c1a20" />}
 </div>
 
